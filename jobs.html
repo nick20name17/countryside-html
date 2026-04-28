@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jobs — Countryside Concrete PM</title>
+
+    <link rel="icon" type="image/webp" href="favicon.webp" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet" />
+
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem('color-mode');
+          if (t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+          }
+        } catch (e) {}
+      })();
+    </script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'] },
+            colors: {
+              brand: {
+                50: 'oklch(98.5% 0 0)', 100: 'oklch(96% 0 0)', 200: 'oklch(91% 0 0)',
+                300: 'oklch(83% 0 0)', 400: 'oklch(70% 0 0)', 500: 'oklch(21% 0 0)',
+                600: 'oklch(16% 0 0)', 700: 'oklch(13% 0 0)', 800: 'oklch(10% 0 0)',
+                900: 'oklch(8% 0 0)', 950: 'oklch(6% 0 0)'
+              }
+            }
+          }
+        }
+      };
+    </script>
+
+    <style type="text/tailwindcss">
+      html, body { font-family: 'Inter', ui-sans-serif, system-ui, sans-serif; }
+      *, *::before, *::after { box-sizing: border-box; }
+      body { margin: 0; }
+      i[data-lucide] { display: inline-block; width: 1em; height: 1em; }
+      i[data-lucide]:empty { visibility: hidden; }
+      .sb-backdrop { opacity: 0; pointer-events: none; transition: opacity 250ms ease; } .sb-backdrop.is-open { opacity: 1; pointer-events: auto; } .nav-link.active { background-color: oklch(21% 0 0); color: white; font-weight: 500; }
+      .dark .nav-link.active { background-color: white; color: oklch(21% 0 0); }
+      .vol-input {
+        appearance: none; border-radius: 9999px; outline: none; border: 1px solid transparent;
+        height: 2.25rem; background-color: rgb(245 245 244);
+        font-size: 0.875rem; color: rgb(28 25 23);
+      }
+      .dark .vol-input { background-color: rgb(41 37 36); color: rgb(250 250 249); }
+      .vol-input::placeholder { color: rgb(168 162 158); }
+      .dark .vol-input::placeholder { color: rgb(120 113 108); }
+      .vol-input:not([class*="pl-"]):not([class*="px-"]) { padding-left: 1rem; }
+      .vol-input:not([class*="pr-"]):not([class*="px-"]) { padding-right: 1rem; }
+      .vol-input:hover { border-color: rgb(214 211 209); }
+      .dark .vol-input:hover { border-color: rgb(87 83 78); }
+      .vol-input:focus { border-color: rgb(168 162 158); box-shadow: 0 0 0 2px rgba(28,25,23,.2); }
+      .dark .vol-input:focus { border-color: rgb(120 113 108); box-shadow: 0 0 0 2px rgba(245,245,244,.2); }
+      .select-trigger {
+        height: 2.25rem; padding: 0 0.75rem 0 1rem;
+        border-radius: 9999px; background-color: rgb(245 245 244);
+        font-size: 0.875rem; color: rgb(28 25 23); border: 1px solid transparent;
+        display: inline-flex; align-items: center; gap: 0.5rem; cursor: pointer; transition: border-color 150ms;
+      }
+      .dark .select-trigger { background-color: rgb(41 37 36); color: rgb(250 250 249); }
+      .select-trigger:hover { border-color: rgb(214 211 209); }
+      .dark .select-trigger:hover { border-color: rgb(87 83 78); }
+      .select-panel {
+        position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+        background: white; border: 1px solid rgb(231 229 228);
+        border-radius: 0.75rem; box-shadow: 0 10px 30px rgb(0 0 0 / 0.08);
+        z-index: 40; max-height: 18rem; overflow: auto; padding: 0.25rem;
+      }
+      .dark .select-panel { background: rgb(12 10 9); border-color: rgb(41 37 36); }
+      .select-option {
+        display: flex; align-items: center; gap: 0.375rem;
+        padding: 0.4rem 0.625rem; border-radius: 0.5rem;
+        cursor: pointer; font-size: 0.875rem; color: rgb(41 37 36);
+      }
+      .dark .select-option { color: rgb(231 229 228); }
+      .select-option:hover, .select-option.is-active { background: rgb(245 245 244); }
+      .dark .select-option:hover, .dark .select-option.is-active { background: rgb(28 25 23); }
+      .table-row:hover td { background-color: rgb(250 250 249); }
+      .dark .table-row:hover td { background-color: rgba(28 25 23 / 0.5); }
+    
+      /* Command Palette */
+      .cmd-palette-root { position: fixed; inset: 0; z-index: 70; pointer-events: none; }
+      .cmd-palette-root.is-open { pointer-events: auto; }
+      .cmd-palette-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.3); backdrop-filter: blur(4px); opacity: 0; transition: opacity 200ms ease; display: flex; justify-content: center; padding-top: 12vh; }
+      .dark .cmd-palette-backdrop { background: rgba(0,0,0,0.5); }
+      .cmd-palette-root.is-open .cmd-palette-backdrop { opacity: 1; }
+      .cmd-palette-panel { width: 600px; max-width: 95vw; max-height: 75vh; background: white; border: 1px solid rgb(231 229 228); border-radius: 0.75rem; box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25); overflow: hidden; display: flex; flex-direction: column; transform: translateY(-8px) scale(0.98); opacity: 0; transition: transform 200ms ease, opacity 200ms ease; }
+      .dark .cmd-palette-panel { background: rgb(12 10 9); border-color: rgb(41 37 36); }
+      .cmd-palette-root.is-open .cmd-palette-panel { transform: translateY(0) scale(1); opacity: 1; }
+      .cmd-result { width: 100%; display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; cursor: pointer; border-bottom: 1px solid rgb(245 245 244); transition: background-color 100ms; text-align: left; background: transparent; border-left: none; border-right: none; border-top: none; }
+      .dark .cmd-result { border-bottom-color: rgb(28 25 23); }
+      .cmd-result:hover, .cmd-result.is-active { background-color: rgb(245 245 244); }
+      .dark .cmd-result:hover, .dark .cmd-result.is-active { background-color: rgb(28 25 23); }
+      .cmd-section-header { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: rgb(250 250 249); border-bottom: 1px solid rgb(245 245 244); border-top: 1px solid rgb(245 245 244); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: rgb(168 162 158); }
+      .dark .cmd-section-header { background: rgb(28 25 23); border-color: rgb(41 37 36); color: rgb(120 113 108); }
+      .cmd-section-header:first-child { border-top: none; }
+          /* sb-collapsed icon-only */
+      @media (min-width: 1024px) {
+        .sb-collapsed .nav-link, .sb-collapsed .qa-btn {
+          padding: 0 !important; gap: 0 !important;
+          width: 2.5rem !important; height: 2.5rem !important;
+          margin-left: auto !important; margin-right: auto !important;
+          justify-content: center !important;
+        }
+        .sb-collapsed .sidebar-label { display: none !important; }
+      }
+    
+      .user-popover { position: absolute; bottom: calc(100% + 8px); left: 0.5rem; right: 0.5rem; z-index: 60; background: white; border: 1px solid rgb(231 229 228); border-radius: 0.75rem; box-shadow: 0 10px 30px rgb(0 0 0 / 0.12); padding: 0.25rem; opacity: 0; pointer-events: none; transform: translateY(4px); transition: opacity 150ms ease, transform 150ms ease; }
+      .dark .user-popover { background: rgb(12 10 9); border-color: rgb(41 37 36); }
+      .user-popover.is-open { opacity: 1; pointer-events: auto; transform: translateY(0); }
+    </style>
+  </head>
+
+  <body class="font-sans antialiased">
+    <div data-comment="jobs-shell" class="h-screen bg-stone-100 dark:bg-stone-950 overflow-hidden">
+
+      <aside data-comment="sidebar" id="sidebar"
+        class="fixed inset-y-0 left-0 bg-stone-100 dark:bg-stone-950 flex flex-col z-30 transition-[transform] lg:transition-[width] duration-150 lg:w-64 w-64 -translate-x-full lg:translate-x-0">
+        <header data-comment="sidebar-brand" class="h-14 flex items-center gap-3 px-[18px] border-b border-stone-200/70 dark:border-stone-800 shrink-0 overflow-hidden">
+          <img data-comment="sidebar-brand-logo" src="favicon.webp" alt="Countryside Concrete" class="w-7 h-7 rounded-md shrink-0" />
+          <div data-comment="sidebar-brand-text" class="leading-tight overflow-hidden sidebar-label">
+            <p data-comment="sidebar-brand-name" class="text-xs font-bold text-stone-900 dark:text-stone-50 tracking-wide whitespace-nowrap">COUNTRYSIDE</p>
+            <p data-comment="sidebar-brand-sub" class="text-[10px] text-stone-400 dark:text-stone-500 tracking-widest uppercase whitespace-nowrap">Concrete</p>
+          </div>
+        </header>
+        <nav data-comment="sidebar-nav" aria-label="Main navigation" class="flex-1 p-2 space-y-1 overflow-y-auto overflow-x-hidden">
+          <p data-comment="sidebar-nav-section" class="sidebar-label px-3 pb-2 pt-1 text-[10px] font-semibold uppercase tracking-widest text-stone-400 dark:text-stone-600">Workspace</p>
+          <a data-component="link" data-comment="sidebar-nav-dashboard" href="home.html" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-full text-sm transition-colors cursor-pointer text-stone-800 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-300 hover:bg-stone-200/50 dark:hover:bg-stone-800/40">
+            <i data-lucide="layout-dashboard" class="w-4 h-4 shrink-0"></i><span class="flex-1 sidebar-label">Dashboard</span>
+          </a>
+          <a data-component="link" data-comment="sidebar-nav-calendar" href="calendar.html" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-full text-sm transition-colors cursor-pointer text-stone-800 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-300 hover:bg-stone-200/50 dark:hover:bg-stone-800/40">
+            <i data-lucide="calendar-days" class="w-4 h-4 shrink-0"></i><span class="flex-1 sidebar-label">Calendar</span>
+          </a>
+          <a data-component="link" data-comment="sidebar-nav-jobs" href="jobs.html" class="nav-link active flex items-center gap-2.5 px-3 py-2 rounded-full text-sm transition-colors cursor-pointer text-stone-800 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-300 hover:bg-stone-200/50 dark:hover:bg-stone-800/40">
+            <i data-lucide="hard-hat" class="w-4 h-4 shrink-0"></i><span class="flex-1 sidebar-label">Jobs</span>
+          </a>
+          <a data-component="link" data-comment="sidebar-nav-todos" href="tasks.html" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-full text-sm transition-colors cursor-pointer text-stone-800 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-300 hover:bg-stone-200/50 dark:hover:bg-stone-800/40">
+            <i data-lucide="check-square" class="w-4 h-4 shrink-0"></i><span class="flex-1 sidebar-label">Todos</span>
+          </a>
+          <a data-component="link" data-comment="sidebar-nav-employees" href="employees.html" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-full text-sm transition-colors cursor-pointer text-stone-800 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-300 hover:bg-stone-200/50 dark:hover:bg-stone-800/40">
+            <i data-lucide="users" class="w-4 h-4 shrink-0"></i><span class="flex-1 sidebar-label">Employees</span>
+          </a>
+          <a data-component="link" data-comment="sidebar-nav-changelog" href="changelog.html" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-full text-sm transition-colors cursor-pointer text-stone-800 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-300 hover:bg-stone-200/50 dark:hover:bg-stone-800/40">
+            <i data-lucide="megaphone" class="w-4 h-4 shrink-0"></i><span class="flex-1 sidebar-label">Changelog</span>
+          </a>
+        </nav>
+        <div data-comment="sidebar-quick-actions" class="p-2 border-t border-stone-200/70 dark:border-stone-800 shrink-0 space-y-1">
+          <p data-comment="sidebar-quick-actions-label" class="sidebar-label px-3 pb-1 pt-0.5 text-[10px] font-semibold uppercase tracking-widest text-stone-400 dark:text-stone-600">Quick Actions</p>
+          <button type="button" data-comment="sidebar-quick-create-task" data-component="button" onclick="quickCreateTask()" class="qa-btn nav-link w-full flex items-center text-sm text-stone-800 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-300 hover:bg-stone-200/50 dark:hover:bg-stone-800/40 rounded-full transition-colors cursor-pointer gap-2.5 px-3 py-2">
+            <i data-lucide="plus" class="w-4 h-4 shrink-0"></i><span class="sidebar-label flex-1 text-left">Create Task</span>
+          </button>
+          <button type="button" data-comment="sidebar-quick-add-user" data-component="button" onclick="quickAddUser()" class="qa-btn nav-link w-full flex items-center text-sm text-stone-800 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-300 hover:bg-stone-200/50 dark:hover:bg-stone-800/40 rounded-full transition-colors cursor-pointer gap-2.5 px-3 py-2">
+            <i data-lucide="user-plus" class="w-4 h-4 shrink-0"></i><span class="sidebar-label flex-1 text-left">Add User</span>
+          </button>
+        </div>
+        <footer data-comment="sidebar-user" class="relative p-2 border-t border-stone-200/70 dark:border-stone-800 shrink-0">
+          <button type="button" data-comment="sidebar-user-button" data-component="button" aria-label="User settings" onclick="toggleUserPopover(event)"
+            class="w-full flex items-center gap-2.5 px-2 py-1.5 rounded-lg hover:bg-stone-200/50 dark:hover:bg-stone-800/40 transition-colors cursor-pointer overflow-hidden">
+            <div class="relative shrink-0">
+              <span data-comment="sidebar-user-avatar" data-component="avatar" class="inline-flex items-center justify-center relative overflow-hidden w-9 h-9 rounded-full bg-stone-200 dark:bg-stone-700 text-stone-700 dark:text-stone-300 text-sm font-medium select-none">NK</span>
+              <span data-comment="sidebar-user-status" aria-label="Live updates connected" class="absolute bottom-0 right-0 w-2 h-2 rounded-full border-2 border-stone-100 dark:border-stone-950 bg-green-400"></span>
+            </div>
+            <div class="sidebar-label flex-1 min-w-0 text-left">
+              <p data-comment="sidebar-user-name" class="text-xs font-semibold text-stone-900 dark:text-stone-50 truncate">Nazar K.</p>
+              <p data-comment="sidebar-user-role" class="text-[10px] text-stone-400 dark:text-stone-500 truncate">Super Admin</p>
+            </div>
+            <i data-lucide="chevrons-up-down" class="sidebar-label w-3.5 h-3.5 text-stone-400 shrink-0"></i>
+          </button>
+        
+          <div data-comment="sidebar-user-popover" data-component="popover" id="user-popover" class="user-popover">
+            <div class="px-3 py-2 mb-1 border-b border-stone-100 dark:border-stone-800">
+              <p data-comment="sidebar-user-popover-name" class="text-xs font-semibold text-stone-900 dark:text-stone-50 truncate">Nazar K.</p>
+              <p data-comment="sidebar-user-popover-email" class="text-[10px] text-stone-400 truncate">nazar@rivnetech.com</p>
+            </div>
+            <button type="button" data-comment="sidebar-user-popover-signout" data-component="button" onclick="signOut()"
+              class="w-full flex items-center gap-2.5 px-2 py-1.5 rounded-md text-sm text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors cursor-pointer">
+              <i data-lucide="log-out" class="w-4 h-4 text-stone-400"></i>Sign out
+            </button>
+          </div>
+        </footer>
+      </aside>
+
+      <div data-comment="sidebar-mobile-backdrop" id="sidebar-backdrop"
+        class="sb-backdrop fixed inset-0 bg-black/40 z-20 lg:hidden" onclick="closeMobileSidebar()"></div>
+
+      <div data-comment="main-wrap" id="main-wrap" class="p-2 h-full transition-[margin] duration-150 ms-0 lg:ms-64">
+        <div data-comment="main-frame" class="h-full bg-white dark:bg-stone-900 rounded-xl border border-stone-200 dark:border-stone-800 flex flex-col overflow-hidden">
+          <header data-comment="header" class="h-14 bg-white dark:bg-stone-950 border-b border-stone-200 dark:border-stone-800 flex items-center justify-between px-6 shrink-0">
+            <div data-comment="header-left" class="flex items-center gap-3">
+              <button type="button" data-comment="header-sidebar-toggle" data-component="button" onclick="toggleSidebar()"
+                class="w-8 h-8 flex items-center justify-center rounded-lg text-stone-400 hover:text-stone-700 dark:hover:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors cursor-pointer shrink-0">
+                <i data-lucide="panel-left-close" class="w-4 h-4" id="ico-collapse" style="display:block"></i>
+                <i data-lucide="panel-left-open" class="w-4 h-4" id="ico-expand" style="display:none"></i>
+                <i data-lucide="menu" class="w-4 h-4 lg:hidden"></i>
+              </button>
+              <div data-comment="header-divider" class="w-px h-5 bg-stone-200 dark:bg-stone-800 shrink-0"></div>
+              <nav data-comment="header-breadcrumb" aria-label="Breadcrumb" class="flex items-center">
+                <ol class="flex items-center gap-1.5 text-sm text-stone-400 dark:text-stone-500 list-none p-0 m-0">
+                  <li data-comment="breadcrumb-app">App</li>
+                  <li class="flex" aria-hidden="true"><i data-lucide="chevron-right" class="w-3.5 h-3.5"></i></li>
+                  <li data-comment="breadcrumb-current" aria-current="page" class="text-stone-900 dark:text-stone-50 font-medium">Jobs</li>
+                </ol>
+              </nav>
+            </div>
+            <div data-comment="header-actions" role="toolbar" aria-label="Header actions" class="flex items-center gap-2">
+              <button type="button" data-comment="header-search" data-component="button" aria-label="Search (⌘K)"
+                class="flex items-center gap-2 w-80 h-9 px-4 rounded-full border border-transparent bg-stone-100 dark:bg-stone-900 text-stone-400 text-sm hover:border-stone-300 dark:hover:border-stone-600 transition-[border-color] duration-150 cursor-pointer">
+                <i data-lucide="search" class="w-3.5 h-3.5"></i>
+                <span data-comment="header-search-text" class="flex-1 text-left text-sm">Search...</span>
+                <kbd class="hidden sm:inline-flex items-center gap-0.5 text-[10px] font-medium border border-stone-200 dark:border-stone-700 rounded px-1.5 py-0.5 leading-none">
+                  <i data-lucide="command" class="w-2.5 h-2.5"></i>K
+                </kbd>
+              </button>
+              <button type="button" data-comment="header-theme-picker" data-component="button" aria-label="Theme color"
+                class="w-8 h-8 flex items-center justify-center rounded-lg text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors cursor-pointer">
+                <i data-lucide="palette" class="w-4 h-4"></i>
+              </button>
+              <button type="button" data-comment="header-darkmode-toggle" data-component="button" aria-label="Toggle dark mode" onclick="toggleColorMode()"
+                class="w-8 h-8 flex items-center justify-center rounded-lg text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors cursor-pointer">
+                <i data-lucide="moon" class="w-4 h-4 dark:hidden"></i>
+                <i data-lucide="sun" class="w-4 h-4 hidden dark:block"></i>
+              </button>
+            </div>
+          </header>
+
+          <main data-comment="main" class="flex-1 overflow-hidden flex flex-col">
+            <div data-comment="jobs-page" class="flex flex-col h-full overflow-hidden">
+
+              <div data-comment="jobs-header" class="px-6 pt-5 pb-4 shrink-0 flex items-center justify-between gap-4">
+                <div>
+                  <h1 data-comment="jobs-title" class="text-xl font-bold text-stone-900 dark:text-stone-50">Jobs</h1>
+                  <p data-comment="jobs-count" id="jobs-count" class="text-sm text-stone-500 dark:text-stone-400 mt-0.5">0 jobs</p>
+                </div>
+              </div>
+
+              <div data-comment="jobs-toolbar" class="px-6 pb-4 flex items-center gap-3 shrink-0 flex-wrap">
+                <div data-comment="jobs-search-wrap" class="relative w-72">
+                  <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400 dark:text-stone-500 pointer-events-none"></i>
+                  <input id="search-input" data-comment="jobs-search" data-component="input" type="text" placeholder="Search jobs..."
+                    class="vol-input w-full pl-9 pr-9" oninput="onSearchInput(event)" />
+                  <button type="button" data-comment="jobs-search-clear" id="search-clear" aria-label="Clear search" onclick="clearSearch()"
+                    class="absolute right-1.5 top-1/2 -translate-y-1/2 hidden items-center justify-center w-6 h-6 rounded-full text-stone-400 hover:text-stone-600 dark:hover:text-stone-200 hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors cursor-pointer">
+                    <i data-lucide="x" class="w-3 h-3"></i>
+                  </button>
+                </div>
+                <div data-comment="jobs-filter-customer" id="filter-customer" class="relative w-48"></div>
+                <div data-comment="jobs-filter-status" id="filter-status" class="relative w-44"></div>
+              </div>
+
+              <div data-comment="jobs-active-filters" id="active-filters" class="px-6 pb-3 flex items-center gap-2 flex-wrap shrink-0 hidden"></div>
+
+              <div data-comment="jobs-table-wrap" class="flex-1 overflow-hidden px-6 pb-6 relative">
+                <div data-comment="jobs-table-frame" data-component="card" class="overflow-hidden h-full flex flex-col rounded-xl border border-stone-200 dark:border-stone-800">
+                  <div class="flex-1 overflow-auto">
+                    <table data-comment="jobs-table" data-component="table" class="w-full text-sm">
+                      <thead class="bg-stone-50 dark:bg-stone-950 sticky top-0 z-10">
+                        <tr id="thead-row" class="text-left"></tr>
+                      </thead>
+                      <tbody id="tbody"></tbody>
+                    </table>
+                  </div>
+                  <div data-comment="jobs-paginator" id="paginator" class="border-t border-stone-200 dark:border-stone-800 px-4 py-2 flex items-center justify-between gap-2 shrink-0 bg-white dark:bg-stone-900"></div>
+                </div>
+                <div data-comment="jobs-empty" id="jobs-empty" class="absolute inset-0 pb-16 hidden items-center justify-center pointer-events-none">
+                  <div class="flex flex-col items-center justify-center gap-3 py-12 text-center">
+                    <div class="w-10 h-10 rounded-3xl bg-stone-50 dark:bg-stone-800 flex items-center justify-center">
+                      <i data-lucide="hard-hat" class="w-8 h-8 text-stone-400 dark:text-stone-500"></i>
+                    </div>
+                    <div>
+                      <p class="text-sm font-semibold text-stone-900 dark:text-stone-50 m-0">No jobs found</p>
+                      <p class="text-xs text-stone-400 dark:text-stone-500 mt-0.5 m-0">Try adjusting your search or filters</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </main>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+    <script>
+      function createStore(initialState) {
+        let state = structuredClone(initialState);
+        const listeners = new Set();
+        return {
+          get: () => state,
+          set(updater) {
+            const patch = typeof updater === 'function' ? updater(state) : updater;
+            state = { ...state, ...patch };
+            listeners.forEach((fn) => fn(state));
+          },
+          subscribe(fn) { listeners.add(fn); return () => listeners.delete(fn); }
+        };
+      }
+
+      const JOB_STATUSES = [
+        { value: 'Tentative',  label: 'Tentative',  dotCls: 'bg-amber-600 dark:bg-amber-400',   textCls: 'text-amber-600 dark:text-amber-400' },
+        { value: 'In Process', label: 'In Process', dotCls: 'bg-blue-600 dark:bg-blue-400',     textCls: 'text-blue-600 dark:text-blue-400' },
+        { value: 'Confirmed',  label: 'Confirmed',  dotCls: 'bg-emerald-600 dark:bg-emerald-400', textCls: 'text-emerald-600 dark:text-emerald-400' },
+        { value: 'Closed',     label: 'Closed',     dotCls: 'bg-stone-500 dark:bg-stone-400',   textCls: 'text-stone-500 dark:text-stone-400' }
+      ];
+      const jobStatus = (v) => JOB_STATUSES.find((s) => s.value === v) ?? { value: v, label: v, dotCls: 'bg-stone-500 dark:bg-stone-400', textCls: 'text-stone-500 dark:text-stone-400' };
+
+      const CUSTOMERS = [
+        { id: 'C001', l_name: 'Westbrook Holdings',     f_name: 'James',  city: 'Toronto',    state: 'ON', country: 'Canada' },
+        { id: 'C002', l_name: 'Greenfield Industries',  f_name: 'Sarah',  city: 'Hamilton',   state: 'ON', country: 'Canada' },
+        { id: 'C003', l_name: 'Lakeside Properties',    f_name: 'David',  city: 'Mississauga',state: 'ON', country: 'Canada' },
+        { id: 'C004', l_name: 'Riverside Utilities',    f_name: 'Emma',   city: 'Burlington', state: 'ON', country: 'Canada' },
+        { id: 'C005', l_name: 'Northpoint Construction',f_name: 'Michael',city: 'Guelph',     state: 'ON', country: 'Canada' },
+        { id: 'C006', l_name: 'Summit Developments',    f_name: 'Olivia', city: 'Kitchener',  state: 'ON', country: 'Canada' },
+        { id: 'C007', l_name: 'Heritage Estates',       f_name: 'Liam',   city: 'Cambridge',  state: 'ON', country: 'Canada' },
+        { id: 'C008', l_name: 'Peak Property Group',    f_name: 'Noah',   city: 'Brampton',   state: 'ON', country: 'Canada' },
+        { id: 'C009', l_name: 'Cedar Park Residential', f_name: 'Ava',    city: 'Oakville',   state: 'ON', country: 'Canada' },
+        { id: 'C010', l_name: 'Stonebridge Homes',      f_name: 'Mason',  city: 'Milton',     state: 'ON', country: 'Canada' }
+      ];
+
+      function isoOffset(d) { return new Date(Date.now() + d * 86400000).toISOString().slice(0, 10); }
+
+      const STATUS_VALS = JOB_STATUSES.map(s => s.value);
+      const CITIES = ['Toronto','Hamilton','Mississauga','Burlington','Guelph','Kitchener','Cambridge','Brampton','Oakville','Milton'];
+      const DESCRS = [
+        'Foundation pour — north wing',
+        'Driveway flatwork installation',
+        'Retaining wall — east elevation',
+        'Basement excavation and footings',
+        'Sidewalk replacement project',
+        'Garage slab and curbs',
+        'Commercial parking lot pour',
+        'Residential foundation package',
+        'Storm sewer trenching',
+        'Concrete steps and walkways',
+        'Industrial floor pour — phase 2',
+        'Curb and gutter installation',
+        'Patio and pool deck flatwork',
+        'Footings for utility expansion',
+        'Warehouse loading dock'
+      ];
+
+      const JOBS = Array.from({ length: 47 }, (_, i) => {
+        const status = STATUS_VALS[i % STATUS_VALS.length];
+        const cust = CUSTOMERS[i % CUSTOMERS.length];
+        const beginOffset = -90 + i * 4;
+        return {
+          job_id: 1000 + i + 1,
+          descr: DESCRS[i % DESCRS.length],
+          status,
+          customerid: cust.id,
+          l_city: CITIES[i % CITIES.length],
+          l_state: 'ON',
+          begin_date: isoOffset(beginOffset),
+          end_date: isoOffset(beginOffset + 14)
+        };
+      });
+
+      const store = createStore({
+        jobs: JOBS,
+        customers: CUSTOMERS,
+        filters: { search: '', status: [], customerid: '', sortField: 'begin_date', sortOrder: -1, page: 1, limit: 25 },
+        openSelect: null,
+        sidebarCollapsed: false,
+        sidebarMobileOpen: false
+      });
+
+      function el(tag, attrs = {}, children = []) {
+        const node = document.createElement(tag);
+        for (const [k, v] of Object.entries(attrs)) {
+          if (v == null || v === false) continue;
+          if (k === 'class') node.className = v;
+          else if (k === 'style') node.setAttribute('style', v);
+          else if (k.startsWith('on') && typeof v === 'function') node[k] = v;
+          else node.setAttribute(k, v === true ? '' : v);
+        }
+        for (const c of [].concat(children)) {
+          if (c == null || c === false) continue;
+          node.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
+        }
+        return node;
+      }
+      const lucideEl = (name, cls, extra = {}) => el('i', { 'data-lucide': name, class: cls, ...extra });
+      const clear = (n) => { while (n.firstChild) n.removeChild(n.firstChild); };
+      const formatShortDate = (iso) => new Date(iso + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+      function customerName(id) { return store.get().customers.find((c) => c.id === id)?.l_name ?? id; }
+
+      function filteredJobs() {
+        const { jobs, filters } = store.get();
+        let out = jobs.filter((j) => {
+          if (filters.search) {
+            const q = filters.search.toLowerCase();
+            if (!String(j.job_id).includes(q) && !j.descr.toLowerCase().includes(q) && !j.l_city.toLowerCase().includes(q)) return false;
+          }
+          if (filters.status.length && !filters.status.includes(j.status)) return false;
+          if (filters.customerid && j.customerid !== filters.customerid) return false;
+          return true;
+        });
+        const f = filters.sortField;
+        if (f) {
+          out = out.slice().sort((a, b) => {
+            const av = a[f] ?? '';
+            const bv = b[f] ?? '';
+            const cmp = av < bv ? -1 : av > bv ? 1 : 0;
+            return filters.sortOrder === -1 ? -cmp : cmp;
+          });
+        }
+        return out;
+      }
+
+      function paged(list) {
+        const { page, limit } = store.get().filters;
+        const start = (page - 1) * limit;
+        return list.slice(start, start + limit);
+      }
+
+      function selectInner(opts) {
+        const { wrap, options, value, placeholder, onChange, dataComment, currentLabelFn, multi, showFilter } = opts;
+        clear(wrap);
+
+        const trigger = el('button', {
+          type: 'button',
+          'data-comment': `${dataComment}-trigger`,
+          'aria-haspopup': 'listbox',
+          'aria-expanded': String(store.get().openSelect === dataComment),
+          class: 'select-trigger w-full',
+          onclick: (e) => { e.stopPropagation(); toggleSelect(dataComment); }
+        });
+        const valueWrap = el('div', { class: 'flex-1 min-w-0 flex items-center gap-1.5 truncate' });
+
+        if (multi) {
+          if (!value || !value.length) {
+            valueWrap.appendChild(el('span', { class: 'text-stone-400 dark:text-stone-500' }, placeholder));
+          } else if (value.length === 1) {
+            currentLabelFn(valueWrap, options.find((o) => o.value === value[0]));
+          } else {
+            valueWrap.appendChild(document.createTextNode(`${placeholder}(${value.length})`));
+          }
+        } else {
+          const sel = options.find((o) => String(o.value) === String(value));
+          if (sel && value !== '' && value != null) {
+            if (currentLabelFn) currentLabelFn(valueWrap, sel);
+            else valueWrap.appendChild(document.createTextNode(sel.label));
+          } else {
+            valueWrap.appendChild(el('span', { class: 'text-stone-400 dark:text-stone-500' }, placeholder));
+          }
+        }
+        trigger.appendChild(valueWrap);
+        trigger.appendChild(lucideEl('chevron-down', 'w-4 h-4 text-stone-400 shrink-0'));
+        wrap.appendChild(trigger);
+
+        if (store.get().openSelect === dataComment) {
+          const panel = el('div', { class: 'select-panel', 'data-comment': `${dataComment}-panel`, onclick: (e) => e.stopPropagation() });
+          if (showFilter) {
+            const fwrap = el('div', { class: 'p-1.5 sticky top-0 bg-white dark:bg-stone-950' });
+            const fInput = el('input', {
+              type: 'text', placeholder: 'Search...',
+              class: 'vol-input w-full', value: opts.filterValue || '',
+              oninput: (e) => opts.onFilter && opts.onFilter(e.target.value)
+            });
+            fwrap.appendChild(fInput);
+            panel.appendChild(fwrap);
+          }
+          for (const o of options) {
+            const isActive = multi ? value.includes(o.value) : String(o.value) === String(value);
+            const optEl = el('div', {
+              'data-comment': `${dataComment}-option-${o.value || 'all'}`,
+              class: `select-option${isActive ? ' is-active' : ''}`,
+              role: 'option',
+              onclick: () => onChange(o.value)
+            });
+            if (multi) {
+              const cb = el('span', { class: 'inline-flex items-center justify-center w-3.5 h-3.5 border border-stone-300 dark:border-stone-600 rounded shrink-0' });
+              if (isActive) {
+                cb.classList.add('bg-brand-500', 'border-brand-500', 'dark:bg-white', 'dark:border-white');
+                cb.appendChild(lucideEl('check', 'w-2.5 h-2.5 text-white dark:text-stone-900'));
+              }
+              optEl.appendChild(cb);
+            }
+            if (o.dot) optEl.appendChild(el('span', { class: `w-2 h-2 rounded-full shrink-0 ${o.dot}` }));
+            if (o.optionRender) o.optionRender(optEl);
+            else optEl.appendChild(document.createTextNode(o.label));
+            panel.appendChild(optEl);
+          }
+          if (!options.length) {
+            panel.appendChild(el('p', { class: 'px-3 py-1.5 text-sm text-stone-400 dark:text-stone-500' }, opts.emptyText || 'No options'));
+          }
+          wrap.appendChild(panel);
+        }
+      }
+
+      function renderFilterCustomer() {
+        const f = store.get().filters;
+        const cs = store.get().customers;
+        const customerFilterValue = store.get().customerFilterValue || '';
+        const filtered = customerFilterValue.length >= 3
+          ? cs.filter((c) => `${c.l_name} ${c.f_name} ${c.id} ${c.city}`.toLowerCase().includes(customerFilterValue.toLowerCase()))
+          : [];
+
+        selectInner({
+          wrap: document.getElementById('filter-customer'),
+          dataComment: 'filter-customer',
+          placeholder: 'Customer',
+          value: f.customerid,
+          showFilter: true,
+          filterValue: customerFilterValue,
+          onFilter: (v) => store.set({ customerFilterValue: v }),
+          emptyText: customerFilterValue.length < 3 ? 'Type at least 3 characters' : 'No customers found',
+          options: [
+            ...(f.customerid ? [{ value: '', label: 'Clear customer' }] : []),
+            ...filtered.map((c) => ({
+              value: c.id, label: c.l_name,
+              optionRender: (root) => {
+                const wrap = el('div', { class: 'flex flex-col min-w-0' });
+                wrap.appendChild(el('span', { class: 'text-sm font-medium text-stone-900 dark:text-stone-100 truncate' }, [c.l_name, c.f_name].filter(Boolean).join(' ')));
+                if (c.city || c.state) wrap.appendChild(el('span', { class: 'text-xs text-stone-400 dark:text-stone-500 truncate' }, [c.city, c.state, c.country].filter(Boolean).join(', ')));
+                root.appendChild(wrap);
+              }
+            }))
+          ],
+          onChange: (v) => { setFilter('customerid', v); store.set({ openSelect: null }); },
+          emptyText: 'No customers found'
+        });
+      }
+
+      function renderFilterStatus() {
+        const f = store.get().filters;
+        selectInner({
+          wrap: document.getElementById('filter-status'),
+          dataComment: 'filter-status',
+          placeholder: 'Status',
+          value: f.status,
+          multi: true,
+          options: JOB_STATUSES.map((s) => ({ value: s.value, label: s.label, dot: s.dotCls })),
+          onChange: (v) => {
+            const cur = store.get().filters.status;
+            const next = cur.includes(v) ? cur.filter(x => x !== v) : [...cur, v];
+            setFilter('status', next);
+          },
+          currentLabelFn: (wrap, sel) => {
+            wrap.appendChild(el('span', { class: `w-2 h-2 rounded-full shrink-0 ${sel.dot}` }));
+            wrap.appendChild(document.createTextNode(sel.label));
+          }
+        });
+      }
+
+      function renderActiveFilters() {
+        const f = store.get().filters;
+        const active = [];
+        if (f.search) active.push({ key: 'search', label: `"${f.search}"`, clear: () => { setFilter('search', ''); document.getElementById('search-input').value = ''; updateSearchClear(); } });
+        f.status.forEach((s) => active.push({ key: `status-${s}`, label: jobStatus(s).label, clear: () => setFilter('status', f.status.filter(x => x !== s)) }));
+        if (f.customerid) active.push({ key: 'customerid', label: customerName(f.customerid), clear: () => setFilter('customerid', '') });
+
+        const root = document.getElementById('active-filters');
+        clear(root);
+        if (!active.length) { root.classList.add('hidden'); return; }
+        root.classList.remove('hidden');
+        for (const a of active) {
+          const chip = el('span', {
+            'data-comment': `active-filter-${a.key}`,
+            'data-component': 'badge',
+            class: 'inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-medium bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 border border-stone-200 dark:border-stone-700'
+          }, a.label);
+          const close = el('button', {
+            type: 'button',
+            'data-comment': `active-filter-${a.key}-remove`,
+            'aria-label': 'Remove filter',
+            onclick: a.clear,
+            class: 'ml-0.5 -mr-0.5 flex items-center justify-center w-4 h-4 rounded-full text-stone-400 dark:text-stone-500 hover:text-white hover:bg-brand-500 transition-all duration-150 cursor-pointer'
+          });
+          close.appendChild(lucideEl('x', 'w-3 h-3'));
+          chip.appendChild(close);
+          root.appendChild(chip);
+        }
+        if (active.length > 1) {
+          const clearAll = el('button', {
+            type: 'button',
+            'data-comment': 'active-filter-clear-all',
+            onclick: clearAllFilters,
+            class: 'inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-medium border border-dashed border-stone-300 dark:border-stone-700 text-stone-500 dark:text-stone-400 hover:border-stone-400 dark:hover:border-stone-500 hover:text-stone-700 dark:hover:text-stone-200 transition-colors cursor-pointer'
+          });
+          clearAll.appendChild(lucideEl('x', 'w-3 h-3'));
+          clearAll.appendChild(document.createTextNode('Clear all'));
+          root.appendChild(clearAll);
+        }
+      }
+
+      const COLS = [
+        { field: 'job_id',     header: 'Job ID',      width: 'w-28', sortable: true },
+        { field: 'descr',      header: 'Description', width: '',     sortable: true },
+        { field: 'status',     header: 'Status',      width: 'w-36', sortable: true },
+        { field: 'customerid', header: 'Customer',    width: 'w-32', sortable: true },
+        { field: 'l_city',     header: 'Location',    width: 'w-40', sortable: true },
+        { field: 'begin_date', header: 'Start',       width: 'w-28', sortable: true },
+        { field: 'end_date',   header: 'End',         width: 'w-28', sortable: true }
+      ];
+
+      function renderHead() {
+        const { sortField, sortOrder } = store.get().filters;
+        const tr = document.getElementById('thead-row');
+        clear(tr);
+        for (const col of COLS) {
+          const th = el('th', {
+            'data-comment': `thead-${col.field}`,
+            class: `px-4 py-3 text-xs font-medium text-stone-500 dark:text-stone-400 ${col.width} ${col.sortable ? 'cursor-pointer select-none hover:text-stone-700 dark:hover:text-stone-200' : ''}`,
+            onclick: col.sortable ? () => onSort(col.field) : null
+          });
+          const inner = el('span', { class: 'inline-flex items-center gap-1' });
+          inner.appendChild(document.createTextNode(col.header));
+          if (col.sortable && sortField === col.field) {
+            inner.appendChild(lucideEl(sortOrder === -1 ? 'arrow-down' : 'arrow-up', 'w-3 h-3'));
+          } else if (col.sortable) {
+            inner.appendChild(el('span', { class: 'inline-block w-3 opacity-30' }, ''));
+          }
+          th.appendChild(inner);
+          tr.appendChild(th);
+        }
+      }
+
+      function renderRow(row) {
+        const tr = el('tr', {
+          'data-comment': `jobs-row-${row.job_id}`,
+          class: 'table-row border-t border-stone-100 dark:border-stone-800 cursor-pointer transition-colors',
+          onclick: () => { window.location.href = `jobs-detail.html#job-${row.job_id}`; }
+        });
+        tr.appendChild(el('td', { class: 'px-4 py-3 w-28' }, [
+          el('span', {
+            'data-comment': `jobs-row-${row.job_id}-id`,
+            class: 'font-mono text-sm font-medium text-stone-900 dark:text-stone-50 whitespace-nowrap'
+          }, String(row.job_id))
+        ]));
+        tr.appendChild(el('td', { class: 'px-4 py-3' }, [
+          el('span', {
+            'data-comment': `jobs-row-${row.job_id}-descr`,
+            class: 'text-sm text-stone-700 dark:text-stone-300'
+          }, row.descr)
+        ]));
+        const st = jobStatus(row.status);
+        const tag = el('span', {
+          'data-comment': `jobs-row-${row.job_id}-status`,
+          class: `inline-flex items-center justify-center text-xs font-medium px-2 py-0.5 rounded-full gap-1 border border-current whitespace-nowrap ${st.textCls}`
+        });
+        tag.appendChild(el('span', { class: `w-1.5 h-1.5 rounded-full shrink-0 ${st.dotCls}` }));
+        tag.appendChild(document.createTextNode(st.label));
+        tr.appendChild(el('td', { class: 'px-4 py-3 w-36' }, [tag]));
+
+        tr.appendChild(el('td', { class: 'px-4 py-3 w-32' }, [
+          el('span', {
+            'data-comment': `jobs-row-${row.job_id}-customer`,
+            class: 'text-sm text-stone-500 dark:text-stone-400 font-mono whitespace-nowrap'
+          }, row.customerid)
+        ]));
+        tr.appendChild(el('td', { class: 'px-4 py-3 w-40' }, [
+          el('span', {
+            'data-comment': `jobs-row-${row.job_id}-location`,
+            class: 'text-sm text-stone-500 dark:text-stone-400 whitespace-nowrap'
+          }, [row.l_city, row.l_state].filter(Boolean).join(', '))
+        ]));
+        tr.appendChild(el('td', { class: 'px-4 py-3 w-28' }, [
+          el('span', {
+            'data-comment': `jobs-row-${row.job_id}-begin`,
+            class: 'text-sm text-stone-500 dark:text-stone-400 whitespace-nowrap'
+          }, row.begin_date ? formatShortDate(row.begin_date) : '—')
+        ]));
+        tr.appendChild(el('td', { class: 'px-4 py-3 w-28' }, [
+          el('span', {
+            'data-comment': `jobs-row-${row.job_id}-end`,
+            class: 'text-sm text-stone-500 dark:text-stone-400 whitespace-nowrap'
+          }, row.end_date ? formatShortDate(row.end_date) : '—')
+        ]));
+        return tr;
+      }
+
+      function renderBody() {
+        const all = filteredJobs();
+        const rows = paged(all);
+        const tbody = document.getElementById('tbody');
+        const empty = document.getElementById('jobs-empty');
+        clear(tbody);
+        document.getElementById('jobs-count').textContent = `${all.length} jobs`;
+        if (!all.length) {
+          empty.classList.remove('hidden');
+          empty.classList.add('flex');
+        } else {
+          empty.classList.add('hidden');
+          empty.classList.remove('flex');
+          rows.forEach((r) => tbody.appendChild(renderRow(r)));
+        }
+      }
+
+      function renderPaginator() {
+        const all = filteredJobs();
+        const { page, limit } = store.get().filters;
+        const totalPages = Math.max(1, Math.ceil(all.length / limit));
+        const root = document.getElementById('paginator');
+        clear(root);
+
+        const left = el('div', { class: 'text-xs text-stone-500 dark:text-stone-400' });
+        const start = all.length ? (page - 1) * limit + 1 : 0;
+        const end = Math.min(page * limit, all.length);
+        left.textContent = `${start}–${end} of ${all.length}`;
+        root.appendChild(left);
+
+        const right = el('div', { class: 'flex items-center gap-1' });
+        const mkBtn = (label, ico, onClick, disabled) => {
+          const b = el('button', {
+            type: 'button',
+            'data-comment': `paginator-${label}`,
+            'aria-label': label,
+            onclick: disabled ? null : onClick,
+            class: `w-8 h-8 inline-flex items-center justify-center rounded-md border border-stone-200 dark:border-stone-800 text-stone-500 dark:text-stone-400 ${disabled ? 'opacity-40 cursor-not-allowed' : 'hover:bg-stone-100 dark:hover:bg-stone-800 cursor-pointer'}`
+          });
+          b.appendChild(lucideEl(ico, 'w-3.5 h-3.5'));
+          return b;
+        };
+        right.appendChild(mkBtn('first', 'chevrons-left', () => setFilter('page', 1), page === 1));
+        right.appendChild(mkBtn('prev', 'chevron-left', () => setFilter('page', page - 1), page === 1));
+        const pageInfo = el('span', { class: 'px-2 text-xs text-stone-700 dark:text-stone-300' });
+        pageInfo.textContent = `${page} / ${totalPages}`;
+        right.appendChild(pageInfo);
+        right.appendChild(mkBtn('next', 'chevron-right', () => setFilter('page', page + 1), page === totalPages));
+        right.appendChild(mkBtn('last', 'chevrons-right', () => setFilter('page', totalPages), page === totalPages));
+
+        const sizeWrap = el('div', { class: 'ml-3 flex items-center gap-1.5 text-xs text-stone-500 dark:text-stone-400' });
+        sizeWrap.appendChild(document.createTextNode('Per page'));
+        const sizeSel = el('select', {
+          'data-comment': 'paginator-size',
+          class: 'rounded-md border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-950 text-sm px-2 py-1 cursor-pointer',
+          onchange: (e) => setFilter({ limit: Number(e.target.value), page: 1 })
+        });
+        [10, 25, 50, 100].forEach((n) => {
+          const opt = el('option', { value: String(n) }, String(n));
+          if (n === limit) opt.setAttribute('selected', '');
+          sizeSel.appendChild(opt);
+        });
+        sizeWrap.appendChild(sizeSel);
+        right.appendChild(sizeWrap);
+
+        root.appendChild(right);
+      }
+
+      function setFilter(key, value) {
+        if (typeof key === 'object') {
+          store.set((s) => ({ filters: { ...s.filters, ...key } }));
+          return;
+        }
+        store.set((s) => ({ filters: { ...s.filters, [key]: value, page: key === 'page' ? value : 1 } }));
+      }
+
+      function onSort(field) {
+        const { sortField, sortOrder } = store.get().filters;
+        const nextOrder = sortField === field ? -sortOrder : 1;
+        setFilter({ sortField: field, sortOrder: nextOrder, page: 1 });
+      }
+
+      let searchDebounce = null;
+      function onSearchInput(e) {
+        const v = e.target.value;
+        updateSearchClear();
+        clearTimeout(searchDebounce);
+        searchDebounce = setTimeout(() => setFilter('search', v), 300);
+      }
+      function updateSearchClear() {
+        const v = document.getElementById('search-input').value;
+        const btn = document.getElementById('search-clear');
+        btn.classList.toggle('hidden', !v);
+        btn.classList.toggle('flex', !!v);
+      }
+      function clearSearch() {
+        document.getElementById('search-input').value = '';
+        updateSearchClear();
+        setFilter('search', '');
+      }
+      function clearAllFilters() {
+        store.set((s) => ({ filters: { ...s.filters, search: '', status: [], customerid: '', page: 1 } }));
+        document.getElementById('search-input').value = '';
+        updateSearchClear();
+      }
+      function toggleSelect(name) {
+        store.set((s) => ({ openSelect: s.openSelect === name ? null : name }));
+      }
+
+      function toggleSidebar() {
+        const isLg = window.matchMedia('(min-width: 1024px)').matches;
+        if (isLg) store.set((s) => ({ sidebarCollapsed: !s.sidebarCollapsed }));
+        else store.set((s) => ({ sidebarMobileOpen: !s.sidebarMobileOpen }));
+      }
+      function closeMobileSidebar() { store.set({ sidebarMobileOpen: false }); }
+      function applySidebarState() {
+        const { sidebarCollapsed, sidebarMobileOpen } = store.get();
+        const sb = document.getElementById('sidebar');
+        const wrap = document.getElementById('main-wrap');
+        const backdrop = document.getElementById('sidebar-backdrop');
+        const collapseIco = document.getElementById('ico-collapse');
+        const expandIco = document.getElementById('ico-expand');
+        sb.classList.toggle('lg:w-16', sidebarCollapsed);
+        sb.classList.toggle('sb-collapsed', sidebarCollapsed);
+        sb.classList.toggle('lg:w-64', !sidebarCollapsed);
+        sb.classList.toggle('translate-x-0', sidebarMobileOpen);
+        sb.classList.toggle('-translate-x-full', !sidebarMobileOpen);
+        wrap.classList.toggle('lg:ms-16', sidebarCollapsed);
+        wrap.classList.toggle('lg:ms-64', !sidebarCollapsed);
+        backdrop.classList.toggle('is-open', !!sidebarMobileOpen);
+        document.querySelectorAll('.sidebar-label').forEach((label) => label.classList.toggle('lg:hidden', sidebarCollapsed));
+        const isLg = window.matchMedia('(min-width: 1024px)').matches;
+        collapseIco.style.display = (isLg && !sidebarCollapsed) ? 'block' : 'none';
+        expandIco.style.display = (isLg && sidebarCollapsed) ? 'block' : 'none';
+      }
+      function toggleColorMode() {
+        const isDark = document.documentElement.classList.toggle('dark');
+        try { localStorage.setItem('color-mode', isDark ? 'dark' : 'light'); } catch (e) {}
+      }
+
+      function renderAll() {
+        renderFilterCustomer();
+        renderFilterStatus();
+        renderActiveFilters();
+        renderHead();
+        renderBody();
+        renderPaginator();
+        applySidebarState();
+        if (window.lucide) lucide.createIcons();
+      }
+      store.subscribe(renderAll);
+
+      document.addEventListener('mousedown', (e) => {
+        if (store.get().openSelect && !e.target.closest('[data-comment$="-trigger"]') && !e.target.closest('.select-panel')) {
+          store.set({ openSelect: null });
+        }
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && store.get().openSelect) store.set({ openSelect: null });
+      });
+
+      window.addEventListener('resize', applySidebarState);
+      window.addEventListener('DOMContentLoaded', () => {
+        if (window.lucide) lucide.createIcons();
+        renderAll();
+      });
+    
+      // Command Palette
+      const CMD_TARGETS = [
+        { kind: 'page', title: 'Dashboard', subtitle: 'Workspace overview', icon: 'layout-dashboard', href: 'home.html' },
+        { kind: 'page', title: 'Calendar', subtitle: 'Month, week, 3-month, unscheduled', icon: 'calendar-days', href: 'calendar.html' },
+        { kind: 'page', title: 'Jobs', subtitle: 'All jobs and statuses', icon: 'hard-hat', href: 'jobs.html' },
+        { kind: 'page', title: 'Todos', subtitle: 'Kanban + list', icon: 'check-square', href: 'tasks.html' },
+        { kind: 'page', title: 'Employees', subtitle: 'Directory and roles', icon: 'users', href: 'employees.html' },
+        { kind: 'page', title: 'Changelog', subtitle: 'What is new', icon: 'megaphone', href: 'changelog.html' },
+        { kind: 'job', title: 'Job #1042 · Westbrook commercial complex', subtitle: 'In Process · Toronto, ON', icon: 'hard-hat', href: 'jobs-detail.html#job-1042' },
+        { kind: 'job', title: 'Job #1058 · Greenfield warehouse expansion', subtitle: 'Confirmed · Hamilton, ON', icon: 'hard-hat', href: 'jobs.html' },
+        { kind: 'job', title: 'Job #1063 · Riverside utilities trenching', subtitle: 'Confirmed · Burlington, ON', icon: 'hard-hat', href: 'jobs.html' },
+        { kind: 'task', title: 'Pour foundation slab — north wing', subtitle: 'Flatwork · #1042', icon: 'hammer', href: 'calendar.html#task-t3' },
+        { kind: 'task', title: 'Form wall sections A1–A4', subtitle: 'Forming · #1042', icon: 'hammer', href: 'calendar.html#task-t4' },
+        { kind: 'task', title: 'Excavate basement footprint', subtitle: 'Excavating · #1042', icon: 'hammer', href: 'calendar.html#task-t1' },
+        { kind: 'todo', title: 'Submit RFI for column spacing', subtitle: 'High priority · Change Order', icon: 'check-square', href: 'tasks.html' },
+        { kind: 'todo', title: 'Daily safety briefing — confined space entry', subtitle: 'Urgent · Safety', icon: 'check-square', href: 'tasks.html' },
+        { kind: 'user', title: 'Nazar K.', subtitle: 'Super Admin · Office', icon: 'user', href: 'employees.html' },
+        { kind: 'user', title: 'Anna Lee', subtitle: 'Admin · Office', icon: 'user', href: 'employees.html' },
+        { kind: 'user', title: 'Mark Chen', subtitle: 'Foreman · Field', icon: 'user', href: 'employees.html' }
+      ];
+      const CMD_KIND_LABELS = { job: 'Jobs', task: 'Tasks', todo: 'Todos', user: 'Users', page: 'Pages' };
+      const CMD_KIND_ORDER = ['page', 'job', 'task', 'todo', 'user'];
+      let cmdActiveIndex = 0;
+      let cmdQuery = '';
+
+      function openCmdPalette() {
+        const root = document.getElementById('cmd-palette');
+        if (!root) return;
+        root.classList.add('is-open');
+        cmdQuery = '';
+        cmdActiveIndex = 0;
+        const inp = document.getElementById('cmd-palette-input');
+        if (inp) { inp.value = ''; setTimeout(() => inp.focus(), 60); }
+        renderCmdPalette();
+      }
+      function closeCmdPalette() {
+        const root = document.getElementById('cmd-palette');
+        if (root) root.classList.remove('is-open');
+      }
+      function onCmdPaletteInput(e) {
+        cmdQuery = e.target.value;
+        cmdActiveIndex = 0;
+        renderCmdPalette();
+      }
+      function cmdFiltered() {
+        const q = cmdQuery.trim().toLowerCase();
+        if (!q) return CMD_TARGETS.filter((x) => x.kind === 'page');
+        return CMD_TARGETS.filter((x) =>
+          x.title.toLowerCase().includes(q) || x.subtitle.toLowerCase().includes(q)
+        );
+      }
+      function renderCmdPalette() {
+        const root = document.getElementById('cmd-palette-results');
+        if (!root) return;
+        while (root.firstChild) root.removeChild(root.firstChild);
+        const items = cmdFiltered();
+        if (!items.length) {
+          const empty = document.createElement('div');
+          empty.className = 'flex flex-col items-center justify-center gap-2 py-12 text-center';
+          empty.setAttribute('data-comment', 'cmd-palette-empty');
+          const ico = document.createElement('div');
+          ico.className = 'w-10 h-10 rounded-3xl bg-stone-50 dark:bg-stone-800 flex items-center justify-center';
+          const i = document.createElement('i'); i.setAttribute('data-lucide', 'search-x'); i.className = 'w-6 h-6 text-stone-400';
+          ico.appendChild(i); empty.appendChild(ico);
+          const p1 = document.createElement('p'); p1.className = 'text-sm font-semibold text-stone-900 dark:text-stone-50 m-0'; p1.textContent = 'No results';
+          const p2 = document.createElement('p'); p2.className = 'text-xs text-stone-400 dark:text-stone-500 mt-0.5 m-0'; p2.textContent = 'Try a different query';
+          empty.appendChild(p1); empty.appendChild(p2);
+          root.appendChild(empty);
+          if (window.lucide) lucide.createIcons();
+          return;
+        }
+        const groups = {};
+        items.forEach((it) => { (groups[it.kind] = groups[it.kind] || []).push(it); });
+        let flatIdx = 0;
+        CMD_KIND_ORDER.forEach((kind) => {
+          if (!groups[kind]) return;
+          const header = document.createElement('div');
+          header.className = 'cmd-section-header';
+          header.setAttribute('data-comment', 'cmd-palette-section-' + kind);
+          const hi = document.createElement('i');
+          hi.setAttribute('data-lucide', kind === 'page' ? 'layout-grid' : kind === 'job' ? 'hard-hat' : kind === 'task' ? 'hammer' : kind === 'todo' ? 'check-square' : 'users');
+          hi.className = 'w-3.5 h-3.5';
+          header.appendChild(hi);
+          header.appendChild(document.createTextNode(CMD_KIND_LABELS[kind]));
+          root.appendChild(header);
+          groups[kind].forEach((it) => {
+            const idx = flatIdx++;
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'cmd-result' + (idx === cmdActiveIndex ? ' is-active' : '');
+            btn.setAttribute('data-comment', 'cmd-palette-result-' + idx);
+            btn.onclick = () => { closeCmdPalette(); window.location.href = it.href; };
+            btn.onmouseenter = () => { cmdActiveIndex = idx; document.querySelectorAll('.cmd-result').forEach((b, i) => b.classList.toggle('is-active', i === idx)); };
+            const ic = document.createElement('i'); ic.setAttribute('data-lucide', it.icon); ic.className = 'w-4 h-4 shrink-0 text-stone-400';
+            btn.appendChild(ic);
+            const inner = document.createElement('div'); inner.className = 'flex-1 min-w-0';
+            const t = document.createElement('p'); t.className = 'text-sm font-medium text-stone-900 dark:text-stone-50 truncate m-0'; t.textContent = it.title;
+            const s = document.createElement('p'); s.className = 'text-xs text-stone-400 dark:text-stone-500 truncate mt-0.5 m-0'; s.textContent = it.subtitle;
+            inner.appendChild(t); inner.appendChild(s);
+            btn.appendChild(inner);
+            const tag = document.createElement('span');
+            tag.className = 'text-[10px] uppercase tracking-wider font-semibold text-stone-400 dark:text-stone-500 shrink-0';
+            tag.textContent = it.kind;
+            btn.appendChild(tag);
+            root.appendChild(btn);
+          });
+        });
+        if (window.lucide) lucide.createIcons();
+      }
+      function onCmdPaletteKey(e) {
+        const items = cmdFiltered();
+        if (e.key === 'ArrowDown') { e.preventDefault(); cmdActiveIndex = Math.min(items.length - 1, cmdActiveIndex + 1); renderCmdPalette(); }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); cmdActiveIndex = Math.max(0, cmdActiveIndex - 1); renderCmdPalette(); }
+        else if (e.key === 'Enter') { e.preventDefault(); const it = items[cmdActiveIndex]; if (it) { closeCmdPalette(); window.location.href = it.href; } }
+      }
+      document.addEventListener('keydown', (e) => {
+        const root = document.getElementById('cmd-palette');
+        if (!root) return;
+        if ((e.metaKey || e.ctrlKey) && e.key && e.key.toLowerCase() === 'k') {
+          e.preventDefault();
+          if (root.classList.contains('is-open')) closeCmdPalette();
+          else openCmdPalette();
+        } else if (e.key === 'Escape' && root.classList.contains('is-open')) {
+          closeCmdPalette();
+        }
+      });
+      window.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('[data-comment="header-search"]').forEach((btn) => btn.addEventListener('click', openCmdPalette));
+      });
+
+    
+      // Quick Actions handlers — open dialog if on the right page, else navigate with #new hash
+      function quickCreateTask() {
+        if (typeof openCreateDialog === 'function' && document.getElementById('create-dialog')) {
+          openCreateDialog();
+        } else {
+          window.location.href = 'tasks.html#new';
+        }
+      }
+      function quickAddUser() {
+        if (typeof openCreate === 'function' && document.getElementById('edit-dialog')) {
+          openCreate();
+        } else {
+          window.location.href = 'employees.html#new';
+        }
+      }
+      // Auto-open dialog when arriving with #new hash
+      window.addEventListener('DOMContentLoaded', () => {
+        if (window.location.hash !== '#new') return;
+        setTimeout(() => {
+          if (typeof openCreateDialog === 'function' && document.getElementById('create-dialog')) openCreateDialog();
+          else if (typeof openCreate === 'function' && document.getElementById('edit-dialog')) openCreate();
+          history.replaceState(null, '', window.location.pathname);
+        }, 100);
+      });
+
+    
+      // Sidebar user popover
+      function toggleUserPopover(e) {
+        if (e) e.stopPropagation();
+        const pop = document.getElementById('user-popover');
+        if (pop) pop.classList.toggle('is-open');
+      }
+      function closeUserPopover() {
+        const pop = document.getElementById('user-popover');
+        if (pop) pop.classList.remove('is-open');
+      }
+      function signOut() {
+        window.location.href = 'login.html';
+      }
+      document.addEventListener('mousedown', (e) => {
+        const pop = document.getElementById('user-popover');
+        if (!pop) return;
+        if (pop.classList.contains('is-open') &&
+            !e.target.closest('#user-popover') &&
+            !e.target.closest('[data-comment="sidebar-user-button"]')) {
+          closeUserPopover();
+        }
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeUserPopover();
+      });
+
+    </script>
+  
+      <div id="cmd-palette" data-comment="cmd-palette" data-component="dialog" class="cmd-palette-root">
+        <div class="cmd-palette-backdrop" onclick="closeCmdPalette()">
+          <div class="cmd-palette-panel" data-comment="cmd-palette-panel" onclick="event.stopPropagation()">
+            <div data-comment="cmd-palette-search-wrap" class="p-3 border-b border-stone-200 dark:border-stone-800 shrink-0">
+              <div class="flex items-center gap-2.5 px-4 h-9 rounded-full bg-stone-100 dark:bg-stone-800 border border-transparent">
+                <i data-lucide="search" class="w-4 h-4 text-stone-400 shrink-0"></i>
+                <input id="cmd-palette-input" data-comment="cmd-palette-input" data-component="input" type="text" placeholder="Search jobs, tasks, todos..." class="flex-1 bg-transparent text-sm text-stone-900 dark:text-stone-50 placeholder:text-stone-400 outline-none border-0" oninput="onCmdPaletteInput(event)" onkeydown="onCmdPaletteKey(event)" />
+                <kbd class="inline-flex items-center text-[10px] font-medium text-stone-400 border border-stone-300 dark:border-stone-600 rounded px-1.5 py-0.5 bg-white dark:bg-stone-700 leading-none">ESC</kbd>
+              </div>
+            </div>
+            <div data-comment="cmd-palette-results" id="cmd-palette-results" class="flex-1 overflow-y-auto"></div>
+          </div>
+        </div>
+      </div>
+
+  </body>
+</html>

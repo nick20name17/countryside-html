@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard — Countryside Concrete PM</title>
+
+    <link rel="icon" type="image/webp" href="favicon.webp" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
+      rel="stylesheet" />
+
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem('color-mode');
+          if (t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+          }
+        } catch (e) {}
+      })();
+    </script>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif']
+            },
+            colors: {
+              brand: {
+                50: 'oklch(98.5% 0 0)',
+                100: 'oklch(96% 0 0)',
+                200: 'oklch(91% 0 0)',
+                300: 'oklch(83% 0 0)',
+                400: 'oklch(70% 0 0)',
+                500: 'oklch(21% 0 0)',
+                600: 'oklch(16% 0 0)',
+                700: 'oklch(13% 0 0)',
+                800: 'oklch(10% 0 0)',
+                900: 'oklch(8% 0 0)',
+                950: 'oklch(6% 0 0)'
+              }
+            }
+          }
+        }
+      };
+    </script>
+
+    <style type="text/tailwindcss">
+      html,
+      body {
+        font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+      }
+      .sb-backdrop { opacity: 0; pointer-events: none; transition: opacity 250ms ease; } .sb-backdrop.is-open { opacity: 1; pointer-events: auto; } .nav-link.active { background-color: oklch(21% 0 0); color: white; font-weight: 500; }
+      .dark .nav-link.active { background-color: white; color: oklch(21% 0 0); }
+    
+      /* Command Palette */
+      .cmd-palette-root { position: fixed; inset: 0; z-index: 70; pointer-events: none; }
+      .cmd-palette-root.is-open { pointer-events: auto; }
+      .cmd-palette-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.3); backdrop-filter: blur(4px); opacity: 0; transition: opacity 200ms ease; display: flex; justify-content: center; padding-top: 12vh; }
+      .dark .cmd-palette-backdrop { background: rgba(0,0,0,0.5); }
+      .cmd-palette-root.is-open .cmd-palette-backdrop { opacity: 1; }
+      .cmd-palette-panel { width: 600px; max-width: 95vw; max-height: 75vh; background: white; border: 1px solid rgb(231 229 228); border-radius: 0.75rem; box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25); overflow: hidden; display: flex; flex-direction: column; transform: translateY(-8px) scale(0.98); opacity: 0; transition: transform 200ms ease, opacity 200ms ease; }
+      .dark .cmd-palette-panel { background: rgb(12 10 9); border-color: rgb(41 37 36); }
+      .cmd-palette-root.is-open .cmd-palette-panel { transform: translateY(0) scale(1); opacity: 1; }
+      .cmd-result { width: 100%; display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; cursor: pointer; border-bottom: 1px solid rgb(245 245 244); transition: background-color 100ms; text-align: left; background: transparent; border-left: none; border-right: none; border-top: none; }
+      .dark .cmd-result { border-bottom-color: rgb(28 25 23); }
+      .cmd-result:hover, .cmd-result.is-active { background-color: rgb(245 245 244); }
+      .dark .cmd-result:hover, .dark .cmd-result.is-active { background-color: rgb(28 25 23); }
+      .cmd-section-header { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: rgb(250 250 249); border-bottom: 1px solid rgb(245 245 244); border-top: 1px solid rgb(245 245 244); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: rgb(168 162 158); }
+      .dark .cmd-section-header { background: rgb(28 25 23); border-color: rgb(41 37 36); color: rgb(120 113 108); }
+      .cmd-section-header:first-child { border-top: none; }
+          /* sb-collapsed icon-only */
+      @media (min-width: 1024px) {
+        .sb-collapsed .nav-link, .sb-collapsed .qa-btn {
+          padding: 0 !important; gap: 0 !important;
+          width: 2.5rem !important; height: 2.5rem !important;
+          margin-left: auto !important; margin-right: auto !important;
+          justify-content: center !important;
+        }
+        .sb-collapsed .sidebar-label { display: none !important; }
+      }
+    
+      .user-popover { position: absolute; bottom: calc(100% + 8px); left: 0.5rem; right: 0.5rem; z-index: 60; background: white; border: 1px solid rgb(231 229 228); border-radius: 0.75rem; box-shadow: 0 10px 30px rgb(0 0 0 / 0.12); padding: 0.25rem; opacity: 0; pointer-events: none; transform: translateY(4px); transition: opacity 150ms ease, transform 150ms ease; }
+      .dark .user-popover { background: rgb(12 10 9); border-color: rgb(41 37 36); }
+      .user-popover.is-open { opacity: 1; pointer-events: auto; transform: translateY(0); }
+    </style>
+  </head>
+
+  <body class="font-sans antialiased">
+    <div
+      data-comment="dashboard-shell"
+      class="h-screen bg-stone-100 dark:bg-stone-950 overflow-hidden">
+
+      <aside
+        data-comment="sidebar"
+        id="sidebar"
+        class="fixed inset-y-0 left-0 bg-stone-100 dark:bg-stone-950 flex flex-col z-30 transition-[transform] lg:transition-[width] duration-150 lg:w-64 w-64 -translate-x-full lg:translate-x-0">
+
+        <header
+          data-comment="sidebar-brand"
+          class="h-14 flex items-center gap-3 px-[18px] border-b border-stone-200/70 dark:border-stone-800 shrink-0 overflow-hidden">
+          <img
+            data-comment="sidebar-brand-logo"
+            src="favicon.webp"
+            alt="Countryside Concrete"
+            class="w-7 h-7 rounded-md shrink-0" />
+          <div data-comment="sidebar-brand-text" class="leading-tight overflow-hidden sidebar-label">
+            <p
+              data-comment="sidebar-brand-name"
+              class="text-xs font-bold text-stone-900 dark:text-stone-50 tracking-wide whitespace-nowrap">
+              COUNTRYSIDE
+            </p>
+            <p
+              data-comment="sidebar-brand-sub"
+              class="text-[10px] text-stone-400 dark:text-stone-500 tracking-widest uppercase whitespace-nowrap">
+              Concrete
+            </p>
+          </div>
+        </header>
+
+        <nav
+          data-comment="sidebar-nav"
+          aria-label="Main navigation"
+          class="flex-1 p-2 space-y-1 overflow-y-auto overflow-x-hidden">
+          <p
+            data-comment="sidebar-nav-section"
+            class="sidebar-label px-3 pb-2 pt-1 text-[10px] font-semibold uppercase tracking-widest text-stone-400 dark:text-stone-600">
+            Workspace
+          </p>
+
+          <a data-component="link" data-comment="sidebar-nav-dashboard" href="home.html" class="nav-link active flex items-center gap-2.5 px-3 py-2 rounded-full text-sm transition-colors cursor-pointer text-stone-800 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-300 hover:bg-stone-200/50 dark:hover:bg-stone-800/40">
+            <i data-lucide="layout-dashboard" class="w-4 h-4 shrink-0"></i>
+            <span class="flex-1 sidebar-label">Dashboard</span>
+          </a>
+          <a data-component="link" data-comment="sidebar-nav-calendar" href="calendar.html" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-full text-sm transition-colors cursor-pointer text-stone-800 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-300 hover:bg-stone-200/50 dark:hover:bg-stone-800/40">
+            <i data-lucide="calendar-days" class="w-4 h-4 shrink-0"></i>
+            <span class="flex-1 sidebar-label">Calendar</span>
+          </a>
+          <a data-component="link" data-comment="sidebar-nav-jobs" href="jobs.html" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-full text-sm transition-colors cursor-pointer text-stone-800 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-300 hover:bg-stone-200/50 dark:hover:bg-stone-800/40">
+            <i data-lucide="hard-hat" class="w-4 h-4 shrink-0"></i>
+            <span class="flex-1 sidebar-label">Jobs</span>
+          </a>
+          <a data-component="link" data-comment="sidebar-nav-todos" href="tasks.html" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-full text-sm transition-colors cursor-pointer text-stone-800 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-300 hover:bg-stone-200/50 dark:hover:bg-stone-800/40">
+            <i data-lucide="check-square" class="w-4 h-4 shrink-0"></i>
+            <span class="flex-1 sidebar-label">Todos</span>
+          </a>
+          <a data-component="link" data-comment="sidebar-nav-employees" href="employees.html" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-full text-sm transition-colors cursor-pointer text-stone-800 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-300 hover:bg-stone-200/50 dark:hover:bg-stone-800/40">
+            <i data-lucide="users" class="w-4 h-4 shrink-0"></i>
+            <span class="flex-1 sidebar-label">Employees</span>
+          </a>
+          <a data-component="link" data-comment="sidebar-nav-changelog" href="changelog.html" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-full text-sm transition-colors cursor-pointer text-stone-800 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-300 hover:bg-stone-200/50 dark:hover:bg-stone-800/40">
+            <i data-lucide="megaphone" class="w-4 h-4 shrink-0"></i>
+            <span class="flex-1 sidebar-label">Changelog</span>
+          </a>
+        </nav>
+
+        <div data-comment="sidebar-quick-actions" class="p-2 border-t border-stone-200/70 dark:border-stone-800 shrink-0 space-y-1">
+          <p data-comment="sidebar-quick-actions-label" class="sidebar-label px-3 pb-1 pt-0.5 text-[10px] font-semibold uppercase tracking-widest text-stone-400 dark:text-stone-600">Quick Actions</p>
+          <button type="button" data-comment="sidebar-quick-create-task" data-component="button" onclick="quickCreateTask()" class="qa-btn nav-link w-full flex items-center text-sm text-stone-800 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-300 hover:bg-stone-200/50 dark:hover:bg-stone-800/40 rounded-full transition-colors cursor-pointer gap-2.5 px-3 py-2">
+            <i data-lucide="plus" class="w-4 h-4 shrink-0"></i><span class="sidebar-label flex-1 text-left">Create Task</span>
+          </button>
+          <button type="button" data-comment="sidebar-quick-add-user" data-component="button" onclick="quickAddUser()" class="qa-btn nav-link w-full flex items-center text-sm text-stone-800 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-300 hover:bg-stone-200/50 dark:hover:bg-stone-800/40 rounded-full transition-colors cursor-pointer gap-2.5 px-3 py-2">
+            <i data-lucide="user-plus" class="w-4 h-4 shrink-0"></i><span class="sidebar-label flex-1 text-left">Add User</span>
+          </button>
+        </div>
+
+        <footer
+          data-comment="sidebar-user"
+          class="relative p-2 border-t border-stone-200/70 dark:border-stone-800 shrink-0">
+          <button
+            type="button"
+            data-comment="sidebar-user-button"
+            data-component="button"
+            aria-label="User settings" onclick="toggleUserPopover(event)"
+            class="w-full flex items-center gap-2.5 px-2 py-1.5 rounded-lg hover:bg-stone-200/50 dark:hover:bg-stone-800/40 transition-colors cursor-pointer overflow-hidden">
+            <div data-comment="sidebar-user-avatar-wrap" class="relative shrink-0">
+              <span
+                data-comment="sidebar-user-avatar"
+                data-component="avatar"
+                class="inline-flex items-center justify-center relative overflow-hidden w-9 h-9 rounded-full bg-stone-200 dark:bg-stone-700 text-stone-700 dark:text-stone-300 text-sm font-medium select-none">
+                NK
+              </span>
+              <span
+                data-comment="sidebar-user-status"
+                aria-label="Live updates connected"
+                class="absolute bottom-0 right-0 w-2 h-2 rounded-full border-2 border-stone-100 dark:border-stone-950 bg-green-400"></span>
+            </div>
+            <div data-comment="sidebar-user-info" class="sidebar-label flex-1 min-w-0 text-left">
+              <p
+                data-comment="sidebar-user-name"
+                class="text-xs font-semibold text-stone-900 dark:text-stone-50 truncate">
+                Nazar K.
+              </p>
+              <p
+                data-comment="sidebar-user-role"
+                class="text-[10px] text-stone-400 dark:text-stone-500 truncate">
+                Super Admin
+              </p>
+            </div>
+            <i
+              data-lucide="chevrons-up-down"
+              class="sidebar-label w-3.5 h-3.5 text-stone-400 shrink-0"></i>
+          </button>
+        
+          <div data-comment="sidebar-user-popover" data-component="popover" id="user-popover" class="user-popover">
+            <div class="px-3 py-2 mb-1 border-b border-stone-100 dark:border-stone-800">
+              <p data-comment="sidebar-user-popover-name" class="text-xs font-semibold text-stone-900 dark:text-stone-50 truncate">Nazar K.</p>
+              <p data-comment="sidebar-user-popover-email" class="text-[10px] text-stone-400 truncate">nazar@rivnetech.com</p>
+            </div>
+            <button type="button" data-comment="sidebar-user-popover-signout" data-component="button" onclick="signOut()"
+              class="w-full flex items-center gap-2.5 px-2 py-1.5 rounded-md text-sm text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors cursor-pointer">
+              <i data-lucide="log-out" class="w-4 h-4 text-stone-400"></i>Sign out
+            </button>
+          </div>
+        </footer>
+      </aside>
+
+      <div
+        data-comment="sidebar-mobile-backdrop"
+        id="sidebar-backdrop"
+        class="sb-backdrop fixed inset-0 bg-black/40 z-20 lg:hidden"
+        onclick="closeMobileSidebar()"></div>
+
+      <div
+        data-comment="main-wrap"
+        id="main-wrap"
+        class="p-2 h-full transition-[margin] duration-150 ms-0 lg:ms-64">
+
+        <div
+          data-comment="main-frame"
+          class="h-full bg-white dark:bg-stone-900 rounded-xl border border-stone-200 dark:border-stone-800 flex flex-col overflow-hidden">
+
+          <header
+            data-comment="header"
+            class="h-14 bg-white dark:bg-stone-950 border-b border-stone-200 dark:border-stone-800 flex items-center justify-between px-6 shrink-0">
+
+            <div data-comment="header-left" class="flex items-center gap-3">
+              <button
+                type="button"
+                data-comment="header-sidebar-toggle"
+                data-component="button"
+                onclick="toggleSidebar()"
+                class="w-8 h-8 flex items-center justify-center rounded-lg text-stone-400 hover:text-stone-700 dark:hover:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors cursor-pointer shrink-0">
+                <i data-lucide="panel-left-close" class="w-4 h-4" id="ico-collapse" style="display:block"></i>
+                <i data-lucide="panel-left-open" class="w-4 h-4" id="ico-expand" style="display:none"></i>
+                <i data-lucide="menu" class="w-4 h-4 lg:hidden"></i>
+              </button>
+
+              <div
+                data-comment="header-divider"
+                class="w-px h-5 bg-stone-200 dark:bg-stone-800 shrink-0"></div>
+
+              <nav data-comment="header-breadcrumb" aria-label="Breadcrumb" class="flex items-center">
+                <ol class="flex items-center gap-1.5 text-sm text-stone-400 dark:text-stone-500 list-none p-0 m-0">
+                  <li data-comment="breadcrumb-app">App</li>
+                  <li class="flex" aria-hidden="true">
+                    <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+                  </li>
+                  <li
+                    data-comment="breadcrumb-current"
+                    aria-current="page"
+                    class="text-stone-900 dark:text-stone-50 font-medium">
+                    Dashboard
+                  </li>
+                </ol>
+              </nav>
+            </div>
+
+            <div
+              data-comment="header-actions"
+              role="toolbar"
+              aria-label="Header actions"
+              class="flex items-center gap-2">
+              <button
+                type="button"
+                data-comment="header-search"
+                data-component="button"
+                aria-label="Search (⌘K)"
+                class="flex items-center gap-2 w-80 h-9 px-4 rounded-full border border-transparent bg-stone-100 dark:bg-stone-900 text-stone-400 text-sm hover:border-stone-300 dark:hover:border-stone-600 transition-[border-color] duration-150 cursor-pointer">
+                <i data-lucide="search" class="w-3.5 h-3.5"></i>
+                <span data-comment="header-search-text" class="flex-1 text-left text-sm">Search...</span>
+                <kbd
+                  data-comment="header-search-kbd"
+                  class="hidden sm:inline-flex items-center gap-0.5 text-[10px] font-medium border border-stone-200 dark:border-stone-700 rounded px-1.5 py-0.5 leading-none">
+                  <i data-lucide="command" class="w-2.5 h-2.5"></i>
+                  K
+                </kbd>
+              </button>
+
+              <button
+                type="button"
+                data-comment="header-theme-picker"
+                data-component="button"
+                aria-label="Theme color"
+                class="w-8 h-8 flex items-center justify-center rounded-lg text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors cursor-pointer">
+                <i data-lucide="palette" class="w-4 h-4"></i>
+              </button>
+
+              <button
+                type="button"
+                data-comment="header-darkmode-toggle"
+                data-component="button"
+                aria-label="Toggle dark mode"
+                onclick="toggleColorMode()"
+                class="w-8 h-8 flex items-center justify-center rounded-lg text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors cursor-pointer">
+                <i data-lucide="moon" class="w-4 h-4 dark:hidden"></i>
+                <i data-lucide="sun" class="w-4 h-4 hidden dark:block"></i>
+              </button>
+            </div>
+          </header>
+
+          <main data-comment="main" class="flex-1 overflow-y-auto">
+            <div data-comment="dashboard-page" class="p-6 flex flex-col gap-6">
+
+              <div data-comment="dashboard-header">
+                <h1
+                  data-comment="dashboard-title"
+                  class="text-xl font-bold text-stone-900 dark:text-stone-50">
+                  Dashboard
+                </h1>
+                <p
+                  data-comment="dashboard-greeting"
+                  class="text-sm text-stone-500 dark:text-stone-400 mt-0.5">
+                  Welcome back, Nazar K.
+                </p>
+              </div>
+
+              <div
+                data-comment="dashboard-stats"
+                id="dashboard-stats"
+                class="grid grid-cols-2 lg:grid-cols-4 gap-3"></div>
+
+              <div
+                data-comment="upcoming-card"
+                data-component="card"
+                class="bg-white dark:bg-stone-950 rounded-3xl border border-stone-200 dark:border-stone-800 shadow-xl shadow-stone-200/70 dark:shadow-black/50 p-6 flex flex-col gap-6">
+                <div data-comment="upcoming-card-title" class="flex items-center justify-between">
+                  <div class="flex flex-col gap-0.5">
+                    <span
+                      data-comment="upcoming-title"
+                      class="font-semibold text-stone-900 dark:text-stone-50">
+                      Upcoming Tasks
+                    </span>
+                    <span
+                      data-comment="upcoming-subtitle"
+                      class="font-normal text-xs text-stone-500 dark:text-stone-400 mt-0.5">
+                      Starting in the next 14 days
+                    </span>
+                  </div>
+                  <i data-lucide="calendar-clock" class="w-4 h-4 text-stone-400"></i>
+                </div>
+
+                <div
+                  data-comment="upcoming-list"
+                  id="upcoming-list"
+                  class="flex-1 flex flex-col"></div>
+              </div>
+            </div>
+          </main>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script>
+      function createStore(initialState) {
+        let state = structuredClone(initialState);
+        const listeners = new Set();
+        return {
+          get: () => state,
+          set(updater) {
+            const patch = typeof updater === 'function' ? updater(state) : updater;
+            state = { ...state, ...patch };
+            listeners.forEach((fn) => fn(state));
+          },
+          subscribe(fn) {
+            listeners.add(fn);
+            return () => listeners.delete(fn);
+          }
+        };
+      }
+
+      const TASK_TYPES = [
+        { value: 'Forming',    label: 'Forming',    short: 'FM', color: '#3b82f6' },
+        { value: 'Flatwork',   label: 'Flatwork',   short: 'FL', color: '#10b981' },
+        { value: 'Excavating', label: 'Excavating', short: 'EX', color: '#f59e0b' }
+      ];
+
+      function taskType(value) {
+        return TASK_TYPES.find((t) => t.value === value) ?? { value, label: value, short: '?', color: '#a8a29e' };
+      }
+
+      function isoOffset(days) {
+        return new Date(Date.now() + days * 86400000).toISOString().slice(0, 10);
+      }
+
+      const TODAY = new Date().toISOString().slice(0, 10);
+
+      const TASKS = [
+        { autoid: 1,  job_id: 1042, descr: 'Pour foundation slab — north wing', type: 'Flatwork',   start_date: isoOffset(2),  end_date: isoOffset(3),  completed: false },
+        { autoid: 2,  job_id: 1042, descr: 'Form wall sections A1–A4',          type: 'Forming',    start_date: isoOffset(4),  end_date: isoOffset(6),  completed: false },
+        { autoid: 3,  job_id: 1058, descr: 'Excavate basement footprint',       type: 'Excavating', start_date: isoOffset(1),  end_date: isoOffset(4),  completed: false },
+        { autoid: 4,  job_id: 1061, descr: 'Driveway flatwork pour',            type: 'Flatwork',   start_date: isoOffset(7),  end_date: isoOffset(8),  completed: false },
+        { autoid: 5,  job_id: 1063, descr: 'Form footings — east elevation',    type: 'Forming',    start_date: isoOffset(9),  end_date: isoOffset(11), completed: false },
+        { autoid: 6,  job_id: 1064, descr: 'Trench utilities corridor',         type: 'Excavating', start_date: isoOffset(12), end_date: isoOffset(13), completed: false },
+        { autoid: 7,  job_id: 1029, descr: 'Garage slab finish',                type: 'Flatwork',   start_date: isoOffset(-3), end_date: isoOffset(-1), completed: true  },
+        { autoid: 8,  job_id: 1031, descr: 'Retaining wall forms strip',        type: 'Forming',    start_date: isoOffset(-1), end_date: isoOffset(1),  completed: false },
+        { autoid: 9,  job_id: 1067, descr: 'Sidewalk pour — phase 2',           type: 'Flatwork',   start_date: isoOffset(13), end_date: isoOffset(14), completed: false },
+        { autoid: 10, job_id: 1071, descr: 'Footings excavation — south',       type: 'Excavating', start_date: isoOffset(5),  end_date: isoOffset(7),  completed: false },
+        { autoid: 11, job_id: 1024, descr: 'Curb forms — completed',            type: 'Forming',    start_date: isoOffset(-10),end_date: isoOffset(-8), completed: true  },
+        { autoid: 12, job_id: 1075, descr: 'Overdue: pad pour',                 type: 'Flatwork',   start_date: isoOffset(-15),end_date: isoOffset(-2), completed: false }
+      ];
+
+      const store = createStore({
+        tasks: TASKS,
+        pending: false,
+        sidebarCollapsed: false,
+        sidebarMobileOpen: false
+      });
+
+      function el(tag, attrs = {}, children = []) {
+        const node = document.createElement(tag);
+        for (const [k, v] of Object.entries(attrs)) {
+          if (v == null || v === false) continue;
+          if (k === 'class') node.className = v;
+          else if (k === 'style') node.setAttribute('style', v);
+          else if (k.startsWith('on') && typeof v === 'function') node[k] = v;
+          else node.setAttribute(k, v === true ? '' : v);
+        }
+        for (const c of [].concat(children)) {
+          if (c == null || c === false) continue;
+          node.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
+        }
+        return node;
+      }
+
+      function lucideEl(name, cls, extra = {}) {
+        return el('i', { 'data-lucide': name, class: cls, ...extra });
+      }
+
+      function clear(node) {
+        while (node.firstChild) node.removeChild(node.firstChild);
+      }
+
+      function formatDate(iso) {
+        return new Date(iso + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      }
+
+      function taskStats() {
+        const all = store.get().tasks;
+        const withDates = all.filter((t) => t.start_date && t.end_date);
+        return {
+          total: all.length,
+          active: withDates.filter((t) => t.start_date <= TODAY && TODAY <= t.end_date && !t.completed).length,
+          completed: all.filter((t) => t.completed).length,
+          overdue: withDates.filter((t) => t.end_date < TODAY && !t.completed).length
+        };
+      }
+
+      function statCards() {
+        const s = taskStats();
+        return [
+          { key: 'total',     label: 'Total Tasks', value: s.total,     desc: 'All tasks across jobs', icon: 'list-checks',     iconBg: 'bg-brand-50 dark:bg-brand-950',     iconColor: 'text-brand-500 dark:text-brand-400' },
+          { key: 'active',    label: 'Active',      value: s.active,    desc: 'Tasks running today',   icon: 'hammer',          iconBg: 'bg-blue-50 dark:bg-blue-950',       iconColor: 'text-blue-500 dark:text-blue-400' },
+          { key: 'completed', label: 'Completed',   value: s.completed, desc: 'Marked as done',        icon: 'circle-check-big',iconBg: 'bg-emerald-50 dark:bg-emerald-950', iconColor: 'text-emerald-500 dark:text-emerald-400' },
+          { key: 'overdue',   label: 'Overdue',     value: s.overdue,   desc: 'Past end date, not done', icon: 'triangle-alert',
+            iconBg: s.overdue ? 'bg-red-50 dark:bg-red-950' : 'bg-stone-100 dark:bg-stone-800',
+            iconColor: s.overdue ? 'text-red-500 dark:text-red-400' : 'text-stone-500 dark:text-stone-400' }
+        ];
+      }
+
+      function upcomingTasks() {
+        const in14 = isoOffset(14);
+        return store
+          .get()
+          .tasks.filter((t) => t.start_date && t.start_date > TODAY && t.start_date <= in14)
+          .sort((a, b) => a.start_date.localeCompare(b.start_date))
+          .slice(0, 10);
+      }
+
+      function renderStatCard(card) {
+        const root = el('div', {
+          'data-comment': `dashboard-stat-${card.key}`,
+          'data-component': 'card',
+          class: 'bg-white dark:bg-stone-950 rounded-3xl border border-stone-200 dark:border-stone-800 shadow-xl shadow-stone-200/70 dark:shadow-black/50 p-6 flex flex-col h-full'
+        });
+        const inner = el('div', { class: 'flex flex-col gap-3' });
+        const top = el('div', { class: 'flex items-center justify-between' });
+        top.appendChild(
+          el('span', { 'data-comment': `dashboard-stat-${card.key}-label`, class: 'text-sm text-stone-500 dark:text-stone-400' }, card.label)
+        );
+        const ico = el('div', {
+          'data-comment': `dashboard-stat-${card.key}-icon`,
+          class: `w-7 h-7 rounded-full flex items-center justify-center shrink-0 ${card.iconBg}`
+        });
+        ico.appendChild(lucideEl(card.icon, `w-3.5 h-3.5 ${card.iconColor}`));
+        top.appendChild(ico);
+        inner.appendChild(top);
+        inner.appendChild(
+          el(
+            'p',
+            {
+              'data-comment': `dashboard-stat-${card.key}-value`,
+              class: 'text-3xl font-bold text-stone-900 dark:text-stone-50 tabular-nums leading-none m-0'
+            },
+            String(card.value)
+          )
+        );
+        inner.appendChild(
+          el(
+            'p',
+            {
+              'data-comment': `dashboard-stat-${card.key}-desc`,
+              class: 'text-xs text-stone-500 dark:text-stone-400 m-0'
+            },
+            card.desc
+          )
+        );
+        root.appendChild(inner);
+        return root;
+      }
+
+      function renderStats() {
+        const root = document.getElementById('dashboard-stats');
+        clear(root);
+        for (const card of statCards()) root.appendChild(renderStatCard(card));
+        if (window.lucide) lucide.createIcons();
+      }
+
+      function renderUpcomingItem(task, idx) {
+        const t = taskType(task.type);
+        const a = el('a', {
+          'data-comment': `upcoming-item-${idx}`,
+          href: `calendar.html#task-${task.autoid}`,
+          class: 'flex items-center gap-3 p-3 rounded-xl bg-stone-50 dark:bg-stone-900 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors duration-100 no-underline'
+        });
+        const left = el('div', { class: 'flex-1 min-w-0' });
+        left.appendChild(
+          el(
+            'p',
+            {
+              'data-comment': `upcoming-item-${idx}-meta`,
+              class: 'text-[10px] font-medium uppercase tracking-wider text-stone-400 dark:text-stone-500 m-0'
+            },
+            `#${task.job_id} · Starts ${formatDate(task.start_date)}`
+          )
+        );
+        left.appendChild(
+          el(
+            'p',
+            {
+              'data-comment': `upcoming-item-${idx}-descr`,
+              class: 'text-sm font-medium text-stone-900 dark:text-stone-50 truncate mt-0.5 m-0'
+            },
+            task.descr
+          )
+        );
+        a.appendChild(left);
+
+        const tag = el(
+          'span',
+          {
+            'data-comment': `upcoming-item-${idx}-tag`,
+            'data-component': 'badge',
+            class: 'inline-flex items-center justify-center text-xs font-medium px-2 py-0.5 rounded-full gap-1 border',
+            style: `border-color:${t.color}66;background:${t.color}1a;color:${t.color}`
+          },
+          [
+            el('span', { class: 'w-1.5 h-1.5 rounded-full shrink-0', style: 'background:currentColor' }),
+            document.createTextNode(t.label)
+          ]
+        );
+        a.appendChild(tag);
+        return a;
+      }
+
+      function renderEmpty() {
+        const wrap = el('div', {
+          'data-comment': 'upcoming-empty',
+          class: 'flex flex-col items-center justify-center gap-3 py-12 text-center'
+        });
+        const ico = el('div', {
+          class: 'w-10 h-10 rounded-3xl bg-stone-50 dark:bg-stone-800 flex items-center justify-center'
+        });
+        ico.appendChild(lucideEl('calendar-check', 'w-8 h-8 text-stone-400 dark:text-stone-500'));
+        wrap.appendChild(ico);
+        const inner = el('div');
+        inner.appendChild(
+          el(
+            'p',
+            {
+              'data-comment': 'upcoming-empty-title',
+              class: 'text-sm font-semibold text-stone-900 dark:text-stone-50 m-0'
+            },
+            'No upcoming tasks'
+          )
+        );
+        inner.appendChild(
+          el(
+            'p',
+            {
+              'data-comment': 'upcoming-empty-desc',
+              class: 'text-xs text-stone-400 dark:text-stone-500 mt-0.5 m-0'
+            },
+            'No tasks starting in the next 14 days'
+          )
+        );
+        wrap.appendChild(inner);
+        return wrap;
+      }
+
+      function renderUpcoming() {
+        const root = document.getElementById('upcoming-list');
+        clear(root);
+        const list = upcomingTasks();
+        if (!list.length) {
+          root.className = 'flex-1 flex flex-col';
+          root.appendChild(renderEmpty());
+          return;
+        }
+        root.className = 'grid grid-cols-1 lg:grid-cols-2 gap-2';
+        list.forEach((task, i) => root.appendChild(renderUpcomingItem(task, i)));
+        if (window.lucide) lucide.createIcons();
+      }
+
+      function toggleSidebar() {
+        const isLg = window.matchMedia('(min-width: 1024px)').matches;
+        if (isLg) store.set((s) => ({ sidebarCollapsed: !s.sidebarCollapsed }));
+        else store.set((s) => ({ sidebarMobileOpen: !s.sidebarMobileOpen }));
+      }
+
+      function closeMobileSidebar() {
+        store.set({ sidebarMobileOpen: false });
+      }
+
+      function applySidebarState() {
+        const { sidebarCollapsed, sidebarMobileOpen } = store.get();
+        const sb = document.getElementById('sidebar');
+        const wrap = document.getElementById('main-wrap');
+        const backdrop = document.getElementById('sidebar-backdrop');
+        const collapseIco = document.getElementById('ico-collapse');
+        const expandIco = document.getElementById('ico-expand');
+
+        sb.classList.toggle('lg:w-16', sidebarCollapsed);
+        sb.classList.toggle('sb-collapsed', sidebarCollapsed);
+        sb.classList.toggle('lg:w-64', !sidebarCollapsed);
+        sb.classList.toggle('translate-x-0', sidebarMobileOpen);
+        sb.classList.toggle('-translate-x-full', !sidebarMobileOpen);
+
+        wrap.classList.toggle('lg:ms-16', sidebarCollapsed);
+        wrap.classList.toggle('lg:ms-64', !sidebarCollapsed);
+
+        backdrop.classList.toggle('is-open', !!sidebarMobileOpen);
+
+        document.querySelectorAll('.sidebar-label').forEach((label) => {
+          label.classList.toggle('lg:hidden', sidebarCollapsed);
+        });
+
+        const isLg = window.matchMedia('(min-width: 1024px)').matches;
+        collapseIco.style.display = (isLg && !sidebarCollapsed) ? 'block' : 'none';
+        expandIco.style.display = (isLg && sidebarCollapsed) ? 'block' : 'none';
+      }
+
+      function toggleColorMode() {
+        const isDark = document.documentElement.classList.toggle('dark');
+        try {
+          localStorage.setItem('color-mode', isDark ? 'dark' : 'light');
+        } catch (e) {}
+      }
+
+      store.subscribe(() => {
+        renderStats();
+        renderUpcoming();
+        applySidebarState();
+      });
+
+      window.addEventListener('resize', applySidebarState);
+      window.addEventListener('DOMContentLoaded', () => {
+        if (window.lucide) lucide.createIcons();
+        renderStats();
+        renderUpcoming();
+        applySidebarState();
+      });
+    
+      // Command Palette
+      const CMD_TARGETS = [
+        { kind: 'page', title: 'Dashboard', subtitle: 'Workspace overview', icon: 'layout-dashboard', href: 'home.html' },
+        { kind: 'page', title: 'Calendar', subtitle: 'Month, week, 3-month, unscheduled', icon: 'calendar-days', href: 'calendar.html' },
+        { kind: 'page', title: 'Jobs', subtitle: 'All jobs and statuses', icon: 'hard-hat', href: 'jobs.html' },
+        { kind: 'page', title: 'Todos', subtitle: 'Kanban + list', icon: 'check-square', href: 'tasks.html' },
+        { kind: 'page', title: 'Employees', subtitle: 'Directory and roles', icon: 'users', href: 'employees.html' },
+        { kind: 'page', title: 'Changelog', subtitle: 'What is new', icon: 'megaphone', href: 'changelog.html' },
+        { kind: 'job', title: 'Job #1042 · Westbrook commercial complex', subtitle: 'In Process · Toronto, ON', icon: 'hard-hat', href: 'jobs-detail.html#job-1042' },
+        { kind: 'job', title: 'Job #1058 · Greenfield warehouse expansion', subtitle: 'Confirmed · Hamilton, ON', icon: 'hard-hat', href: 'jobs.html' },
+        { kind: 'job', title: 'Job #1063 · Riverside utilities trenching', subtitle: 'Confirmed · Burlington, ON', icon: 'hard-hat', href: 'jobs.html' },
+        { kind: 'task', title: 'Pour foundation slab — north wing', subtitle: 'Flatwork · #1042', icon: 'hammer', href: 'calendar.html#task-t3' },
+        { kind: 'task', title: 'Form wall sections A1–A4', subtitle: 'Forming · #1042', icon: 'hammer', href: 'calendar.html#task-t4' },
+        { kind: 'task', title: 'Excavate basement footprint', subtitle: 'Excavating · #1042', icon: 'hammer', href: 'calendar.html#task-t1' },
+        { kind: 'todo', title: 'Submit RFI for column spacing', subtitle: 'High priority · Change Order', icon: 'check-square', href: 'tasks.html' },
+        { kind: 'todo', title: 'Daily safety briefing — confined space entry', subtitle: 'Urgent · Safety', icon: 'check-square', href: 'tasks.html' },
+        { kind: 'user', title: 'Nazar K.', subtitle: 'Super Admin · Office', icon: 'user', href: 'employees.html' },
+        { kind: 'user', title: 'Anna Lee', subtitle: 'Admin · Office', icon: 'user', href: 'employees.html' },
+        { kind: 'user', title: 'Mark Chen', subtitle: 'Foreman · Field', icon: 'user', href: 'employees.html' }
+      ];
+      const CMD_KIND_LABELS = { job: 'Jobs', task: 'Tasks', todo: 'Todos', user: 'Users', page: 'Pages' };
+      const CMD_KIND_ORDER = ['page', 'job', 'task', 'todo', 'user'];
+      let cmdActiveIndex = 0;
+      let cmdQuery = '';
+
+      function openCmdPalette() {
+        const root = document.getElementById('cmd-palette');
+        if (!root) return;
+        root.classList.add('is-open');
+        cmdQuery = '';
+        cmdActiveIndex = 0;
+        const inp = document.getElementById('cmd-palette-input');
+        if (inp) { inp.value = ''; setTimeout(() => inp.focus(), 60); }
+        renderCmdPalette();
+      }
+      function closeCmdPalette() {
+        const root = document.getElementById('cmd-palette');
+        if (root) root.classList.remove('is-open');
+      }
+      function onCmdPaletteInput(e) {
+        cmdQuery = e.target.value;
+        cmdActiveIndex = 0;
+        renderCmdPalette();
+      }
+      function cmdFiltered() {
+        const q = cmdQuery.trim().toLowerCase();
+        if (!q) return CMD_TARGETS.filter((x) => x.kind === 'page');
+        return CMD_TARGETS.filter((x) =>
+          x.title.toLowerCase().includes(q) || x.subtitle.toLowerCase().includes(q)
+        );
+      }
+      function renderCmdPalette() {
+        const root = document.getElementById('cmd-palette-results');
+        if (!root) return;
+        while (root.firstChild) root.removeChild(root.firstChild);
+        const items = cmdFiltered();
+        if (!items.length) {
+          const empty = document.createElement('div');
+          empty.className = 'flex flex-col items-center justify-center gap-2 py-12 text-center';
+          empty.setAttribute('data-comment', 'cmd-palette-empty');
+          const ico = document.createElement('div');
+          ico.className = 'w-10 h-10 rounded-3xl bg-stone-50 dark:bg-stone-800 flex items-center justify-center';
+          const i = document.createElement('i'); i.setAttribute('data-lucide', 'search-x'); i.className = 'w-6 h-6 text-stone-400';
+          ico.appendChild(i); empty.appendChild(ico);
+          const p1 = document.createElement('p'); p1.className = 'text-sm font-semibold text-stone-900 dark:text-stone-50 m-0'; p1.textContent = 'No results';
+          const p2 = document.createElement('p'); p2.className = 'text-xs text-stone-400 dark:text-stone-500 mt-0.5 m-0'; p2.textContent = 'Try a different query';
+          empty.appendChild(p1); empty.appendChild(p2);
+          root.appendChild(empty);
+          if (window.lucide) lucide.createIcons();
+          return;
+        }
+        const groups = {};
+        items.forEach((it) => { (groups[it.kind] = groups[it.kind] || []).push(it); });
+        let flatIdx = 0;
+        CMD_KIND_ORDER.forEach((kind) => {
+          if (!groups[kind]) return;
+          const header = document.createElement('div');
+          header.className = 'cmd-section-header';
+          header.setAttribute('data-comment', 'cmd-palette-section-' + kind);
+          const hi = document.createElement('i');
+          hi.setAttribute('data-lucide', kind === 'page' ? 'layout-grid' : kind === 'job' ? 'hard-hat' : kind === 'task' ? 'hammer' : kind === 'todo' ? 'check-square' : 'users');
+          hi.className = 'w-3.5 h-3.5';
+          header.appendChild(hi);
+          header.appendChild(document.createTextNode(CMD_KIND_LABELS[kind]));
+          root.appendChild(header);
+          groups[kind].forEach((it) => {
+            const idx = flatIdx++;
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'cmd-result' + (idx === cmdActiveIndex ? ' is-active' : '');
+            btn.setAttribute('data-comment', 'cmd-palette-result-' + idx);
+            btn.onclick = () => { closeCmdPalette(); window.location.href = it.href; };
+            btn.onmouseenter = () => { cmdActiveIndex = idx; document.querySelectorAll('.cmd-result').forEach((b, i) => b.classList.toggle('is-active', i === idx)); };
+            const ic = document.createElement('i'); ic.setAttribute('data-lucide', it.icon); ic.className = 'w-4 h-4 shrink-0 text-stone-400';
+            btn.appendChild(ic);
+            const inner = document.createElement('div'); inner.className = 'flex-1 min-w-0';
+            const t = document.createElement('p'); t.className = 'text-sm font-medium text-stone-900 dark:text-stone-50 truncate m-0'; t.textContent = it.title;
+            const s = document.createElement('p'); s.className = 'text-xs text-stone-400 dark:text-stone-500 truncate mt-0.5 m-0'; s.textContent = it.subtitle;
+            inner.appendChild(t); inner.appendChild(s);
+            btn.appendChild(inner);
+            const tag = document.createElement('span');
+            tag.className = 'text-[10px] uppercase tracking-wider font-semibold text-stone-400 dark:text-stone-500 shrink-0';
+            tag.textContent = it.kind;
+            btn.appendChild(tag);
+            root.appendChild(btn);
+          });
+        });
+        if (window.lucide) lucide.createIcons();
+      }
+      function onCmdPaletteKey(e) {
+        const items = cmdFiltered();
+        if (e.key === 'ArrowDown') { e.preventDefault(); cmdActiveIndex = Math.min(items.length - 1, cmdActiveIndex + 1); renderCmdPalette(); }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); cmdActiveIndex = Math.max(0, cmdActiveIndex - 1); renderCmdPalette(); }
+        else if (e.key === 'Enter') { e.preventDefault(); const it = items[cmdActiveIndex]; if (it) { closeCmdPalette(); window.location.href = it.href; } }
+      }
+      document.addEventListener('keydown', (e) => {
+        const root = document.getElementById('cmd-palette');
+        if (!root) return;
+        if ((e.metaKey || e.ctrlKey) && e.key && e.key.toLowerCase() === 'k') {
+          e.preventDefault();
+          if (root.classList.contains('is-open')) closeCmdPalette();
+          else openCmdPalette();
+        } else if (e.key === 'Escape' && root.classList.contains('is-open')) {
+          closeCmdPalette();
+        }
+      });
+      window.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('[data-comment="header-search"]').forEach((btn) => btn.addEventListener('click', openCmdPalette));
+      });
+
+    
+      // Quick Actions handlers — open dialog if on the right page, else navigate with #new hash
+      function quickCreateTask() {
+        if (typeof openCreateDialog === 'function' && document.getElementById('create-dialog')) {
+          openCreateDialog();
+        } else {
+          window.location.href = 'tasks.html#new';
+        }
+      }
+      function quickAddUser() {
+        if (typeof openCreate === 'function' && document.getElementById('edit-dialog')) {
+          openCreate();
+        } else {
+          window.location.href = 'employees.html#new';
+        }
+      }
+      // Auto-open dialog when arriving with #new hash
+      window.addEventListener('DOMContentLoaded', () => {
+        if (window.location.hash !== '#new') return;
+        setTimeout(() => {
+          if (typeof openCreateDialog === 'function' && document.getElementById('create-dialog')) openCreateDialog();
+          else if (typeof openCreate === 'function' && document.getElementById('edit-dialog')) openCreate();
+          history.replaceState(null, '', window.location.pathname);
+        }, 100);
+      });
+
+    
+      // Sidebar user popover
+      function toggleUserPopover(e) {
+        if (e) e.stopPropagation();
+        const pop = document.getElementById('user-popover');
+        if (pop) pop.classList.toggle('is-open');
+      }
+      function closeUserPopover() {
+        const pop = document.getElementById('user-popover');
+        if (pop) pop.classList.remove('is-open');
+      }
+      function signOut() {
+        window.location.href = 'login.html';
+      }
+      document.addEventListener('mousedown', (e) => {
+        const pop = document.getElementById('user-popover');
+        if (!pop) return;
+        if (pop.classList.contains('is-open') &&
+            !e.target.closest('#user-popover') &&
+            !e.target.closest('[data-comment="sidebar-user-button"]')) {
+          closeUserPopover();
+        }
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeUserPopover();
+      });
+
+    </script>
+  
+      <div id="cmd-palette" data-comment="cmd-palette" data-component="dialog" class="cmd-palette-root">
+        <div class="cmd-palette-backdrop" onclick="closeCmdPalette()">
+          <div class="cmd-palette-panel" data-comment="cmd-palette-panel" onclick="event.stopPropagation()">
+            <div data-comment="cmd-palette-search-wrap" class="p-3 border-b border-stone-200 dark:border-stone-800 shrink-0">
+              <div class="flex items-center gap-2.5 px-4 h-9 rounded-full bg-stone-100 dark:bg-stone-800 border border-transparent">
+                <i data-lucide="search" class="w-4 h-4 text-stone-400 shrink-0"></i>
+                <input id="cmd-palette-input" data-comment="cmd-palette-input" data-component="input" type="text" placeholder="Search jobs, tasks, todos..." class="flex-1 bg-transparent text-sm text-stone-900 dark:text-stone-50 placeholder:text-stone-400 outline-none border-0" oninput="onCmdPaletteInput(event)" onkeydown="onCmdPaletteKey(event)" />
+                <kbd class="inline-flex items-center text-[10px] font-medium text-stone-400 border border-stone-300 dark:border-stone-600 rounded px-1.5 py-0.5 bg-white dark:bg-stone-700 leading-none">ESC</kbd>
+              </div>
+            </div>
+            <div data-comment="cmd-palette-results" id="cmd-palette-results" class="flex-1 overflow-y-auto"></div>
+          </div>
+        </div>
+      </div>
+
+  </body>
+</html>

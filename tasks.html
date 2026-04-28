@@ -1,0 +1,1807 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Todos — Countryside Concrete PM</title>
+
+    <link rel="icon" type="image/webp" href="favicon.webp" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
+      rel="stylesheet" />
+
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem('color-mode');
+          if (t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+          }
+        } catch (e) {}
+      })();
+    </script>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,line-clamp"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif']
+            },
+            colors: {
+              brand: {
+                50: 'oklch(98.5% 0 0)',
+                100: 'oklch(96% 0 0)',
+                200: 'oklch(91% 0 0)',
+                300: 'oklch(83% 0 0)',
+                400: 'oklch(70% 0 0)',
+                500: 'oklch(21% 0 0)',
+                600: 'oklch(16% 0 0)',
+                700: 'oklch(13% 0 0)',
+                800: 'oklch(10% 0 0)',
+                900: 'oklch(8% 0 0)',
+                950: 'oklch(6% 0 0)'
+              }
+            }
+          }
+        }
+      };
+    </script>
+
+    <style type="text/tailwindcss">
+      html,
+      body {
+        font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+      }
+      .tab-pill[aria-selected='true'] {
+        background-color: white;
+        color: rgb(28 25 23);
+        box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      }
+      .dark .tab-pill[aria-selected='true'] {
+        background-color: rgb(12 10 9);
+        color: rgb(250 250 249);
+      }
+      .sb-backdrop { opacity: 0; pointer-events: none; transition: opacity 250ms ease; } .sb-backdrop.is-open { opacity: 1; pointer-events: auto; } .nav-link.active { background-color: oklch(21% 0 0); color: white; font-weight: 500; }
+      .dark .nav-link.active { background-color: white; color: oklch(21% 0 0); }
+      i[data-lucide] {
+        display: inline-block;
+        width: 1em;
+        height: 1em;
+      }
+      i[data-lucide]:empty {
+        visibility: hidden;
+      }
+      .kanban-ghost {
+        opacity: 0.4;
+      }
+      .kanban-drag {
+        cursor: grabbing !important;
+        transform: rotate(2deg);
+      }
+      .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      .truncate {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .vol-input {
+        appearance: none;
+        border-radius: 9999px;
+        outline: none;
+        border: 1px solid transparent;
+        height: 2.25rem;
+        background-color: rgb(245 245 244);
+        font-size: 0.875rem;
+        color: rgb(28 25 23);
+      }
+      .vol-input:not([class*="pl-"]):not([class*="px-"]) {
+        padding-left: 1rem;
+      }
+      .vol-input:not([class*="pr-"]):not([class*="px-"]) {
+        padding-right: 1rem;
+      }
+      .dark .vol-input {
+        background-color: rgb(41 37 36);
+        color: rgb(250 250 249);
+      }
+      .vol-input::placeholder {
+        color: rgb(168 162 158);
+      }
+      .dark .vol-input::placeholder {
+        color: rgb(120 113 108);
+      }
+      .vol-input:hover {
+        border-color: rgb(214 211 209);
+      }
+      .dark .vol-input:hover {
+        border-color: rgb(87 83 78);
+      }
+      .vol-input:focus {
+        border-color: rgb(168 162 158);
+        box-shadow: 0 0 0 2px rgba(28, 25, 23, 0.2);
+      }
+      .dark .vol-input:focus {
+        border-color: rgb(120 113 108);
+        box-shadow: 0 0 0 2px rgba(245, 245, 244, 0.2);
+      }
+      .select-trigger {
+        height: 2.25rem;
+        padding: 0 0.75rem 0 1rem;
+        border-radius: 9999px;
+        background-color: rgb(245 245 244);
+        font-size: 0.875rem;
+        color: rgb(28 25 23);
+        border: 1px solid transparent;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+        transition: border-color 150ms;
+      }
+      .dark .select-trigger {
+        background-color: rgb(41 37 36);
+        color: rgb(250 250 249);
+      }
+      .select-trigger:hover {
+        border-color: rgb(214 211 209);
+      }
+      .dark .select-trigger:hover {
+        border-color: rgb(87 83 78);
+      }
+      .select-panel {
+        position: absolute;
+        top: calc(100% + 4px);
+        left: 0;
+        right: 0;
+        background: white;
+        border: 1px solid rgb(231 229 228);
+        border-radius: 0.75rem;
+        box-shadow: 0 10px 30px rgb(0 0 0 / 0.08);
+        z-index: 40;
+        max-height: 16rem;
+        overflow: auto;
+        padding: 0.25rem;
+      }
+      .dark .select-panel {
+        background: rgb(12 10 9);
+        border-color: rgb(41 37 36);
+      }
+      .select-option {
+        display: flex;
+        align-items: center;
+        gap: 0.375rem;
+        padding: 0.4rem 0.625rem;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        font-size: 0.875rem;
+        color: rgb(41 37 36);
+      }
+      .dark .select-option {
+        color: rgb(231 229 228);
+      }
+      .select-option:hover,
+      .select-option.is-active {
+        background: rgb(245 245 244);
+      }
+      .dark .select-option:hover,
+      .dark .select-option.is-active {
+        background: rgb(28 25 23);
+      }
+      .drawer-root, .dialog-root { position: fixed; inset: 0; z-index: 50; pointer-events: none; }
+      .drawer-root.is-open, .dialog-root.is-open { pointer-events: auto; }
+      .drawer-backdrop, .dialog-backdrop {
+        position: absolute; inset: 0; background: rgba(0, 0, 0, 0.4);
+        opacity: 0; transition: opacity 250ms ease;
+      }
+      .drawer-root.is-open .drawer-backdrop, .dialog-root.is-open .dialog-backdrop { opacity: 1; }
+      .dialog-backdrop { display: flex; align-items: center; justify-content: center; padding: 1rem; }
+      .drawer-panel {
+        position: absolute; top: 0; right: 0; bottom: 0;
+        width: 100%; max-width: 32rem;
+        background: white; box-shadow: -10px 0 30px rgb(0 0 0 / 0.1);
+        display: flex; flex-direction: column;
+        transform: translateX(100%); transition: transform 280ms cubic-bezier(.32,.72,.16,1);
+      }
+      .dark .drawer-panel { background: rgb(12 10 9); }
+      .drawer-root.is-open .drawer-panel { transform: translateX(0); }
+      .dialog-panel {
+        background: white; border-radius: 1.5rem;
+        max-width: 32rem; width: 100%; padding: 1.5rem;
+        box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+        transform: translateY(8px) scale(0.98); opacity: 0;
+        transition: transform 200ms ease, opacity 200ms ease;
+      }
+      .dark .dialog-panel { background: rgb(12 10 9); }
+      .dialog-root.is-open .dialog-panel { transform: translateY(0) scale(1); opacity: 1; }
+    
+      /* Command Palette */
+      .cmd-palette-root { position: fixed; inset: 0; z-index: 70; pointer-events: none; }
+      .cmd-palette-root.is-open { pointer-events: auto; }
+      .cmd-palette-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.3); backdrop-filter: blur(4px); opacity: 0; transition: opacity 200ms ease; display: flex; justify-content: center; padding-top: 12vh; }
+      .dark .cmd-palette-backdrop { background: rgba(0,0,0,0.5); }
+      .cmd-palette-root.is-open .cmd-palette-backdrop { opacity: 1; }
+      .cmd-palette-panel { width: 600px; max-width: 95vw; max-height: 75vh; background: white; border: 1px solid rgb(231 229 228); border-radius: 0.75rem; box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25); overflow: hidden; display: flex; flex-direction: column; transform: translateY(-8px) scale(0.98); opacity: 0; transition: transform 200ms ease, opacity 200ms ease; }
+      .dark .cmd-palette-panel { background: rgb(12 10 9); border-color: rgb(41 37 36); }
+      .cmd-palette-root.is-open .cmd-palette-panel { transform: translateY(0) scale(1); opacity: 1; }
+      .cmd-result { width: 100%; display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; cursor: pointer; border-bottom: 1px solid rgb(245 245 244); transition: background-color 100ms; text-align: left; background: transparent; border-left: none; border-right: none; border-top: none; }
+      .dark .cmd-result { border-bottom-color: rgb(28 25 23); }
+      .cmd-result:hover, .cmd-result.is-active { background-color: rgb(245 245 244); }
+      .dark .cmd-result:hover, .dark .cmd-result.is-active { background-color: rgb(28 25 23); }
+      .cmd-section-header { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: rgb(250 250 249); border-bottom: 1px solid rgb(245 245 244); border-top: 1px solid rgb(245 245 244); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: rgb(168 162 158); }
+      .dark .cmd-section-header { background: rgb(28 25 23); border-color: rgb(41 37 36); color: rgb(120 113 108); }
+      .cmd-section-header:first-child { border-top: none; }
+          /* sb-collapsed icon-only */
+      @media (min-width: 1024px) {
+        .sb-collapsed .nav-link, .sb-collapsed .qa-btn {
+          padding: 0 !important; gap: 0 !important;
+          width: 2.5rem !important; height: 2.5rem !important;
+          margin-left: auto !important; margin-right: auto !important;
+          justify-content: center !important;
+        }
+        .sb-collapsed .sidebar-label { display: none !important; }
+      }
+    
+      .user-popover { position: absolute; bottom: calc(100% + 8px); left: 0.5rem; right: 0.5rem; z-index: 60; background: white; border: 1px solid rgb(231 229 228); border-radius: 0.75rem; box-shadow: 0 10px 30px rgb(0 0 0 / 0.12); padding: 0.25rem; opacity: 0; pointer-events: none; transform: translateY(4px); transition: opacity 150ms ease, transform 150ms ease; }
+      .dark .user-popover { background: rgb(12 10 9); border-color: rgb(41 37 36); }
+      .user-popover.is-open { opacity: 1; pointer-events: auto; transform: translateY(0); }
+    </style>
+  </head>
+
+  <body class="font-sans antialiased">
+    <div data-comment="todos-shell" class="h-screen bg-stone-100 dark:bg-stone-950 overflow-hidden">
+
+      <aside data-comment="sidebar" id="sidebar"
+        class="fixed inset-y-0 left-0 bg-stone-100 dark:bg-stone-950 flex flex-col z-30 transition-[transform] lg:transition-[width] duration-150 lg:w-64 w-64 -translate-x-full lg:translate-x-0">
+        <header data-comment="sidebar-brand"
+          class="h-14 flex items-center gap-3 px-[18px] border-b border-stone-200/70 dark:border-stone-800 shrink-0 overflow-hidden">
+          <img data-comment="sidebar-brand-logo" src="favicon.webp" alt="Countryside Concrete" class="w-7 h-7 rounded-md shrink-0" />
+          <div data-comment="sidebar-brand-text" class="leading-tight overflow-hidden sidebar-label">
+            <p data-comment="sidebar-brand-name" class="text-xs font-bold text-stone-900 dark:text-stone-50 tracking-wide whitespace-nowrap">COUNTRYSIDE</p>
+            <p data-comment="sidebar-brand-sub" class="text-[10px] text-stone-400 dark:text-stone-500 tracking-widest uppercase whitespace-nowrap">Concrete</p>
+          </div>
+        </header>
+        <nav data-comment="sidebar-nav" aria-label="Main navigation" class="flex-1 p-2 space-y-1 overflow-y-auto overflow-x-hidden">
+          <p data-comment="sidebar-nav-section" class="sidebar-label px-3 pb-2 pt-1 text-[10px] font-semibold uppercase tracking-widest text-stone-400 dark:text-stone-600">Workspace</p>
+          <a data-component="link" data-comment="sidebar-nav-dashboard" href="home.html" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-full text-sm transition-colors cursor-pointer text-stone-800 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-300 hover:bg-stone-200/50 dark:hover:bg-stone-800/40">
+            <i data-lucide="layout-dashboard" class="w-4 h-4 shrink-0"></i><span class="flex-1 sidebar-label">Dashboard</span>
+          </a>
+          <a data-component="link" data-comment="sidebar-nav-calendar" href="calendar.html" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-full text-sm transition-colors cursor-pointer text-stone-800 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-300 hover:bg-stone-200/50 dark:hover:bg-stone-800/40">
+            <i data-lucide="calendar-days" class="w-4 h-4 shrink-0"></i><span class="flex-1 sidebar-label">Calendar</span>
+          </a>
+          <a data-component="link" data-comment="sidebar-nav-jobs" href="jobs.html" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-full text-sm transition-colors cursor-pointer text-stone-800 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-300 hover:bg-stone-200/50 dark:hover:bg-stone-800/40">
+            <i data-lucide="hard-hat" class="w-4 h-4 shrink-0"></i><span class="flex-1 sidebar-label">Jobs</span>
+          </a>
+          <a data-component="link" data-comment="sidebar-nav-todos" href="tasks.html" class="nav-link active flex items-center gap-2.5 px-3 py-2 rounded-full text-sm transition-colors cursor-pointer text-stone-800 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-300 hover:bg-stone-200/50 dark:hover:bg-stone-800/40">
+            <i data-lucide="check-square" class="w-4 h-4 shrink-0"></i><span class="flex-1 sidebar-label">Todos</span>
+          </a>
+          <a data-component="link" data-comment="sidebar-nav-employees" href="employees.html" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-full text-sm transition-colors cursor-pointer text-stone-800 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-300 hover:bg-stone-200/50 dark:hover:bg-stone-800/40">
+            <i data-lucide="users" class="w-4 h-4 shrink-0"></i><span class="flex-1 sidebar-label">Employees</span>
+          </a>
+          <a data-component="link" data-comment="sidebar-nav-changelog" href="changelog.html" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-full text-sm transition-colors cursor-pointer text-stone-800 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-300 hover:bg-stone-200/50 dark:hover:bg-stone-800/40">
+            <i data-lucide="megaphone" class="w-4 h-4 shrink-0"></i><span class="flex-1 sidebar-label">Changelog</span>
+          </a>
+        </nav>
+        <div data-comment="sidebar-quick-actions" class="p-2 border-t border-stone-200/70 dark:border-stone-800 shrink-0 space-y-1">
+          <p data-comment="sidebar-quick-actions-label" class="sidebar-label px-3 pb-1 pt-0.5 text-[10px] font-semibold uppercase tracking-widest text-stone-400 dark:text-stone-600">Quick Actions</p>
+          <button type="button" data-comment="sidebar-quick-create-task" data-component="button" onclick="quickCreateTask()" class="qa-btn nav-link w-full flex items-center text-sm text-stone-800 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-300 hover:bg-stone-200/50 dark:hover:bg-stone-800/40 rounded-full transition-colors cursor-pointer gap-2.5 px-3 py-2">
+            <i data-lucide="plus" class="w-4 h-4 shrink-0"></i><span class="sidebar-label flex-1 text-left">Create Task</span>
+          </button>
+          <button type="button" data-comment="sidebar-quick-add-user" data-component="button" onclick="quickAddUser()" class="qa-btn nav-link w-full flex items-center text-sm text-stone-800 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-300 hover:bg-stone-200/50 dark:hover:bg-stone-800/40 rounded-full transition-colors cursor-pointer gap-2.5 px-3 py-2">
+            <i data-lucide="user-plus" class="w-4 h-4 shrink-0"></i><span class="sidebar-label flex-1 text-left">Add User</span>
+          </button>
+        </div>
+        <footer data-comment="sidebar-user" class="relative p-2 border-t border-stone-200/70 dark:border-stone-800 shrink-0">
+          <button type="button" data-comment="sidebar-user-button" data-component="button" aria-label="User settings" onclick="toggleUserPopover(event)"
+            class="w-full flex items-center gap-2.5 px-2 py-1.5 rounded-lg hover:bg-stone-200/50 dark:hover:bg-stone-800/40 transition-colors cursor-pointer overflow-hidden">
+            <div data-comment="sidebar-user-avatar-wrap" class="relative shrink-0">
+              <span data-comment="sidebar-user-avatar" data-component="avatar"
+                class="inline-flex items-center justify-center relative overflow-hidden w-9 h-9 rounded-full bg-stone-200 dark:bg-stone-700 text-stone-700 dark:text-stone-300 text-sm font-medium select-none">NK</span>
+              <span data-comment="sidebar-user-status" aria-label="Live updates connected"
+                class="absolute bottom-0 right-0 w-2 h-2 rounded-full border-2 border-stone-100 dark:border-stone-950 bg-green-400"></span>
+            </div>
+            <div data-comment="sidebar-user-info" class="sidebar-label flex-1 min-w-0 text-left">
+              <p data-comment="sidebar-user-name" class="text-xs font-semibold text-stone-900 dark:text-stone-50 truncate">Nazar K.</p>
+              <p data-comment="sidebar-user-role" class="text-[10px] text-stone-400 dark:text-stone-500 truncate">Super Admin</p>
+            </div>
+            <i data-lucide="chevrons-up-down" class="sidebar-label w-3.5 h-3.5 text-stone-400 shrink-0"></i>
+          </button>
+        
+          <div data-comment="sidebar-user-popover" data-component="popover" id="user-popover" class="user-popover">
+            <div class="px-3 py-2 mb-1 border-b border-stone-100 dark:border-stone-800">
+              <p data-comment="sidebar-user-popover-name" class="text-xs font-semibold text-stone-900 dark:text-stone-50 truncate">Nazar K.</p>
+              <p data-comment="sidebar-user-popover-email" class="text-[10px] text-stone-400 truncate">nazar@rivnetech.com</p>
+            </div>
+            <button type="button" data-comment="sidebar-user-popover-signout" data-component="button" onclick="signOut()"
+              class="w-full flex items-center gap-2.5 px-2 py-1.5 rounded-md text-sm text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors cursor-pointer">
+              <i data-lucide="log-out" class="w-4 h-4 text-stone-400"></i>Sign out
+            </button>
+          </div>
+        </footer>
+      </aside>
+
+      <div data-comment="sidebar-mobile-backdrop" id="sidebar-backdrop"
+        class="sb-backdrop fixed inset-0 bg-black/40 z-20 lg:hidden" onclick="closeMobileSidebar()"></div>
+
+      <div data-comment="main-wrap" id="main-wrap" class="p-2 h-full transition-[margin] duration-150 ms-0 lg:ms-64">
+        <div data-comment="main-frame" class="h-full bg-white dark:bg-stone-900 rounded-xl border border-stone-200 dark:border-stone-800 flex flex-col overflow-hidden">
+          <header data-comment="header" class="h-14 bg-white dark:bg-stone-950 border-b border-stone-200 dark:border-stone-800 flex items-center justify-between px-6 shrink-0">
+            <div data-comment="header-left" class="flex items-center gap-3">
+              <button type="button" data-comment="header-sidebar-toggle" data-component="button" onclick="toggleSidebar()"
+                class="w-8 h-8 flex items-center justify-center rounded-lg text-stone-400 hover:text-stone-700 dark:hover:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors cursor-pointer shrink-0">
+                <i data-lucide="panel-left-close" class="w-4 h-4" id="ico-collapse" style="display:block"></i>
+                <i data-lucide="panel-left-open" class="w-4 h-4" id="ico-expand" style="display:none"></i>
+                <i data-lucide="menu" class="w-4 h-4 lg:hidden"></i>
+              </button>
+              <div data-comment="header-divider" class="w-px h-5 bg-stone-200 dark:bg-stone-800 shrink-0"></div>
+              <nav data-comment="header-breadcrumb" aria-label="Breadcrumb" class="flex items-center">
+                <ol class="flex items-center gap-1.5 text-sm text-stone-400 dark:text-stone-500 list-none p-0 m-0">
+                  <li data-comment="breadcrumb-app">App</li>
+                  <li class="flex" aria-hidden="true"><i data-lucide="chevron-right" class="w-3.5 h-3.5"></i></li>
+                  <li data-comment="breadcrumb-current" aria-current="page" class="text-stone-900 dark:text-stone-50 font-medium">Todos</li>
+                </ol>
+              </nav>
+            </div>
+            <div data-comment="header-actions" role="toolbar" aria-label="Header actions" class="flex items-center gap-2">
+              <button type="button" data-comment="header-search" data-component="button" aria-label="Search (⌘K)"
+                class="flex items-center gap-2 w-80 h-9 px-4 rounded-full border border-transparent bg-stone-100 dark:bg-stone-900 text-stone-400 text-sm hover:border-stone-300 dark:hover:border-stone-600 transition-[border-color] duration-150 cursor-pointer">
+                <i data-lucide="search" class="w-3.5 h-3.5"></i>
+                <span data-comment="header-search-text" class="flex-1 text-left text-sm">Search...</span>
+                <kbd data-comment="header-search-kbd" class="hidden sm:inline-flex items-center gap-0.5 text-[10px] font-medium border border-stone-200 dark:border-stone-700 rounded px-1.5 py-0.5 leading-none">
+                  <i data-lucide="command" class="w-2.5 h-2.5"></i>K
+                </kbd>
+              </button>
+              <button type="button" data-comment="header-theme-picker" data-component="button" aria-label="Theme color"
+                class="w-8 h-8 flex items-center justify-center rounded-lg text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors cursor-pointer">
+                <i data-lucide="palette" class="w-4 h-4"></i>
+              </button>
+              <button type="button" data-comment="header-darkmode-toggle" data-component="button" aria-label="Toggle dark mode" onclick="toggleColorMode()"
+                class="w-8 h-8 flex items-center justify-center rounded-lg text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors cursor-pointer">
+                <i data-lucide="moon" class="w-4 h-4 dark:hidden"></i>
+                <i data-lucide="sun" class="w-4 h-4 hidden dark:block"></i>
+              </button>
+            </div>
+          </header>
+
+          <main data-comment="main" id="main-scroll" class="flex-1 overflow-y-auto flex flex-col">
+            <div data-comment="todos-page" id="todos-page" class="flex flex-col flex-1">
+
+              <div data-comment="todos-header" class="px-6 pt-5 pb-4 shrink-0 flex items-start justify-between gap-4">
+                <div>
+                  <h1 data-comment="todos-title" class="text-xl font-bold text-stone-900 dark:text-stone-50">Todos</h1>
+                </div>
+                <button type="button" data-comment="todos-create" data-component="button" onclick="openCreateDialog()"
+                  class="inline-flex cursor-pointer select-none items-center justify-center h-9 px-4 gap-1.5 rounded-full text-sm bg-brand-500 hover:bg-brand-600 active:bg-brand-700 text-white border border-brand-500 hover:border-brand-600 active:border-brand-700 dark:bg-white dark:text-stone-900 dark:border-white dark:hover:bg-stone-100 dark:hover:border-stone-100 transition-colors">
+                  <i data-lucide="plus" class="w-4 h-4"></i>
+                  <span>Create Todo</span>
+                </button>
+              </div>
+
+              <div data-comment="todos-toolbar" class="px-6 pb-4 flex items-center gap-3 shrink-0 flex-wrap">
+                <div data-comment="todos-tabs" data-component="tabs" id="view-tabs" role="tablist"
+                  class="flex items-center bg-stone-100 dark:bg-stone-800 rounded-full p-1 gap-0.5"></div>
+                <div data-comment="todos-toolbar-right" class="flex items-center gap-2 ml-auto flex-wrap">
+                  <div data-comment="todos-search-wrap" class="relative w-80">
+                    <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400 dark:text-stone-500 pointer-events-none"></i>
+                    <input id="search-input" data-comment="todos-search" data-component="input" type="text" placeholder="Search tasks..."
+                      class="vol-input w-full pl-9 pr-9" oninput="onSearchInput(event)" />
+                    <button type="button" data-comment="todos-search-clear" id="search-clear" aria-label="Clear search" onclick="clearSearch()"
+                      class="absolute right-1.5 top-1/2 -translate-y-1/2 hidden items-center justify-center w-6 h-6 rounded-full text-stone-400 hover:text-stone-600 dark:hover:text-stone-200 hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors cursor-pointer">
+                      <i data-lucide="x" class="w-3 h-3"></i>
+                    </button>
+                  </div>
+                  <div data-comment="todos-filter-type" id="filter-type" class="relative w-44"></div>
+                  <div data-comment="todos-filter-status" id="filter-status" class="relative w-44"></div>
+                  <div data-comment="todos-filter-priority" id="filter-priority" class="relative w-44"></div>
+                </div>
+              </div>
+
+              <div data-comment="todos-active-filters" id="active-filters" class="px-6 pb-3 flex items-center gap-2 flex-wrap shrink-0 hidden"></div>
+
+              <div data-comment="todos-board-view" id="board-view" class="pb-6">
+                <div id="board-columns" class="flex gap-4 px-6 overflow-x-auto"></div>
+              </div>
+
+              <div data-comment="todos-list-view" id="list-view" class="flex-1 px-6 pb-6 overflow-hidden flex-col hidden">
+                <div data-comment="todos-table-wrap" data-component="card"
+                  class="overflow-hidden flex-1 flex flex-col rounded-xl border border-stone-200 dark:border-stone-800">
+                  <div class="flex-1 overflow-auto">
+                    <table data-comment="todos-table" data-component="table" class="w-full text-sm">
+                      <thead class="bg-stone-50 dark:bg-stone-950 sticky top-0 z-10">
+                        <tr class="text-left">
+                          <th class="px-4 py-3 text-xs font-medium text-stone-500 dark:text-stone-400">Title</th>
+                          <th class="px-4 py-3 text-xs font-medium text-stone-500 dark:text-stone-400">Type</th>
+                          <th class="px-4 py-3 text-xs font-medium text-stone-500 dark:text-stone-400">Status</th>
+                          <th class="px-4 py-3 text-xs font-medium text-stone-500 dark:text-stone-400">Priority</th>
+                          <th class="px-4 py-3 text-xs font-medium text-stone-500 dark:text-stone-400">Due Date</th>
+                          <th class="px-4 py-3 text-xs font-medium text-stone-500 dark:text-stone-400">Assignees</th>
+                          <th class="px-4 py-3 text-xs font-medium text-stone-500 dark:text-stone-400">Author</th>
+                          <th class="px-4 py-3 w-10"></th>
+                        </tr>
+                      </thead>
+                      <tbody id="list-body"></tbody>
+                    </table>
+                  </div>
+                  <div data-comment="todos-list-empty" id="list-empty"
+                    class="absolute inset-0 pb-12 items-center justify-center pointer-events-none hidden">
+                    <div class="flex flex-col items-center justify-center gap-3 py-12 text-center">
+                      <div class="w-10 h-10 rounded-3xl bg-stone-50 dark:bg-stone-800 flex items-center justify-center">
+                        <i data-lucide="check-square" class="w-8 h-8 text-stone-400 dark:text-stone-500"></i>
+                      </div>
+                      <div>
+                        <p class="text-sm font-semibold text-stone-900 dark:text-stone-50 m-0">No todos found</p>
+                        <p class="text-xs text-stone-400 dark:text-stone-500 mt-0.5 m-0">Try adjusting your search or filters</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </main>
+        </div>
+      </div>
+
+      <div id="drawer" data-comment="todo-drawer" data-component="drawer" class="drawer-root">
+        <div class="drawer-backdrop" onclick="closeDrawer()"></div>
+        <aside class="drawer-panel" data-comment="todo-drawer-panel">
+          <header class="flex items-center justify-between px-6 py-4 border-b border-stone-200 dark:border-stone-800 shrink-0">
+            <div>
+              <p data-comment="drawer-id" id="drawer-id" class="text-[10px] font-medium uppercase tracking-wider text-stone-400 dark:text-stone-500">TODO #—</p>
+              <h2 data-comment="drawer-title" id="drawer-title" class="text-lg font-semibold text-stone-900 dark:text-stone-50 mt-0.5">—</h2>
+            </div>
+            <button type="button" data-comment="drawer-close" aria-label="Close" onclick="closeDrawer()"
+              class="w-8 h-8 flex items-center justify-center rounded-lg text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800 cursor-pointer">
+              <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+          </header>
+          <div data-comment="drawer-body" id="drawer-body" class="flex-1 overflow-y-auto p-6 flex flex-col gap-5"></div>
+        </aside>
+      </div>
+
+      <div id="create-dialog" data-comment="create-dialog" data-component="dialog" class="dialog-root">
+        <div class="dialog-backdrop" onclick="closeCreateDialog()">
+          <div class="dialog-panel" data-comment="create-dialog-panel" onclick="event.stopPropagation()">
+            <div class="flex items-start justify-between mb-5">
+              <div>
+                <h2 data-comment="create-dialog-title" class="text-lg font-semibold text-stone-900 dark:text-stone-50">Create Todo</h2>
+                <p data-comment="create-dialog-sub" class="text-xs text-stone-500 dark:text-stone-400 mt-0.5">Add a new task to the board</p>
+              </div>
+              <button type="button" data-comment="create-dialog-close" aria-label="Close" onclick="closeCreateDialog()"
+                class="w-8 h-8 flex items-center justify-center rounded-lg text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800 cursor-pointer">
+                <i data-lucide="x" class="w-4 h-4"></i>
+              </button>
+            </div>
+            <div data-comment="create-form" data-component="form" class="flex flex-col gap-4">
+              <div class="flex flex-col gap-1.5">
+                <label data-comment="create-label-title" class="text-sm font-medium text-stone-700 dark:text-stone-300">Title <span class="text-red-500">*</span></label>
+                <input id="create-title" data-comment="create-input-title" data-component="input" type="text" class="vol-input w-full" placeholder="What needs doing?" />
+              </div>
+              <div class="flex flex-col gap-1.5">
+                <label data-comment="create-label-descr" class="text-sm font-medium text-stone-700 dark:text-stone-300">Description</label>
+                <textarea id="create-descr" data-comment="create-input-descr" data-component="textarea" class="vol-input w-full" placeholder="Optional details..." rows="2" style="height: auto; padding-top: 0.5rem; padding-bottom: 0.5rem; resize: vertical; min-height: 4rem;"></textarea>
+              </div>
+              <div class="grid grid-cols-3 gap-3">
+                <div class="flex flex-col gap-1.5">
+                  <label data-comment="create-label-type" class="text-sm font-medium text-stone-700 dark:text-stone-300">Type</label>
+                  <div data-comment="create-type-select" id="create-type-select" class="relative"></div>
+                </div>
+                <div class="flex flex-col gap-1.5">
+                  <label data-comment="create-label-status" class="text-sm font-medium text-stone-700 dark:text-stone-300">Status</label>
+                  <div data-comment="create-status-select" id="create-status-select" class="relative"></div>
+                </div>
+                <div class="flex flex-col gap-1.5">
+                  <label data-comment="create-label-priority" class="text-sm font-medium text-stone-700 dark:text-stone-300">Priority</label>
+                  <div data-comment="create-priority-select" id="create-priority-select" class="relative"></div>
+                </div>
+              </div>
+              <div class="grid grid-cols-2 gap-3">
+                <div class="flex flex-col gap-1.5">
+                  <label data-comment="create-label-due" class="text-sm font-medium text-stone-700 dark:text-stone-300">Due date</label>
+                  <input id="create-due" data-comment="create-input-due" data-component="input" type="date" class="vol-input w-full" />
+                </div>
+                <div class="flex flex-col gap-1.5">
+                  <label data-comment="create-label-job" class="text-sm font-medium text-stone-700 dark:text-stone-300">Related job</label>
+                  <input id="create-job" data-comment="create-input-job" data-component="input" type="text" class="vol-input w-full" placeholder="Job ID" />
+                </div>
+              </div>
+              <div class="flex flex-col gap-1.5">
+                <label data-comment="create-label-assignees" class="text-sm font-medium text-stone-700 dark:text-stone-300">Assignees</label>
+                <div data-comment="create-assignees" id="create-assignees" class="flex flex-wrap gap-1.5"></div>
+              </div>
+              <div data-comment="create-error" id="create-error" class="hidden text-xs text-red-500"></div>
+              <div class="flex justify-end gap-2 pt-2">
+                <button type="button" data-comment="create-cancel" data-component="button" onclick="closeCreateDialog()"
+                  class="inline-flex h-9 px-4 items-center justify-center rounded-full text-sm bg-stone-100 dark:bg-stone-800 text-stone-900 dark:text-stone-50 cursor-pointer hover:bg-stone-200 dark:hover:bg-stone-700">
+                  Cancel
+                </button>
+                <button type="button" data-comment="create-submit" data-component="button" onclick="submitCreate()"
+                  class="inline-flex h-9 px-4 items-center justify-center gap-1.5 rounded-full text-sm bg-brand-500 hover:bg-brand-600 text-white border border-brand-500 dark:bg-white dark:text-stone-900 dark:border-white dark:hover:bg-stone-100 cursor-pointer">
+                  <i data-lucide="plus" class="w-4 h-4"></i>Create
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+    <script>
+      function createStore(initialState) {
+        let state = structuredClone(initialState);
+        const listeners = new Set();
+        return {
+          get: () => state,
+          set(updater) {
+            const patch = typeof updater === 'function' ? updater(state) : updater;
+            state = { ...state, ...patch };
+            listeners.forEach((fn) => fn(state));
+          },
+          subscribe(fn) {
+            listeners.add(fn);
+            return () => listeners.delete(fn);
+          }
+        };
+      }
+
+      const VIEWS = [
+        { value: 'board', label: 'Board', icon: 'layout-dashboard' },
+        { value: 'list',  label: 'List',  icon: 'list' }
+      ];
+
+      const TODO_TYPES = [
+        { id: 1, label: 'General',      icon: 'circle-dot',       color: '#a8a29e' },
+        { id: 2, label: 'Change Order', icon: 'git-pull-request', color: '#f97316' },
+        { id: 3, label: 'Safety',       icon: 'shield-alert',     color: '#ef4444' },
+        { id: 4, label: 'Financial',    icon: 'dollar-sign',      color: '#22c55e' },
+        { id: 5, label: 'Other',        icon: 'ellipsis',         color: '#8b5cf6' }
+      ];
+      const TODO_STATUSES = [
+        { id: 1, label: 'Not Started', color: '#a8a29e' },
+        { id: 2, label: 'In Progress', color: '#3b82f6' },
+        { id: 3, label: 'Review',      color: '#f97316' },
+        { id: 4, label: 'Done',        color: '#22c55e' },
+        { id: 5, label: 'Blocked',     color: '#ef4444' }
+      ];
+      const TODO_PRIORITIES = [
+        { value: 'low',    label: 'Low',    color: '#a8a29e', icon: 'arrow-down' },
+        { value: 'medium', label: 'Medium', color: '#3b82f6', icon: 'arrow-right' },
+        { value: 'high',   label: 'High',   color: '#f97316', icon: 'arrow-up' },
+        { value: 'urgent', label: 'Urgent', color: '#ef4444', icon: 'flame' }
+      ];
+      const todoType     = (id) => TODO_TYPES.find((t) => t.id === id) ?? TODO_TYPES[4];
+      const todoStatus   = (id) => TODO_STATUSES.find((s) => s.id === id) ?? TODO_STATUSES[0];
+      const todoPriority = (v)  => TODO_PRIORITIES.find((p) => p.value === v) ?? TODO_PRIORITIES[0];
+
+      const USERS = [
+        { id: 1, first_name: 'Nazar',  last_name: 'K.',     color: '#3b82f6' },
+        { id: 2, first_name: 'Anna',   last_name: 'Lee',    color: '#22c55e' },
+        { id: 3, first_name: 'Mark',   last_name: 'Chen',   color: '#f97316' },
+        { id: 4, first_name: 'Olivia', last_name: 'Brown',  color: '#a855f7' },
+        { id: 5, first_name: 'Liam',   last_name: 'Patel',  color: '#ef4444' }
+      ];
+      const userById = (id) => USERS.find((u) => u.id === id);
+      const displayName = (u) => `${u.first_name} ${u.last_name}`;
+      const initials = (name) => name.split(' ').map((p) => p[0]).slice(0, 2).join('').toUpperCase();
+
+      function isoOffset(days) {
+        return new Date(Date.now() + days * 86400000).toISOString().slice(0, 10);
+      }
+      const TODAY = new Date().toISOString().slice(0, 10);
+      const isOverdue = (iso) => iso < TODAY;
+
+      const TODOS = [
+        { id: 1, title: 'Submit RFI for column spacing on north elevation', type: { id: 2 }, status: { id: 2 }, priority: 'high',   due_date: isoOffset(3),   job_id: 1042, job_descr: 'Westbrook commercial complex',         created_by: { id: 1, first_name: 'Nazar',  last_name: 'K.',    color: '#3b82f6' }, assigned_users: [{ id: 2, first_name: 'Anna',   last_name: 'Lee',   color: '#22c55e' }, { id: 3, first_name: 'Mark', last_name: 'Chen', color: '#f97316' }] },
+        { id: 2, title: 'Order rebar for footings — phase 2', type: { id: 4 }, status: { id: 1 }, priority: 'medium', due_date: isoOffset(5),   job_id: 1058, job_descr: 'Greenfield warehouse expansion',        created_by: { id: 2, first_name: 'Anna',   last_name: 'Lee',   color: '#22c55e' }, assigned_users: [{ id: 1, first_name: 'Nazar',  last_name: 'K.',    color: '#3b82f6' }] },
+        { id: 3, title: 'Coordinate with electrician on conduit layout', type: { id: 1 }, status: { id: 3 }, priority: 'low',    due_date: isoOffset(7),   job_id: 1042, job_descr: 'Westbrook commercial complex',         created_by: { id: 3, first_name: 'Mark',   last_name: 'Chen',  color: '#f97316' }, assigned_users: [{ id: 4, first_name: 'Olivia', last_name: 'Brown', color: '#a855f7' }] },
+        { id: 4, title: 'Daily safety briefing — confined space entry',   type: { id: 3 }, status: { id: 2 }, priority: 'urgent', due_date: isoOffset(1),   job_id: 1063, job_descr: 'Riverside utilities trenching',         created_by: { id: 1, first_name: 'Nazar',  last_name: 'K.',    color: '#3b82f6' }, assigned_users: [{ id: 5, first_name: 'Liam',   last_name: 'Patel', color: '#ef4444' }, { id: 3, first_name: 'Mark', last_name: 'Chen', color: '#f97316' }] },
+        { id: 5, title: 'Update budget after change order #4',            type: { id: 4 }, status: { id: 4 }, priority: 'medium', due_date: isoOffset(-2),  job_id: 1042, job_descr: 'Westbrook commercial complex',         created_by: { id: 2, first_name: 'Anna',   last_name: 'Lee',   color: '#22c55e' }, assigned_users: [{ id: 2, first_name: 'Anna', last_name: 'Lee', color: '#22c55e' }] },
+        { id: 6, title: 'Fix damaged formwork on east wall',              type: { id: 5 }, status: { id: 5 }, priority: 'high',   due_date: isoOffset(-1),  job_id: 1058, job_descr: 'Greenfield warehouse expansion',        created_by: { id: 4, first_name: 'Olivia', last_name: 'Brown', color: '#a855f7' }, assigned_users: [{ id: 5, first_name: 'Liam', last_name: 'Patel', color: '#ef4444' }] },
+        { id: 7, title: 'Final walkthrough with owner — punch list', type: { id: 1 }, status: { id: 3 }, priority: 'medium', due_date: isoOffset(10),  job_id: 1029, job_descr: 'Lakeside residential — unit 3',          created_by: { id: 1, first_name: 'Nazar', last_name: 'K.', color: '#3b82f6' }, assigned_users: [{ id: 4, first_name: 'Olivia', last_name: 'Brown', color: '#a855f7' }, { id: 1, first_name: 'Nazar', last_name: 'K.', color: '#3b82f6' }] },
+        { id: 8, title: 'Replace cracked sidewalk panel #14', type: { id: 1 }, status: { id: 1 }, priority: 'low', due_date: null, job_id: 1067, job_descr: 'Phase 2 sidewalk', created_by: { id: 5, first_name: 'Liam', last_name: 'Patel', color: '#ef4444' }, assigned_users: [{ id: 5, first_name: 'Liam', last_name: 'Patel', color: '#ef4444' }] },
+        { id: 9, title: 'Approve invoice from concrete supplier', type: { id: 4 }, status: { id: 2 }, priority: 'medium', due_date: isoOffset(2), job_id: null, job_descr: null, created_by: { id: 2, first_name: 'Anna', last_name: 'Lee', color: '#22c55e' }, assigned_users: [{ id: 2, first_name: 'Anna', last_name: 'Lee', color: '#22c55e' }] },
+        { id: 10, title: 'Site photos for weekly progress report', type: { id: 1 }, status: { id: 4 }, priority: 'low', due_date: isoOffset(-5), job_id: 1042, job_descr: 'Westbrook commercial complex', created_by: { id: 3, first_name: 'Mark', last_name: 'Chen', color: '#f97316' }, assigned_users: [{ id: 3, first_name: 'Mark', last_name: 'Chen', color: '#f97316' }] }
+      ];
+
+      const store = createStore({
+        todos: TODOS,
+        activeView: 'board',
+        filters: { search: '', type: '', status: '', priority: '' },
+        drawerTodoId: null,
+        drawerEditing: false,
+        createOpen: false,
+        sidebarCollapsed: false,
+        sidebarMobileOpen: false,
+        openSelect: null
+      });
+
+      function el(tag, attrs = {}, children = []) {
+        const node = document.createElement(tag);
+        for (const [k, v] of Object.entries(attrs)) {
+          if (v == null || v === false) continue;
+          if (k === 'class') node.className = v;
+          else if (k === 'style') node.setAttribute('style', v);
+          else if (k.startsWith('on') && typeof v === 'function') node[k] = v;
+          else node.setAttribute(k, v === true ? '' : v);
+        }
+        for (const c of [].concat(children)) {
+          if (c == null || c === false) continue;
+          node.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
+        }
+        return node;
+      }
+      function lucideEl(name, cls, extra = {}) { return el('i', { 'data-lucide': name, class: cls, ...extra }); }
+      function clear(node) { while (node.firstChild) node.removeChild(node.firstChild); }
+      const formatDate = (iso, withYear = false) =>
+        new Date(iso + 'T00:00:00').toLocaleDateString('en-US',
+          withYear ? { month: 'short', day: 'numeric', year: 'numeric' } : { month: 'short', day: 'numeric' });
+
+      function filteredTodos() {
+        const { todos, filters } = store.get();
+        return todos.filter((t) => {
+          if (filters.search && !t.title.toLowerCase().includes(filters.search.toLowerCase())) return false;
+          if (filters.type && t.type.id !== Number(filters.type)) return false;
+          if (filters.status && t.status.id !== Number(filters.status)) return false;
+          if (filters.priority && t.priority !== filters.priority) return false;
+          return true;
+        });
+      }
+
+      function renderViewTabs() {
+        const { activeView } = store.get();
+        const root = document.getElementById('view-tabs');
+        clear(root);
+        for (const v of VIEWS) {
+          const active = v.value === activeView;
+          const btn = el('button', {
+            type: 'button', role: 'tab',
+            'data-comment': `todos-tab-${v.value}`,
+            'aria-selected': String(active),
+            onclick: () => setView(v.value),
+            class: 'tab-pill px-3.5 py-1.5 rounded-full text-sm font-medium transition-colors duration-100 cursor-pointer select-none whitespace-nowrap outline-none text-stone-500 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-300'
+          });
+          const inner = el('span', { class: 'flex items-center gap-1.5' });
+          inner.appendChild(lucideEl(v.icon, 'w-3.5 h-3.5'));
+          inner.appendChild(document.createTextNode(v.label));
+          btn.appendChild(inner);
+          root.appendChild(btn);
+        }
+      }
+
+      function selectInner(opts) {
+        const { wrap, options, value, placeholder, onChange, dataComment, currentLabelFn } = opts;
+        clear(wrap);
+        const selected = options.find((o) => String(o.value) === String(value));
+
+        const trigger = el('button', {
+          type: 'button',
+          'data-comment': `${dataComment}-trigger`,
+          'aria-haspopup': 'listbox',
+          'aria-expanded': String(store.get().openSelect === dataComment),
+          class: 'select-trigger w-full',
+          onclick: (e) => { e.stopPropagation(); toggleSelect(dataComment); }
+        });
+
+        const valueWrap = el('div', { class: 'flex-1 min-w-0 flex items-center gap-1.5 truncate' });
+        if (selected) {
+          if (currentLabelFn) currentLabelFn(valueWrap, selected);
+          else valueWrap.appendChild(document.createTextNode(selected.label));
+        } else {
+          valueWrap.appendChild(el('span', { class: 'text-stone-400 dark:text-stone-500' }, placeholder));
+        }
+        trigger.appendChild(valueWrap);
+        trigger.appendChild(lucideEl('chevron-down', 'w-4 h-4 text-stone-400 shrink-0'));
+        wrap.appendChild(trigger);
+
+        if (store.get().openSelect === dataComment) {
+          const panel = el('div', { class: 'select-panel', 'data-comment': `${dataComment}-panel` });
+          for (const o of options) {
+            const isActive = String(o.value) === String(value);
+            const opt = el('div', {
+              'data-comment': `${dataComment}-option-${o.value ?? 'all'}`,
+              class: `select-option${isActive ? ' is-active' : ''}`,
+              role: 'option',
+              onclick: () => { onChange(o.value); store.set({ openSelect: null }); }
+            });
+            if (o.icon) opt.appendChild(lucideEl(o.icon, 'w-3.5 h-3.5 shrink-0', o.color ? { style: `color:${o.color}` } : {}));
+            else if (o.dot) opt.appendChild(el('span', { class: 'w-1.5 h-1.5 rounded-full shrink-0', style: `background:${o.dot}` }));
+            opt.appendChild(document.createTextNode(o.label));
+            panel.appendChild(opt);
+          }
+          wrap.appendChild(panel);
+        }
+      }
+
+      function renderFilterSelects() {
+        const f = store.get().filters;
+
+        selectInner({
+          wrap: document.getElementById('filter-type'),
+          dataComment: 'filter-type',
+          placeholder: 'Type',
+          value: f.type,
+          options: [
+            { value: '', label: 'All types' },
+            ...TODO_TYPES.map((t) => ({ value: String(t.id), label: t.label, icon: t.icon, color: t.color }))
+          ],
+          onChange: (v) => setFilter('type', v),
+          currentLabelFn: (wrap, sel) => {
+            const t = TODO_TYPES.find((x) => String(x.id) === sel.value);
+            if (t) wrap.appendChild(lucideEl(t.icon, 'w-3.5 h-3.5 shrink-0', { style: `color:${t.color}` }));
+            wrap.appendChild(document.createTextNode(sel.label));
+          }
+        });
+
+        selectInner({
+          wrap: document.getElementById('filter-status'),
+          dataComment: 'filter-status',
+          placeholder: 'Status',
+          value: f.status,
+          options: [
+            { value: '', label: 'All statuses' },
+            ...TODO_STATUSES.map((s) => ({ value: String(s.id), label: s.label, dot: s.color }))
+          ],
+          onChange: (v) => setFilter('status', v),
+          currentLabelFn: (wrap, sel) => {
+            const s = TODO_STATUSES.find((x) => String(x.id) === sel.value);
+            if (s) wrap.appendChild(el('span', { class: 'w-1.5 h-1.5 rounded-full shrink-0', style: `background:${s.color}` }));
+            wrap.appendChild(document.createTextNode(sel.label));
+          }
+        });
+
+        const statusWrap = document.getElementById('filter-status');
+        statusWrap.classList.toggle('hidden', store.get().activeView === 'board');
+
+        selectInner({
+          wrap: document.getElementById('filter-priority'),
+          dataComment: 'filter-priority',
+          placeholder: 'Priority',
+          value: f.priority,
+          options: [
+            { value: '', label: 'All priorities' },
+            ...TODO_PRIORITIES.map((p) => ({ value: p.value, label: p.label, icon: p.icon, color: p.color }))
+          ],
+          onChange: (v) => setFilter('priority', v),
+          currentLabelFn: (wrap, sel) => {
+            const p = TODO_PRIORITIES.find((x) => x.value === sel.value);
+            if (p) wrap.appendChild(lucideEl(p.icon, 'w-3.5 h-3.5 shrink-0', { style: `color:${p.color}` }));
+            wrap.appendChild(document.createTextNode(sel.label));
+          }
+        });
+      }
+
+      function renderActiveFilters() {
+        const f = store.get().filters;
+        const active = [];
+        if (f.search) active.push({ key: 'search', label: `"${f.search}"`, clear: () => { setFilter('search', ''); document.getElementById('search-input').value = ''; updateSearchClear(); } });
+        if (f.type) { const t = todoType(Number(f.type)); active.push({ key: 'type', label: t.label, clear: () => setFilter('type', '') }); }
+        if (f.status) { const s = todoStatus(Number(f.status)); active.push({ key: 'status', label: s.label, clear: () => setFilter('status', '') }); }
+        if (f.priority) { const p = todoPriority(f.priority); active.push({ key: 'priority', label: p.label, clear: () => setFilter('priority', '') }); }
+
+        const root = document.getElementById('active-filters');
+        clear(root);
+        if (!active.length) { root.classList.add('hidden'); return; }
+        root.classList.remove('hidden');
+
+        for (const a of active) {
+          const chip = el('span', {
+            'data-comment': `active-filter-${a.key}`,
+            'data-component': 'badge',
+            class: 'inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-medium bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 border border-stone-200 dark:border-stone-700'
+          });
+          chip.appendChild(document.createTextNode(a.label));
+          const close = el('button', {
+            type: 'button',
+            'data-comment': `active-filter-${a.key}-remove`,
+            'aria-label': 'Remove filter',
+            onclick: a.clear,
+            class: 'ml-0.5 -mr-0.5 flex items-center justify-center w-4 h-4 rounded-full text-stone-400 dark:text-stone-500 hover:text-white hover:bg-brand-500 transition-all duration-150 cursor-pointer'
+          });
+          close.appendChild(lucideEl('x', 'w-3 h-3'));
+          chip.appendChild(close);
+          root.appendChild(chip);
+        }
+
+        if (active.length > 1) {
+          const clearAll = el('button', {
+            type: 'button',
+            'data-comment': 'active-filter-clear-all',
+            onclick: clearAllFilters,
+            class: 'inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-medium border border-dashed border-stone-300 dark:border-stone-700 text-stone-500 dark:text-stone-400 hover:border-stone-400 dark:hover:border-stone-500 hover:text-stone-700 dark:hover:text-stone-200 transition-colors cursor-pointer'
+          });
+          clearAll.appendChild(lucideEl('x', 'w-3 h-3'));
+          clearAll.appendChild(document.createTextNode('Clear all'));
+          root.appendChild(clearAll);
+        }
+      }
+
+      function renderAvatar(name, color, size, extraCls = '') {
+        const sizes = { xs: 'w-5 h-5 text-[10px]', sm: 'w-6 h-6 text-[10px]', md: 'w-7 h-7 text-xs' };
+        const cls = `inline-flex items-center justify-center relative overflow-hidden rounded-full font-medium select-none shrink-0 ${sizes[size] || sizes.sm} ${extraCls}`;
+        const style = color ? `background:${color}22;color:${color}` : '';
+        return el('span', { class: cls, style, 'data-comment': 'avatar', title: name }, initials(name));
+      }
+
+      function renderKanbanCard(todo) {
+        const t = todoType(todo.type.id);
+        const p = todoPriority(todo.priority);
+        const card = el('div', {
+          tabindex: '0', role: 'button',
+          'data-comment': `kanban-card-${todo.id}`,
+          'data-todo-id': String(todo.id),
+          class: 'bg-white dark:bg-stone-800/40 rounded-lg border p-3 flex flex-col gap-3 shadow-xs hover:shadow-sm transition-all duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 border-stone-200 dark:border-stone-800 hover:border-stone-300 dark:hover:border-stone-700',
+          onclick: () => openDrawer(todo.id)
+        });
+
+        card.appendChild(el('p', {
+          'data-comment': `kanban-card-${todo.id}-title`,
+          class: 'text-sm font-medium text-stone-800 dark:text-stone-200 leading-snug line-clamp-2 m-0'
+        }, todo.title));
+
+        const meta = el('div', { class: 'flex items-center justify-between gap-2' });
+        const typePill = el('div', {
+          'data-comment': `kanban-card-${todo.id}-type`,
+          class: 'flex items-center gap-1.5 text-xs rounded-md px-2 py-0.5 border',
+          style: `color:${t.color};background:${t.color}18;border-color:${t.color}35`
+        });
+        typePill.appendChild(lucideEl(t.icon, 'w-3 h-3 shrink-0'));
+        typePill.appendChild(document.createTextNode(t.label));
+        meta.appendChild(typePill);
+
+        const dueWrap = el('div', { class: 'flex items-center gap-1.5 text-xs text-stone-400 dark:text-stone-500 whitespace-nowrap' });
+        dueWrap.appendChild(lucideEl(p.icon, 'w-3 h-3 shrink-0', { style: `color:${p.color}` }));
+        if (todo.due_date) {
+          const overdue = isOverdue(todo.due_date);
+          dueWrap.appendChild(lucideEl(overdue ? 'calendar-x' : 'calendar', `w-3 h-3 shrink-0${overdue ? ' text-red-400 dark:text-red-500' : ''}`));
+          dueWrap.appendChild(el('span', {
+            class: `tabular-nums${overdue ? ' text-red-400 dark:text-red-500 font-medium' : ''}`
+          }, formatDate(todo.due_date)));
+        }
+        meta.appendChild(dueWrap);
+        card.appendChild(meta);
+
+        if (todo.job_id) {
+          const job = el('a', {
+            href: `jobs.html#job-${todo.job_id}`,
+            'data-comment': `kanban-card-${todo.id}-job`,
+            class: 'flex items-center gap-1 w-fit max-w-full no-underline',
+            onclick: (e) => e.stopPropagation()
+          });
+          job.appendChild(el('span', { class: 'text-xs text-stone-500 dark:text-stone-400 shrink-0' }, `#${todo.job_id}`));
+          if (todo.job_descr) {
+            job.appendChild(el('span', { class: 'text-xs text-stone-300 dark:text-stone-600 shrink-0' }, '·'));
+            job.appendChild(el('span', { class: 'text-xs text-stone-400 dark:text-stone-500 truncate' }, todo.job_descr));
+          }
+          card.appendChild(job);
+        }
+
+        const footer = el('div', { class: 'flex items-center gap-1 pt-1.5 border-t border-stone-100 dark:border-stone-800' });
+        footer.appendChild(renderAvatar(displayName(todo.created_by), todo.created_by.color, 'xs'));
+        const others = todo.assigned_users.filter((a) => a.id !== todo.created_by.id);
+        if (others.length) {
+          footer.appendChild(lucideEl('arrow-right', 'w-2.5 h-2.5 text-stone-300 dark:text-stone-600 shrink-0'));
+          const stack = el('div', { class: 'flex items-center' });
+          others.slice(0, 3).forEach((a, i) =>
+            stack.appendChild(renderAvatar(displayName(a), a.color, 'xs', i > 0 ? '-ml-1 relative' : 'relative'))
+          );
+          footer.appendChild(stack);
+        }
+        card.appendChild(footer);
+        return card;
+      }
+
+      function renderKanbanColumn(col) {
+        const wrap = el('div', {
+          'data-comment': `kanban-col-${col.id}`,
+          'data-status-id': String(col.id),
+          class: 'flex flex-col gap-3 shrink-0 bg-stone-50 dark:bg-stone-950 border border-stone-200 dark:border-stone-800 rounded-xl p-3 transition-[width] duration-150 w-72'
+        });
+        const head = el('div', { class: 'flex items-center gap-2 shrink-0 select-none' });
+        const tag = el('span', {
+          'data-comment': `kanban-col-${col.id}-label`,
+          class: 'flex items-center gap-2 text-sm font-semibold px-2.5 py-1 rounded-lg border',
+          style: `color:${col.color};border-color:${col.color}40;background:${col.color}18`
+        });
+        tag.appendChild(el('span', { class: 'w-2 h-2 rounded-full shrink-0', style: `background:${col.color}` }));
+        tag.appendChild(document.createTextNode(col.label));
+        head.appendChild(tag);
+
+        const meta = el('div', { class: 'ml-auto flex items-center gap-1.5' });
+        const overdueCount = col.todos.filter((t) => t.due_date && isOverdue(t.due_date)).length;
+        if (overdueCount) {
+          meta.appendChild(el('span', {
+            'data-comment': `kanban-col-${col.id}-overdue`,
+            class: 'min-w-5 h-5 px-1.5 rounded-full text-[11px] font-semibold flex items-center justify-center bg-red-100 dark:bg-red-500/15 text-red-500 dark:text-red-400'
+          }, String(overdueCount)));
+        }
+        meta.appendChild(el('span', {
+          'data-comment': `kanban-col-${col.id}-count`,
+          class: 'min-w-6 h-6 px-1.5 rounded-full text-xs font-semibold flex items-center justify-center bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400'
+        }, String(col.todos.length)));
+        head.appendChild(meta);
+        wrap.appendChild(head);
+
+        const addBtn = el('button', {
+          type: 'button',
+          'data-comment': `kanban-col-${col.id}-add`,
+          onclick: () => openCreateDialog(col.id),
+          class: 'flex items-center gap-1.5 w-full px-2 py-1.5 rounded-lg text-xs text-stone-400 dark:text-stone-500 hover:text-stone-600 dark:hover:text-stone-300 hover:bg-stone-200/60 dark:hover:bg-stone-800/60 transition-colors cursor-pointer shrink-0'
+        });
+        addBtn.appendChild(lucideEl('plus', 'w-3.5 h-3.5 shrink-0'));
+        addBtn.appendChild(document.createTextNode('Add task'));
+        wrap.appendChild(addBtn);
+
+        const cards = el('div', {
+          'data-comment': `kanban-col-${col.id}-cards`,
+          'data-sortable-col': String(col.id),
+          class: 'flex flex-col gap-2 pb-2 min-h-16'
+        });
+        col.todos.forEach((t) => cards.appendChild(renderKanbanCard(t)));
+        if (!col.todos.length) {
+          cards.appendChild(el('div', {
+            'data-comment': `kanban-col-${col.id}-empty`,
+            class: 'flex items-center justify-center py-8 rounded-lg border border-dashed border-stone-200 dark:border-stone-800'
+          }, [el('span', { class: 'text-xs text-stone-400 dark:text-stone-600' }, 'No todos')]));
+        }
+        wrap.appendChild(cards);
+        return wrap;
+      }
+
+      let sortables = [];
+      function initSortables() {
+        sortables.forEach((s) => s.destroy());
+        sortables = [];
+        document.querySelectorAll('[data-sortable-col]').forEach((node) => {
+          const colId = Number(node.dataset.sortableCol);
+          sortables.push(
+            Sortable.create(node, {
+              group: 'todos',
+              animation: 150,
+              ghostClass: 'kanban-ghost',
+              dragClass: 'kanban-drag',
+              onAdd: (evt) => {
+                const todoId = Number(evt.item.dataset.todoId);
+                setTimeout(() => moveTodo(todoId, colId), 0);
+              }
+            })
+          );
+        });
+      }
+
+      function renderBoard() {
+        const todos = filteredTodos();
+        const cols = TODO_STATUSES.map((s) => ({ ...s, todos: todos.filter((t) => t.status.id === s.id) }));
+        const root = document.getElementById('board-columns');
+        clear(root);
+        cols.forEach((c) => root.appendChild(renderKanbanColumn(c)));
+        if (window.lucide) lucide.createIcons();
+        initSortables();
+      }
+
+      function renderListRow(todo) {
+        const t = todoType(todo.type.id);
+        const s = todoStatus(todo.status.id);
+        const p = todoPriority(todo.priority);
+        const tr = el('tr', {
+          'data-comment': `list-row-${todo.id}`,
+          class: 'border-t border-stone-100 dark:border-stone-800 hover:bg-stone-50 dark:hover:bg-stone-900/40 transition-colors'
+        });
+
+        tr.appendChild(el('td', {
+          class: 'px-4 py-3', style: 'max-width:18rem;min-width:12rem'
+        }, [
+          el('p', {
+            'data-comment': `list-row-${todo.id}-title`,
+            class: 'text-sm font-medium text-stone-800 dark:text-stone-200 truncate cursor-pointer hover:text-brand-500 dark:hover:text-brand-400 transition-colors m-0',
+            onclick: () => openDrawer(todo.id)
+          }, todo.title)
+        ]));
+
+        const typePill = el('span', {
+          'data-comment': `list-row-${todo.id}-type`,
+          class: 'inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full border',
+          style: `color:${t.color};background:${t.color}18;border-color:${t.color}35`
+        });
+        typePill.appendChild(lucideEl(t.icon, 'w-3 h-3 shrink-0'));
+        typePill.appendChild(document.createTextNode(t.label));
+        tr.appendChild(el('td', { class: 'px-4 py-3' }, [typePill]));
+
+        const statusPill = el('span', {
+          'data-comment': `list-row-${todo.id}-status`,
+          class: 'inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full border',
+          style: `color:${s.color};background:${s.color}18;border-color:${s.color}35`
+        });
+        statusPill.appendChild(el('span', { class: 'w-1.5 h-1.5 rounded-full shrink-0', style: `background:${s.color}` }));
+        statusPill.appendChild(document.createTextNode(s.label));
+        tr.appendChild(el('td', { class: 'px-4 py-3' }, [statusPill]));
+
+        const prPill = el('span', {
+          'data-comment': `list-row-${todo.id}-priority`,
+          class: 'inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full border',
+          style: `color:${p.color};background:${p.color}18;border-color:${p.color}35`
+        });
+        prPill.appendChild(lucideEl(p.icon, 'w-3 h-3 shrink-0'));
+        prPill.appendChild(document.createTextNode(p.label));
+        tr.appendChild(el('td', { class: 'px-4 py-3' }, [prPill]));
+
+        const overdue = todo.due_date && isOverdue(todo.due_date);
+        tr.appendChild(el('td', { class: 'px-4 py-3' }, [
+          el('span', {
+            'data-comment': `list-row-${todo.id}-due`,
+            class: `text-sm tabular-nums whitespace-nowrap ${overdue ? 'text-red-400 dark:text-red-500 font-medium' : 'text-stone-700 dark:text-stone-300'}`
+          }, todo.due_date ? formatDate(todo.due_date, true) : '—')
+        ]));
+
+        const assigneeWrap = el('div', { class: 'flex items-center -ml-1.5' });
+        todo.assigned_users.slice(0, 4).forEach((a, i) =>
+          assigneeWrap.appendChild(renderAvatar(displayName(a), a.color, 'sm', `ring-2 ring-white dark:ring-stone-900 ${i > 0 ? '-ml-1' : ''}`))
+        );
+        if (todo.assigned_users.length > 4) {
+          assigneeWrap.appendChild(el('span', {
+            class: '-ml-1 flex items-center justify-center w-6 h-6 rounded-full text-[10px] font-semibold shrink-0 bg-stone-200 dark:bg-stone-700 text-stone-500 dark:text-stone-300 ring-2 ring-white dark:ring-stone-900'
+          }, `+${todo.assigned_users.length - 4}`));
+        }
+        tr.appendChild(el('td', { class: 'px-4 py-3' }, [assigneeWrap]));
+
+        tr.appendChild(el('td', { class: 'px-4 py-3' }, [
+          el('span', {
+            'data-comment': `list-row-${todo.id}-author`,
+            class: 'text-sm text-stone-700 dark:text-stone-300 whitespace-nowrap'
+          }, displayName(todo.created_by))
+        ]));
+
+        const actions = el('div', { class: 'flex items-center justify-end gap-1' });
+        const delBtn = el('button', {
+          type: 'button',
+          'data-comment': `list-row-${todo.id}-delete`,
+          'aria-label': 'Delete',
+          onclick: (e) => { e.stopPropagation(); deleteTodo(todo.id); },
+          class: 'flex items-center justify-center px-1.5 h-7 min-w-7 rounded-md text-stone-500 dark:text-stone-400 hover:text-red-500 dark:hover:text-red-400 hover:bg-red-100 dark:hover:bg-red-500/10 transition-colors cursor-pointer'
+        });
+        delBtn.appendChild(lucideEl('trash-2', 'w-3.5 h-3.5'));
+        actions.appendChild(delBtn);
+        tr.appendChild(el('td', { class: 'px-4 py-3 w-10' }, [actions]));
+
+        return tr;
+      }
+
+      function renderList() {
+        const todos = filteredTodos();
+        const body = document.getElementById('list-body');
+        const empty = document.getElementById('list-empty');
+        clear(body);
+        if (!todos.length) {
+          empty.classList.remove('hidden');
+          empty.classList.add('flex');
+        } else {
+          empty.classList.add('hidden');
+          empty.classList.remove('flex');
+          todos.forEach((t) => body.appendChild(renderListRow(t)));
+        }
+        if (window.lucide) lucide.createIcons();
+      }
+
+      function applyView() {
+        const { activeView } = store.get();
+        const board = document.getElementById('board-view');
+        const list = document.getElementById('list-view');
+        const page = document.getElementById('todos-page');
+        if (activeView === 'list') {
+          board.classList.add('hidden');
+          list.classList.remove('hidden');
+          list.classList.add('flex');
+          page.classList.add('overflow-hidden', 'h-full');
+        } else {
+          list.classList.add('hidden');
+          list.classList.remove('flex');
+          board.classList.remove('hidden');
+          page.classList.remove('overflow-hidden', 'h-full');
+        }
+      }
+
+      function renderDrawer() {
+        const { drawerTodoId, todos, drawerEditing } = store.get();
+        const drawer = document.getElementById('drawer');
+        if (drawerTodoId == null) {
+          drawer.classList.remove('is-open');
+          return;
+        }
+        drawer.classList.add('is-open');
+        const todo = todos.find((t) => t.id === drawerTodoId);
+        if (!todo) return;
+        document.getElementById('drawer-id').textContent = `TODO #${todo.id}`;
+        document.getElementById('drawer-title').textContent = todo.title;
+        const body = document.getElementById('drawer-body');
+        clear(body);
+
+        const t = todoType(todo.type.id);
+        const s = todoStatus(todo.status.id);
+        const p = todoPriority(todo.priority);
+
+        // Inline-edit title/description block
+        const titleBlock = el('div', { 'data-comment': 'drawer-title-block', class: 'flex flex-col gap-2' });
+        const titleRow = el('div', { class: 'flex items-start gap-2' });
+        if (drawerEditing) {
+          const ti = el('input', {
+            id: 'drawer-edit-title', type: 'text', class: 'vol-input flex-1', value: todo.title,
+            placeholder: 'Task title'
+          });
+          titleRow.appendChild(ti);
+        } else {
+          titleRow.appendChild(el('p', { 'data-comment': 'drawer-title-text', class: 'text-base font-semibold text-stone-900 dark:text-stone-50 flex-1 leading-snug m-0' }, todo.title));
+          const editBtn = el('button', {
+            type: 'button', 'data-comment': 'drawer-edit-toggle', 'aria-label': 'Edit',
+            onclick: () => store.set({ drawerEditing: true }),
+            class: 'w-7 h-7 flex items-center justify-center rounded-md text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800 cursor-pointer'
+          });
+          editBtn.appendChild(lucideEl('pencil', 'w-3.5 h-3.5'));
+          titleRow.appendChild(editBtn);
+        }
+        titleBlock.appendChild(titleRow);
+        if (drawerEditing) {
+          const ta = el('textarea', {
+            id: 'drawer-edit-descr', class: 'vol-input', placeholder: 'Description (optional)',
+            style: 'min-height: 4rem; padding: 0.5rem 1rem; resize: vertical;'
+          });
+          ta.value = todo.description || '';
+          titleBlock.appendChild(ta);
+          const btnRow = el('div', { class: 'flex justify-end gap-2' });
+          const cancel = el('button', { type: 'button', 'data-comment': 'drawer-edit-cancel', onclick: () => store.set({ drawerEditing: false }), class: 'inline-flex h-8 px-3 items-center justify-center rounded-full text-xs bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-200 cursor-pointer hover:bg-stone-200 dark:hover:bg-stone-700' }, 'Cancel');
+          const save = el('button', { type: 'button', 'data-comment': 'drawer-edit-save', onclick: () => saveDrawerEdit(), class: 'inline-flex h-8 px-3 items-center justify-center rounded-full text-xs bg-brand-500 hover:bg-brand-600 text-white border border-brand-500 dark:bg-white dark:text-stone-900 dark:border-white cursor-pointer' }, 'Save');
+          btnRow.appendChild(cancel);
+          btnRow.appendChild(save);
+          titleBlock.appendChild(btnRow);
+        } else if (todo.description) {
+          titleBlock.appendChild(el('p', { 'data-comment': 'drawer-descr', class: 'text-sm text-stone-600 dark:text-stone-400 leading-relaxed m-0' }, todo.description));
+        }
+        body.appendChild(titleBlock);
+        body.appendChild(el('div', { class: 'h-px bg-stone-200 dark:bg-stone-800' }));
+
+        const grid = el('div', { class: 'grid grid-cols-2 gap-4' });
+        const make = (label, content) => {
+          const w = el('div', { class: 'flex flex-col gap-1' });
+          w.appendChild(el('span', { class: 'text-[10px] font-medium uppercase tracking-wider text-stone-400 dark:text-stone-500' }, label));
+          w.appendChild(content);
+          return w;
+        };
+
+        // Type pill
+        const typeP = el('span', {
+          'data-comment': 'drawer-type',
+          class: 'inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full border w-fit',
+          style: `color:${t.color};background:${t.color}18;border-color:${t.color}35`
+        });
+        typeP.appendChild(lucideEl(t.icon, 'w-3 h-3 shrink-0'));
+        typeP.appendChild(document.createTextNode(t.label));
+        grid.appendChild(make('Type', typeP));
+
+        // Status select
+        const statusBtn = el('button', {
+          type: 'button', 'data-comment': 'drawer-status',
+          onclick: () => cycleDrawerField('status'),
+          class: 'inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full border w-fit cursor-pointer hover:brightness-110',
+          style: `color:${s.color};background:${s.color}18;border-color:${s.color}35`,
+          title: 'Click to cycle status'
+        });
+        statusBtn.appendChild(el('span', { class: 'w-1.5 h-1.5 rounded-full shrink-0', style: `background:${s.color}` }));
+        statusBtn.appendChild(document.createTextNode(s.label));
+        grid.appendChild(make('Status', statusBtn));
+
+        // Priority cycle
+        const prBtn = el('button', {
+          type: 'button', 'data-comment': 'drawer-priority',
+          onclick: () => cycleDrawerField('priority'),
+          class: 'inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full border w-fit cursor-pointer hover:brightness-110',
+          style: `color:${p.color};background:${p.color}18;border-color:${p.color}35`,
+          title: 'Click to cycle priority'
+        });
+        prBtn.appendChild(lucideEl(p.icon, 'w-3 h-3 shrink-0'));
+        prBtn.appendChild(document.createTextNode(p.label));
+        grid.appendChild(make('Priority', prBtn));
+
+        // Due date editable
+        const dueRow = el('div', { class: 'flex items-center gap-2' });
+        const dueInput = el('input', {
+          type: 'date', 'data-comment': 'drawer-due-input',
+          class: 'vol-input text-sm',
+          style: 'height: 2rem; padding: 0 0.75rem;',
+          value: todo.due_date || '',
+          onchange: (e) => updateTodoField(todo.id, { due_date: e.target.value || null })
+        });
+        dueRow.appendChild(dueInput);
+        if (todo.due_date && isOverdue(todo.due_date)) {
+          const flag = el('span', { class: 'text-xs text-red-500 font-medium flex items-center gap-1' });
+          flag.appendChild(lucideEl('triangle-alert', 'w-3 h-3'));
+          flag.appendChild(document.createTextNode('Overdue'));
+          dueRow.appendChild(flag);
+        }
+        grid.appendChild(make('Due Date', dueRow));
+
+        body.appendChild(grid);
+
+        // Related job
+        if (todo.job_id) {
+          body.appendChild(make('Related Job',
+            el('a', { href: `jobs-detail.html#job-${todo.job_id}`, 'data-comment': 'drawer-job-link', class: 'text-sm text-brand-500 dark:text-brand-400 hover:underline w-fit' },
+              `#${todo.job_id}${todo.job_descr ? ' · ' + todo.job_descr : ''}`)
+          ));
+        }
+
+        // Created by
+        const author = el('div', { class: 'flex items-center gap-2' });
+        author.appendChild(renderAvatar(displayName(todo.created_by), todo.created_by.color, 'sm'));
+        author.appendChild(el('span', { class: 'text-sm text-stone-700 dark:text-stone-300' }, displayName(todo.created_by)));
+        body.appendChild(make('Created by', author));
+
+        // Assignees with toggle
+        const assignees = el('div', { 'data-comment': 'drawer-assignees', class: 'flex flex-wrap gap-1.5' });
+        const taskUserIds = new Set(todo.assigned_users.map((u) => u.id));
+        USERS.forEach((u) => {
+          const selected = taskUserIds.has(u.id);
+          const chip = el('button', {
+            type: 'button', 'data-comment': `drawer-assignee-${u.id}`,
+            onclick: () => toggleDrawerAssignee(todo.id, u.id),
+            class: `inline-flex items-center gap-1.5 pl-0.5 pr-2 py-0.5 rounded-full border transition-colors cursor-pointer ${selected ? 'bg-brand-500 dark:bg-white border-brand-500 dark:border-white text-white dark:text-stone-900' : 'bg-stone-100 dark:bg-stone-800 border-stone-200 dark:border-stone-700 text-stone-700 dark:text-stone-300 hover:border-stone-300 dark:hover:border-stone-600'}`
+          });
+          chip.appendChild(renderAvatar(displayName({ first_name: u.first_name, last_name: u.last_name }), u.color, 'xs'));
+          chip.appendChild(el('span', { class: 'text-xs' }, displayName({ first_name: u.first_name, last_name: u.last_name })));
+          assignees.appendChild(chip);
+        });
+        body.appendChild(make('Assignees', assignees));
+
+        // Delete action
+        body.appendChild(el('div', { class: 'h-px bg-stone-200 dark:bg-stone-800 mt-2' }));
+        const delBtn = el('button', {
+          type: 'button', 'data-comment': 'drawer-delete',
+          onclick: () => deleteFromDrawer(todo.id),
+          class: 'inline-flex items-center gap-1.5 text-sm font-medium text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 px-3 py-2 rounded-lg w-fit cursor-pointer transition-colors'
+        });
+        delBtn.appendChild(lucideEl('trash-2', 'w-3.5 h-3.5'));
+        delBtn.appendChild(document.createTextNode('Delete todo'));
+        body.appendChild(delBtn);
+
+        if (window.lucide) lucide.createIcons();
+      }
+
+      function saveDrawerEdit() {
+        const id = store.get().drawerTodoId;
+        const newTitle = document.getElementById('drawer-edit-title').value.trim();
+        const newDescr = document.getElementById('drawer-edit-descr').value.trim();
+        if (!newTitle) return;
+        store.set((s) => ({
+          todos: s.todos.map((t) => t.id === id ? { ...t, title: newTitle, description: newDescr || null } : t),
+          drawerEditing: false
+        }));
+      }
+
+      function cycleDrawerField(field) {
+        const id = store.get().drawerTodoId;
+        store.set((s) => ({
+          todos: s.todos.map((t) => {
+            if (t.id !== id) return t;
+            if (field === 'status') {
+              const idx = TODO_STATUSES.findIndex((x) => x.id === t.status.id);
+              const next = TODO_STATUSES[(idx + 1) % TODO_STATUSES.length];
+              return { ...t, status: { id: next.id } };
+            }
+            if (field === 'priority') {
+              const idx = TODO_PRIORITIES.findIndex((x) => x.value === t.priority);
+              const next = TODO_PRIORITIES[(idx + 1) % TODO_PRIORITIES.length];
+              return { ...t, priority: next.value };
+            }
+            return t;
+          })
+        }));
+      }
+
+      function updateTodoField(id, patch) {
+        store.set((s) => ({ todos: s.todos.map((t) => t.id === id ? { ...t, ...patch } : t) }));
+      }
+
+      function toggleDrawerAssignee(todoId, userId) {
+        store.set((s) => ({
+          todos: s.todos.map((t) => {
+            if (t.id !== todoId) return t;
+            const has = t.assigned_users.some((u) => u.id === userId);
+            if (has) return { ...t, assigned_users: t.assigned_users.filter((u) => u.id !== userId) };
+            const u = USERS.find((x) => x.id === userId);
+            if (!u) return t;
+            return { ...t, assigned_users: [...t.assigned_users, { id: u.id, first_name: u.first_name, last_name: u.last_name, color: u.color }] };
+          })
+        }));
+      }
+
+      function deleteFromDrawer(id) {
+        store.set((s) => ({
+          todos: s.todos.filter((t) => t.id !== id),
+          drawerTodoId: null,
+          drawerEditing: false
+        }));
+      }
+
+      function renderCreateDialog() {
+        const { createOpen } = store.get();
+        document.getElementById('create-dialog').classList.toggle('is-open', !!createOpen);
+      }
+
+      function setView(v) { store.set({ activeView: v, openSelect: null }); }
+      function setFilter(key, value) {
+        store.set((s) => ({ filters: { ...s.filters, [key]: value }, openSelect: null }));
+      }
+      function clearAllFilters() {
+        store.set({ filters: { search: '', type: '', status: '', priority: '' } });
+        const inp = document.getElementById('search-input');
+        inp.value = '';
+        updateSearchClear();
+      }
+      function toggleSelect(name) {
+        store.set((s) => ({ openSelect: s.openSelect === name ? null : name }));
+      }
+
+      let searchDebounce = null;
+      function onSearchInput(e) {
+        const v = e.target.value;
+        updateSearchClear();
+        clearTimeout(searchDebounce);
+        searchDebounce = setTimeout(() => setFilter('search', v), 300);
+      }
+      function updateSearchClear() {
+        const v = document.getElementById('search-input').value;
+        const btn = document.getElementById('search-clear');
+        btn.classList.toggle('hidden', !v);
+        btn.classList.toggle('flex', !!v);
+      }
+      function clearSearch() {
+        document.getElementById('search-input').value = '';
+        updateSearchClear();
+        setFilter('search', '');
+      }
+
+      function moveTodo(todoId, newStatusId) {
+        store.set((s) => ({
+          todos: s.todos.map((t) => t.id === todoId ? { ...t, status: { id: newStatusId } } : t)
+        }));
+      }
+      function deleteTodo(id) {
+        store.set((s) => ({ todos: s.todos.filter((t) => t.id !== id) }));
+      }
+      function openDrawer(id) { store.set({ drawerTodoId: id, drawerEditing: false }); }
+      function closeDrawer() { store.set({ drawerTodoId: null, drawerEditing: false }); }
+
+      let createInitialStatus = 1;
+      let createForm = { type: 1, status: 1, priority: 'medium', assigneeIds: [USERS[0].id] };
+      let createOpenSelect = null;
+
+      function openCreateDialog(statusId) {
+        createInitialStatus = statusId || 1;
+        createForm = { type: 1, status: createInitialStatus, priority: 'medium', assigneeIds: [USERS[0].id] };
+        createOpenSelect = null;
+        store.set({ createOpen: true });
+        renderCreateSelects();
+        renderCreateAssignees();
+        setTimeout(() => document.getElementById('create-title')?.focus(), 50);
+      }
+      function closeCreateDialog() {
+        store.set({ createOpen: false });
+        document.getElementById('create-title').value = '';
+        document.getElementById('create-descr').value = '';
+        document.getElementById('create-due').value = '';
+        document.getElementById('create-job').value = '';
+        document.getElementById('create-error').classList.add('hidden');
+        createOpenSelect = null;
+      }
+
+      function renderCreateMiniSelect(wrap, options, value, dataComment, onChange, currentRender) {
+        clear(wrap);
+        const sel = options.find((o) => String(o.value) === String(value));
+        const trigger = el('button', {
+          type: 'button',
+          'data-comment': `${dataComment}-trigger`,
+          class: 'select-trigger w-full',
+          onclick: (e) => { e.stopPropagation(); createOpenSelect = createOpenSelect === dataComment ? null : dataComment; renderCreateSelects(); }
+        });
+        const valueWrap = el('div', { class: 'flex-1 min-w-0 flex items-center gap-1.5 truncate' });
+        if (sel) currentRender(valueWrap, sel); else valueWrap.appendChild(document.createTextNode('—'));
+        trigger.appendChild(valueWrap);
+        trigger.appendChild(lucideEl('chevron-down', 'w-4 h-4 text-stone-400 shrink-0'));
+        wrap.appendChild(trigger);
+        if (createOpenSelect === dataComment) {
+          const panel = el('div', { class: 'select-panel', 'data-comment': `${dataComment}-panel`, onclick: (e) => e.stopPropagation() });
+          options.forEach((o) => {
+            const opt = el('div', {
+              'data-comment': `${dataComment}-option-${o.value}`,
+              class: `select-option${String(o.value) === String(value) ? ' is-active' : ''}`,
+              onclick: () => { onChange(o.value); createOpenSelect = null; renderCreateSelects(); }
+            });
+            currentRender(opt, o);
+            panel.appendChild(opt);
+          });
+          wrap.appendChild(panel);
+        }
+      }
+
+      function renderCreateSelects() {
+        const typeWrap = document.getElementById('create-type-select');
+        if (!typeWrap) return;
+        renderCreateMiniSelect(
+          typeWrap,
+          TODO_TYPES.map((t) => ({ value: t.id, label: t.label, icon: t.icon, color: t.color })),
+          createForm.type, 'create-type-select',
+          (v) => { createForm.type = v; },
+          (root, o) => {
+            root.appendChild(lucideEl(o.icon, 'w-3.5 h-3.5 shrink-0', { style: `color:${o.color}` }));
+            root.appendChild(document.createTextNode(o.label));
+          }
+        );
+        renderCreateMiniSelect(
+          document.getElementById('create-status-select'),
+          TODO_STATUSES.map((s) => ({ value: s.id, label: s.label, color: s.color })),
+          createForm.status, 'create-status-select',
+          (v) => { createForm.status = v; },
+          (root, o) => {
+            root.appendChild(el('span', { class: 'w-1.5 h-1.5 rounded-full shrink-0', style: `background:${o.color}` }));
+            root.appendChild(document.createTextNode(o.label));
+          }
+        );
+        renderCreateMiniSelect(
+          document.getElementById('create-priority-select'),
+          TODO_PRIORITIES.map((p) => ({ value: p.value, label: p.label, icon: p.icon, color: p.color })),
+          createForm.priority, 'create-priority-select',
+          (v) => { createForm.priority = v; },
+          (root, o) => {
+            root.appendChild(lucideEl(o.icon, 'w-3.5 h-3.5 shrink-0', { style: `color:${o.color}` }));
+            root.appendChild(document.createTextNode(o.label));
+          }
+        );
+        if (window.lucide) lucide.createIcons();
+      }
+
+      function renderCreateAssignees() {
+        const root = document.getElementById('create-assignees');
+        if (!root) return;
+        clear(root);
+        USERS.forEach((u) => {
+          const selected = createForm.assigneeIds.includes(u.id);
+          const chip = el('button', {
+            type: 'button',
+            'data-comment': `create-assignee-${u.id}`,
+            onclick: () => {
+              if (selected) createForm.assigneeIds = createForm.assigneeIds.filter((x) => x !== u.id);
+              else createForm.assigneeIds = [...createForm.assigneeIds, u.id];
+              renderCreateAssignees();
+            },
+            class: `inline-flex items-center gap-1.5 pl-1 pr-2.5 py-1 rounded-full border transition-colors text-xs ${selected ? 'bg-brand-500 border-brand-500 text-white dark:bg-white dark:text-stone-900 dark:border-white' : 'bg-stone-100 dark:bg-stone-800 border-stone-200 dark:border-stone-700 text-stone-700 dark:text-stone-300 hover:border-stone-300 dark:hover:border-stone-600'} cursor-pointer`
+          });
+          chip.appendChild(el('span', { class: 'w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold', style: `background:${u.color};color:white` }, initials(`${u.first_name} ${u.last_name}`)));
+          chip.appendChild(document.createTextNode(displayName({ first_name: u.first_name, last_name: u.last_name })));
+          root.appendChild(chip);
+        });
+      }
+
+      function submitCreate() {
+        const titleInput = document.getElementById('create-title');
+        const errEl = document.getElementById('create-error');
+        const title = titleInput.value.trim();
+        const descr = document.getElementById('create-descr').value.trim();
+        const due = document.getElementById('create-due').value || null;
+        const job = document.getElementById('create-job').value.trim();
+        if (!title) {
+          errEl.textContent = 'Title is required';
+          errEl.classList.remove('hidden');
+          titleInput.focus();
+          return;
+        }
+        if (!createForm.assigneeIds.length) {
+          errEl.textContent = 'At least one assignee is required';
+          errEl.classList.remove('hidden');
+          return;
+        }
+        errEl.classList.add('hidden');
+        const me = USERS[0];
+        const assignees = USERS.filter((u) => createForm.assigneeIds.includes(u.id))
+          .map((u) => ({ id: u.id, first_name: u.first_name, last_name: u.last_name, color: u.color }));
+        const newTodo = {
+          id: Date.now(),
+          title,
+          description: descr || null,
+          type: { id: createForm.type },
+          status: { id: createForm.status },
+          priority: createForm.priority,
+          due_date: due,
+          job_id: job ? Number(job) || null : null,
+          job_descr: null,
+          created_by: { id: me.id, first_name: me.first_name, last_name: me.last_name, color: me.color },
+          assigned_users: assignees
+        };
+        store.set((s) => ({ todos: [newTodo, ...s.todos] }));
+        closeCreateDialog();
+        createInitialStatus = 1;
+      }
+
+      function toggleSidebar() {
+        const isLg = window.matchMedia('(min-width: 1024px)').matches;
+        if (isLg) store.set((s) => ({ sidebarCollapsed: !s.sidebarCollapsed }));
+        else store.set((s) => ({ sidebarMobileOpen: !s.sidebarMobileOpen }));
+      }
+      function closeMobileSidebar() { store.set({ sidebarMobileOpen: false }); }
+      function applySidebarState() {
+        const { sidebarCollapsed, sidebarMobileOpen } = store.get();
+        const sb = document.getElementById('sidebar');
+        const wrap = document.getElementById('main-wrap');
+        const backdrop = document.getElementById('sidebar-backdrop');
+        const collapseIco = document.getElementById('ico-collapse');
+        const expandIco = document.getElementById('ico-expand');
+        sb.classList.toggle('lg:w-16', sidebarCollapsed);
+        sb.classList.toggle('sb-collapsed', sidebarCollapsed);
+        sb.classList.toggle('lg:w-64', !sidebarCollapsed);
+        sb.classList.toggle('translate-x-0', sidebarMobileOpen);
+        sb.classList.toggle('-translate-x-full', !sidebarMobileOpen);
+        wrap.classList.toggle('lg:ms-16', sidebarCollapsed);
+        wrap.classList.toggle('lg:ms-64', !sidebarCollapsed);
+        backdrop.classList.toggle('is-open', !!sidebarMobileOpen);
+        document.querySelectorAll('.sidebar-label').forEach((label) => label.classList.toggle('lg:hidden', sidebarCollapsed));
+        const isLg = window.matchMedia('(min-width: 1024px)').matches;
+        collapseIco.style.display = (isLg && !sidebarCollapsed) ? 'block' : 'none';
+        expandIco.style.display = (isLg && sidebarCollapsed) ? 'block' : 'none';
+      }
+      function toggleColorMode() {
+        const isDark = document.documentElement.classList.toggle('dark');
+        try { localStorage.setItem('color-mode', isDark ? 'dark' : 'light'); } catch (e) {}
+      }
+
+      function renderAll() {
+        renderViewTabs();
+        renderFilterSelects();
+        renderActiveFilters();
+        applyView();
+        if (store.get().activeView === 'board') renderBoard();
+        else renderList();
+        renderDrawer();
+        renderCreateDialog();
+        applySidebarState();
+        if (window.lucide) lucide.createIcons();
+      }
+
+      store.subscribe(renderAll);
+
+      document.addEventListener('click', (e) => {
+        if (store.get().openSelect && !e.target.closest('.relative')) {
+          store.set({ openSelect: null });
+        }
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          if (store.get().drawerTodoId != null) closeDrawer();
+          else if (store.get().createOpen) closeCreateDialog();
+          else if (store.get().openSelect) store.set({ openSelect: null });
+        }
+      });
+
+      window.addEventListener('resize', applySidebarState);
+      window.addEventListener('DOMContentLoaded', () => {
+        if (window.lucide) lucide.createIcons();
+        renderAll();
+      });
+    
+      // Command Palette
+      const CMD_TARGETS = [
+        { kind: 'page', title: 'Dashboard', subtitle: 'Workspace overview', icon: 'layout-dashboard', href: 'home.html' },
+        { kind: 'page', title: 'Calendar', subtitle: 'Month, week, 3-month, unscheduled', icon: 'calendar-days', href: 'calendar.html' },
+        { kind: 'page', title: 'Jobs', subtitle: 'All jobs and statuses', icon: 'hard-hat', href: 'jobs.html' },
+        { kind: 'page', title: 'Todos', subtitle: 'Kanban + list', icon: 'check-square', href: 'tasks.html' },
+        { kind: 'page', title: 'Employees', subtitle: 'Directory and roles', icon: 'users', href: 'employees.html' },
+        { kind: 'page', title: 'Changelog', subtitle: 'What is new', icon: 'megaphone', href: 'changelog.html' },
+        { kind: 'job', title: 'Job #1042 · Westbrook commercial complex', subtitle: 'In Process · Toronto, ON', icon: 'hard-hat', href: 'jobs-detail.html#job-1042' },
+        { kind: 'job', title: 'Job #1058 · Greenfield warehouse expansion', subtitle: 'Confirmed · Hamilton, ON', icon: 'hard-hat', href: 'jobs.html' },
+        { kind: 'job', title: 'Job #1063 · Riverside utilities trenching', subtitle: 'Confirmed · Burlington, ON', icon: 'hard-hat', href: 'jobs.html' },
+        { kind: 'task', title: 'Pour foundation slab — north wing', subtitle: 'Flatwork · #1042', icon: 'hammer', href: 'calendar.html#task-t3' },
+        { kind: 'task', title: 'Form wall sections A1–A4', subtitle: 'Forming · #1042', icon: 'hammer', href: 'calendar.html#task-t4' },
+        { kind: 'task', title: 'Excavate basement footprint', subtitle: 'Excavating · #1042', icon: 'hammer', href: 'calendar.html#task-t1' },
+        { kind: 'todo', title: 'Submit RFI for column spacing', subtitle: 'High priority · Change Order', icon: 'check-square', href: 'tasks.html' },
+        { kind: 'todo', title: 'Daily safety briefing — confined space entry', subtitle: 'Urgent · Safety', icon: 'check-square', href: 'tasks.html' },
+        { kind: 'user', title: 'Nazar K.', subtitle: 'Super Admin · Office', icon: 'user', href: 'employees.html' },
+        { kind: 'user', title: 'Anna Lee', subtitle: 'Admin · Office', icon: 'user', href: 'employees.html' },
+        { kind: 'user', title: 'Mark Chen', subtitle: 'Foreman · Field', icon: 'user', href: 'employees.html' }
+      ];
+      const CMD_KIND_LABELS = { job: 'Jobs', task: 'Tasks', todo: 'Todos', user: 'Users', page: 'Pages' };
+      const CMD_KIND_ORDER = ['page', 'job', 'task', 'todo', 'user'];
+      let cmdActiveIndex = 0;
+      let cmdQuery = '';
+
+      function openCmdPalette() {
+        const root = document.getElementById('cmd-palette');
+        if (!root) return;
+        root.classList.add('is-open');
+        cmdQuery = '';
+        cmdActiveIndex = 0;
+        const inp = document.getElementById('cmd-palette-input');
+        if (inp) { inp.value = ''; setTimeout(() => inp.focus(), 60); }
+        renderCmdPalette();
+      }
+      function closeCmdPalette() {
+        const root = document.getElementById('cmd-palette');
+        if (root) root.classList.remove('is-open');
+      }
+      function onCmdPaletteInput(e) {
+        cmdQuery = e.target.value;
+        cmdActiveIndex = 0;
+        renderCmdPalette();
+      }
+      function cmdFiltered() {
+        const q = cmdQuery.trim().toLowerCase();
+        if (!q) return CMD_TARGETS.filter((x) => x.kind === 'page');
+        return CMD_TARGETS.filter((x) =>
+          x.title.toLowerCase().includes(q) || x.subtitle.toLowerCase().includes(q)
+        );
+      }
+      function renderCmdPalette() {
+        const root = document.getElementById('cmd-palette-results');
+        if (!root) return;
+        while (root.firstChild) root.removeChild(root.firstChild);
+        const items = cmdFiltered();
+        if (!items.length) {
+          const empty = document.createElement('div');
+          empty.className = 'flex flex-col items-center justify-center gap-2 py-12 text-center';
+          empty.setAttribute('data-comment', 'cmd-palette-empty');
+          const ico = document.createElement('div');
+          ico.className = 'w-10 h-10 rounded-3xl bg-stone-50 dark:bg-stone-800 flex items-center justify-center';
+          const i = document.createElement('i'); i.setAttribute('data-lucide', 'search-x'); i.className = 'w-6 h-6 text-stone-400';
+          ico.appendChild(i); empty.appendChild(ico);
+          const p1 = document.createElement('p'); p1.className = 'text-sm font-semibold text-stone-900 dark:text-stone-50 m-0'; p1.textContent = 'No results';
+          const p2 = document.createElement('p'); p2.className = 'text-xs text-stone-400 dark:text-stone-500 mt-0.5 m-0'; p2.textContent = 'Try a different query';
+          empty.appendChild(p1); empty.appendChild(p2);
+          root.appendChild(empty);
+          if (window.lucide) lucide.createIcons();
+          return;
+        }
+        const groups = {};
+        items.forEach((it) => { (groups[it.kind] = groups[it.kind] || []).push(it); });
+        let flatIdx = 0;
+        CMD_KIND_ORDER.forEach((kind) => {
+          if (!groups[kind]) return;
+          const header = document.createElement('div');
+          header.className = 'cmd-section-header';
+          header.setAttribute('data-comment', 'cmd-palette-section-' + kind);
+          const hi = document.createElement('i');
+          hi.setAttribute('data-lucide', kind === 'page' ? 'layout-grid' : kind === 'job' ? 'hard-hat' : kind === 'task' ? 'hammer' : kind === 'todo' ? 'check-square' : 'users');
+          hi.className = 'w-3.5 h-3.5';
+          header.appendChild(hi);
+          header.appendChild(document.createTextNode(CMD_KIND_LABELS[kind]));
+          root.appendChild(header);
+          groups[kind].forEach((it) => {
+            const idx = flatIdx++;
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'cmd-result' + (idx === cmdActiveIndex ? ' is-active' : '');
+            btn.setAttribute('data-comment', 'cmd-palette-result-' + idx);
+            btn.onclick = () => { closeCmdPalette(); window.location.href = it.href; };
+            btn.onmouseenter = () => { cmdActiveIndex = idx; document.querySelectorAll('.cmd-result').forEach((b, i) => b.classList.toggle('is-active', i === idx)); };
+            const ic = document.createElement('i'); ic.setAttribute('data-lucide', it.icon); ic.className = 'w-4 h-4 shrink-0 text-stone-400';
+            btn.appendChild(ic);
+            const inner = document.createElement('div'); inner.className = 'flex-1 min-w-0';
+            const t = document.createElement('p'); t.className = 'text-sm font-medium text-stone-900 dark:text-stone-50 truncate m-0'; t.textContent = it.title;
+            const s = document.createElement('p'); s.className = 'text-xs text-stone-400 dark:text-stone-500 truncate mt-0.5 m-0'; s.textContent = it.subtitle;
+            inner.appendChild(t); inner.appendChild(s);
+            btn.appendChild(inner);
+            const tag = document.createElement('span');
+            tag.className = 'text-[10px] uppercase tracking-wider font-semibold text-stone-400 dark:text-stone-500 shrink-0';
+            tag.textContent = it.kind;
+            btn.appendChild(tag);
+            root.appendChild(btn);
+          });
+        });
+        if (window.lucide) lucide.createIcons();
+      }
+      function onCmdPaletteKey(e) {
+        const items = cmdFiltered();
+        if (e.key === 'ArrowDown') { e.preventDefault(); cmdActiveIndex = Math.min(items.length - 1, cmdActiveIndex + 1); renderCmdPalette(); }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); cmdActiveIndex = Math.max(0, cmdActiveIndex - 1); renderCmdPalette(); }
+        else if (e.key === 'Enter') { e.preventDefault(); const it = items[cmdActiveIndex]; if (it) { closeCmdPalette(); window.location.href = it.href; } }
+      }
+      document.addEventListener('keydown', (e) => {
+        const root = document.getElementById('cmd-palette');
+        if (!root) return;
+        if ((e.metaKey || e.ctrlKey) && e.key && e.key.toLowerCase() === 'k') {
+          e.preventDefault();
+          if (root.classList.contains('is-open')) closeCmdPalette();
+          else openCmdPalette();
+        } else if (e.key === 'Escape' && root.classList.contains('is-open')) {
+          closeCmdPalette();
+        }
+      });
+      window.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('[data-comment="header-search"]').forEach((btn) => btn.addEventListener('click', openCmdPalette));
+      });
+
+    
+      // Quick Actions handlers — open dialog if on the right page, else navigate with #new hash
+      function quickCreateTask() {
+        if (typeof openCreateDialog === 'function' && document.getElementById('create-dialog')) {
+          openCreateDialog();
+        } else {
+          window.location.href = 'tasks.html#new';
+        }
+      }
+      function quickAddUser() {
+        if (typeof openCreate === 'function' && document.getElementById('edit-dialog')) {
+          openCreate();
+        } else {
+          window.location.href = 'employees.html#new';
+        }
+      }
+      // Auto-open dialog when arriving with #new hash
+      window.addEventListener('DOMContentLoaded', () => {
+        if (window.location.hash !== '#new') return;
+        setTimeout(() => {
+          if (typeof openCreateDialog === 'function' && document.getElementById('create-dialog')) openCreateDialog();
+          else if (typeof openCreate === 'function' && document.getElementById('edit-dialog')) openCreate();
+          history.replaceState(null, '', window.location.pathname);
+        }, 100);
+      });
+
+    
+      // Sidebar user popover
+      function toggleUserPopover(e) {
+        if (e) e.stopPropagation();
+        const pop = document.getElementById('user-popover');
+        if (pop) pop.classList.toggle('is-open');
+      }
+      function closeUserPopover() {
+        const pop = document.getElementById('user-popover');
+        if (pop) pop.classList.remove('is-open');
+      }
+      function signOut() {
+        window.location.href = 'login.html';
+      }
+      document.addEventListener('mousedown', (e) => {
+        const pop = document.getElementById('user-popover');
+        if (!pop) return;
+        if (pop.classList.contains('is-open') &&
+            !e.target.closest('#user-popover') &&
+            !e.target.closest('[data-comment="sidebar-user-button"]')) {
+          closeUserPopover();
+        }
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeUserPopover();
+      });
+
+    </script>
+  
+      <div id="cmd-palette" data-comment="cmd-palette" data-component="dialog" class="cmd-palette-root">
+        <div class="cmd-palette-backdrop" onclick="closeCmdPalette()">
+          <div class="cmd-palette-panel" data-comment="cmd-palette-panel" onclick="event.stopPropagation()">
+            <div data-comment="cmd-palette-search-wrap" class="p-3 border-b border-stone-200 dark:border-stone-800 shrink-0">
+              <div class="flex items-center gap-2.5 px-4 h-9 rounded-full bg-stone-100 dark:bg-stone-800 border border-transparent">
+                <i data-lucide="search" class="w-4 h-4 text-stone-400 shrink-0"></i>
+                <input id="cmd-palette-input" data-comment="cmd-palette-input" data-component="input" type="text" placeholder="Search jobs, tasks, todos..." class="flex-1 bg-transparent text-sm text-stone-900 dark:text-stone-50 placeholder:text-stone-400 outline-none border-0" oninput="onCmdPaletteInput(event)" onkeydown="onCmdPaletteKey(event)" />
+                <kbd class="inline-flex items-center text-[10px] font-medium text-stone-400 border border-stone-300 dark:border-stone-600 rounded px-1.5 py-0.5 bg-white dark:bg-stone-700 leading-none">ESC</kbd>
+              </div>
+            </div>
+            <div data-comment="cmd-palette-results" id="cmd-palette-results" class="flex-1 overflow-y-auto"></div>
+          </div>
+        </div>
+      </div>
+
+  </body>
+</html>

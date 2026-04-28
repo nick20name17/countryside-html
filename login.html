@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign In — Countryside Concrete PM</title>
+
+    <link rel="icon" type="image/webp" href="favicon.webp" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
+      rel="stylesheet" />
+
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem('color-mode');
+          if (t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+          }
+        } catch (e) {}
+      })();
+    </script>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif']
+            },
+            colors: {
+              brand: {
+                50: 'oklch(98.5% 0 0)',
+                100: 'oklch(96% 0 0)',
+                200: 'oklch(91% 0 0)',
+                300: 'oklch(83% 0 0)',
+                400: 'oklch(70% 0 0)',
+                500: 'oklch(21% 0 0)',
+                600: 'oklch(16% 0 0)',
+                700: 'oklch(13% 0 0)',
+                800: 'oklch(10% 0 0)',
+                900: 'oklch(8% 0 0)',
+                950: 'oklch(6% 0 0)'
+              }
+            }
+          }
+        }
+      };
+    </script>
+
+    <style type="text/tailwindcss">
+      :root {
+        --color-bg-light: #f5f5f4;
+        --color-bg-dark: #1c1917;
+      }
+      html,
+      body {
+        font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      .reveal {
+        opacity: 0;
+        transform: translateY(12px);
+        transition: opacity 300ms ease, transform 300ms ease;
+      }
+      .reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    </style>
+  </head>
+
+  <body class="font-sans antialiased">
+    <div
+      data-comment="login-page"
+      class="min-h-screen flex flex-col bg-stone-100 dark:bg-stone-900">
+
+      <header
+        data-comment="login-header"
+        class="flex items-center justify-between px-8 py-5 shrink-0">
+
+        <div data-comment="login-brand" class="flex items-center gap-3">
+          <div
+            data-comment="login-brand-logo"
+            class="w-8 h-8 rounded-lg bg-stone-900 dark:bg-white/10 flex items-center justify-center">
+            <i data-lucide="hard-hat" class="w-4 h-4 text-white"></i>
+          </div>
+          <span
+            data-comment="login-brand-name"
+            class="font-semibold text-stone-900 dark:text-stone-50 tracking-tight">
+            Countryside Concrete
+          </span>
+        </div>
+
+        <button
+          type="button"
+          data-comment="login-darkmode-toggle"
+          data-component="button"
+          aria-label="Toggle dark mode"
+          onclick="toggleColorMode()"
+          class="w-8 h-8 flex items-center justify-center rounded-lg text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors cursor-pointer">
+          <i data-lucide="moon" class="w-4 h-4 dark:hidden"></i>
+          <i data-lucide="sun" class="w-4 h-4 hidden dark:block"></i>
+        </button>
+      </header>
+
+      <div
+        data-comment="login-form-wrapper"
+        class="flex-1 flex items-center justify-center p-8">
+
+        <div
+          data-comment="login-card"
+          data-component="card"
+          class="reveal w-full max-w-sm bg-white dark:bg-stone-950 rounded-3xl border border-stone-200 dark:border-stone-800 shadow-xl shadow-stone-200/70 dark:shadow-black/50 p-6 flex flex-col gap-6">
+
+          <div data-comment="login-card-content" class="flex-1 flex flex-col">
+
+            <div data-comment="login-heading-block" class="mb-8">
+              <h2
+                data-comment="login-heading"
+                class="text-2xl font-bold text-stone-900 dark:text-stone-50 tracking-tight">
+                Sign in
+              </h2>
+              <p
+                data-comment="login-subheading"
+                class="text-sm text-stone-500 dark:text-stone-400 mt-1.5">
+                Access project, field and scheduling information
+              </p>
+            </div>
+
+            <form
+              data-comment="login-form"
+              data-component="form"
+              class="flex flex-col gap-5"
+              onsubmit="handleLogin(event)"
+              novalidate>
+
+              <div data-comment="login-field-email" class="flex flex-col gap-1.5">
+                <label
+                  data-comment="login-label-email"
+                  for="login-email"
+                  class="text-sm font-medium text-stone-700 dark:text-stone-300">
+                  Email
+                </label>
+                <input
+                  id="login-email"
+                  data-comment="login-input-email"
+                  data-component="input"
+                  type="email"
+                  name="email"
+                  autocomplete="email"
+                  placeholder="you@countrysideconcrete.ca"
+                  class="appearance-none rounded-full outline-none border border-transparent h-9 px-4 w-full bg-stone-100 dark:bg-stone-800 text-sm font-normal text-stone-900 dark:text-stone-50 text-ellipsis placeholder:text-stone-400 dark:placeholder:text-stone-500 hover:border-stone-300 dark:hover:border-stone-600 focus:border-stone-400 dark:focus:border-stone-500 focus:ring-2 focus:ring-stone-900/20 dark:focus:ring-stone-100/20 transition-[border-color,box-shadow] duration-150" />
+                <span
+                  data-comment="login-error-email"
+                  data-component="alert"
+                  class="hidden text-xs text-red-500 flex items-center gap-1">
+                  <i data-lucide="circle-alert" class="w-3 h-3"></i>
+                  <span data-comment="login-error-email-text"></span>
+                </span>
+              </div>
+
+              <div data-comment="login-field-password" class="flex flex-col gap-1.5">
+                <div
+                  data-comment="login-password-label-row"
+                  class="flex items-center justify-between">
+                  <label
+                    data-comment="login-label-password"
+                    for="login-password"
+                    class="text-sm font-medium text-stone-700 dark:text-stone-300">
+                    Password
+                  </label>
+                  <a
+                    data-comment="login-link-forgot"
+                    href="#"
+                    class="text-xs text-stone-500 hover:text-stone-900 dark:hover:text-stone-200 transition-colors">
+                    Forgot password?
+                  </a>
+                </div>
+                <div data-comment="login-password-wrap" class="relative">
+                  <input
+                    id="login-password"
+                    data-comment="login-input-password"
+                    data-component="input"
+                    type="password"
+                    name="password"
+                    autocomplete="current-password"
+                    placeholder="••••••••"
+                    class="appearance-none rounded-full outline-none border border-transparent h-9 px-4 pr-10 w-full bg-stone-100 dark:bg-stone-800 text-sm font-normal text-stone-900 dark:text-stone-50 text-ellipsis placeholder:text-stone-400 dark:placeholder:text-stone-500 hover:border-stone-300 dark:hover:border-stone-600 focus:border-stone-400 dark:focus:border-stone-500 focus:ring-2 focus:ring-stone-900/20 dark:focus:ring-stone-100/20 transition-[border-color,box-shadow] duration-150" />
+                  <button
+                    type="button"
+                    data-comment="login-toggle-password"
+                    onclick="togglePassword()"
+                    class="absolute inset-y-0 right-0 flex items-center pr-3 text-stone-400 hover:text-stone-600 dark:hover:text-stone-300 transition-colors cursor-pointer">
+                    <i data-lucide="eye" class="w-4 h-4" data-comment-icon="show"></i>
+                    <i data-lucide="eye-off" class="w-4 h-4 hidden" data-comment-icon="hide"></i>
+                  </button>
+                </div>
+                <span
+                  data-comment="login-error-password"
+                  data-component="alert"
+                  class="hidden text-xs text-red-500 flex items-center gap-1">
+                  <i data-lucide="circle-alert" class="w-3 h-3"></i>
+                  <span data-comment="login-error-password-text"></span>
+                </span>
+              </div>
+
+              <label
+                data-comment="login-remember"
+                data-component="checkbox"
+                class="flex items-center gap-2.5 cursor-pointer select-none">
+                <span
+                  data-comment="login-remember-box"
+                  class="relative inline-flex items-center justify-center w-4 h-4 rounded border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-900 transition-colors duration-200 focus-within:ring-2 focus-within:ring-brand-500/20 dark:focus-within:ring-brand-400/20">
+                  <input
+                    id="login-remember-input"
+                    data-comment="login-remember-input"
+                    type="checkbox"
+                    name="remember"
+                    class="peer sr-only"
+                    onchange="syncRemember(event)" />
+                  <i
+                    data-lucide="check"
+                    class="w-2.5 h-2.5 text-white dark:text-stone-900 opacity-0 peer-checked:opacity-100"></i>
+                </span>
+                <span
+                  data-comment="login-remember-text"
+                  class="text-sm text-stone-600 dark:text-stone-400">
+                  Remember me
+                </span>
+              </label>
+
+              <div
+                data-comment="login-error-general"
+                data-component="alert"
+                class="hidden items-center gap-2 rounded-lg bg-red-50 dark:bg-red-950/40 px-3 py-2.5 text-sm text-red-600 dark:text-red-400">
+                <i data-lucide="circle-alert" class="w-4 h-4 shrink-0"></i>
+                <span data-comment="login-error-general-text">Invalid email or password</span>
+              </div>
+
+              <button
+                type="submit"
+                data-comment="login-submit"
+                data-component="button"
+                class="mt-1 inline-flex w-full cursor-pointer select-none items-center justify-center overflow-hidden relative h-9 px-4 gap-1.5 rounded-full text-sm disabled:pointer-events-none disabled:opacity-50 bg-brand-500 hover:bg-brand-600 active:bg-brand-700 text-white border border-brand-500 hover:border-brand-600 active:border-brand-700 dark:bg-white dark:text-stone-900 dark:border-white dark:hover:bg-stone-100 dark:hover:border-stone-100 dark:active:bg-stone-200 dark:active:border-stone-200 focus:outline-none focus:ring-2 focus:ring-brand-500/40 dark:focus:ring-brand-400/40 transition-[border-color,box-shadow] duration-150">
+                <span data-comment="login-submit-content" class="flex items-center gap-2 justify-center">
+                  <i data-lucide="log-in" class="w-4 h-4" data-comment-icon="submit-default"></i>
+                  <span data-comment="login-submit-label">Sign in</span>
+                </span>
+                <span data-comment="login-submit-loading" class="hidden items-center gap-2 justify-center">
+                  <i data-lucide="loader-circle" class="w-4 h-4 animate-spin"></i>
+                </span>
+              </button>
+            </form>
+
+            <p
+              data-comment="login-copyright"
+              class="text-center text-xs text-stone-400 mt-8">
+              © <span data-comment="login-copyright-year"></span> Countryside Concrete, Harriston ON
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script>
+      function createStore(initialState) {
+        let state = structuredClone(initialState);
+        const listeners = new Set();
+        return {
+          get: () => state,
+          set(updater) {
+            const patch = typeof updater === 'function' ? updater(state) : updater;
+            state = { ...state, ...patch };
+            listeners.forEach((fn) => fn(state));
+          },
+          subscribe(fn) {
+            listeners.add(fn);
+            return () => listeners.delete(fn);
+          }
+        };
+      }
+
+      const store = createStore({
+        form: { email: '', password: '', remember: false },
+        errors: { email: '', password: '', general: '' },
+        loading: false,
+        showPassword: false
+      });
+
+      function setFieldError(field, msg) {
+        const wrap = document.querySelector(`[data-comment="login-error-${field}"]`);
+        const text = document.querySelector(`[data-comment="login-error-${field}-text"]`);
+        if (!wrap || !text) return;
+        if (msg) {
+          text.textContent = msg;
+          wrap.classList.remove('hidden');
+          wrap.classList.add('flex');
+        } else {
+          wrap.classList.add('hidden');
+          wrap.classList.remove('flex');
+        }
+      }
+
+      function setGeneralError(msg) {
+        const wrap = document.querySelector('[data-comment="login-error-general"]');
+        const text = document.querySelector('[data-comment="login-error-general-text"]');
+        if (!wrap || !text) return;
+        if (msg) {
+          text.textContent = msg;
+          wrap.classList.remove('hidden');
+          wrap.classList.add('flex');
+        } else {
+          wrap.classList.add('hidden');
+          wrap.classList.remove('flex');
+        }
+      }
+
+      function setInputInvalid(name, invalid) {
+        const el = document.querySelector(`[data-comment="login-input-${name}"]`);
+        if (!el) return;
+        el.classList.toggle('border-red-400', invalid);
+        el.classList.toggle('dark:border-red-500', invalid);
+        el.classList.toggle('placeholder:text-red-400', invalid);
+      }
+
+      function setLoading(isLoading) {
+        const btn = document.querySelector('[data-comment="login-submit"]');
+        const def = document.querySelector('[data-comment="login-submit-content"]');
+        const ld = document.querySelector('[data-comment="login-submit-loading"]');
+        btn.disabled = isLoading;
+        def.classList.toggle('hidden', isLoading);
+        def.classList.toggle('flex', !isLoading);
+        ld.classList.toggle('hidden', !isLoading);
+        ld.classList.toggle('flex', isLoading);
+      }
+
+      function validate(form) {
+        const errors = { email: '', password: '' };
+        if (!form.email) errors.email = 'Email is required';
+        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) errors.email = 'Invalid email address';
+        if (!form.password) errors.password = 'Password is required';
+        else if (form.password.length < 6) errors.password = 'Minimum 6 characters';
+        return { valid: !errors.email && !errors.password, errors };
+      }
+
+      function togglePassword() {
+        const inp = document.querySelector('[data-comment="login-input-password"]');
+        const showIcon = document.querySelector('[data-comment-icon="show"]');
+        const hideIcon = document.querySelector('[data-comment-icon="hide"]');
+        const next = inp.type === 'password' ? 'text' : 'password';
+        inp.type = next;
+        showIcon.classList.toggle('hidden', next === 'text');
+        hideIcon.classList.toggle('hidden', next !== 'text');
+      }
+
+      function syncRemember(e) {
+        store.set((s) => ({ form: { ...s.form, remember: e.target.checked } }));
+      }
+
+      function toggleColorMode() {
+        const isDark = document.documentElement.classList.toggle('dark');
+        try {
+          localStorage.setItem('color-mode', isDark ? 'dark' : 'light');
+        } catch (e) {}
+      }
+
+      async function handleLogin(e) {
+        e.preventDefault();
+        const f = e.target;
+        const form = {
+          email: f.email.value.trim(),
+          password: f.password.value,
+          remember: f.remember.checked
+        };
+        store.set({ form });
+        setGeneralError('');
+
+        const { valid, errors } = validate(form);
+        setFieldError('email', errors.email);
+        setFieldError('password', errors.password);
+        setInputInvalid('email', !!errors.email);
+        setInputInvalid('password', !!errors.password);
+        if (!valid) return;
+
+        setLoading(true);
+        try {
+          await new Promise((r) => setTimeout(r, 600));
+          window.location.href = 'home.html';
+        } catch {
+          setGeneralError('Invalid email or password');
+        } finally {
+          setLoading(false);
+        }
+      }
+
+      document.querySelector('[data-comment="login-copyright-year"]').textContent =
+        new Date().getFullYear();
+
+      window.addEventListener('DOMContentLoaded', () => {
+        if (window.lucide) lucide.createIcons();
+        requestAnimationFrame(() => {
+          document.querySelectorAll('.reveal').forEach((el) => el.classList.add('is-visible'));
+        });
+        const email = document.querySelector('[data-comment="login-input-email"]');
+        if (email) email.focus();
+      });
+    </script>
+  </body>
+</html>
