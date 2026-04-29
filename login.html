@@ -3,14 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sign In — Countryside Concrete PM</title>
+    <title>Sign In - Countryside Concrete PM</title>
 
     <link rel="icon" type="image/webp" href="favicon.webp" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=JetBrains+Mono:wght@100..800&family=Plus+Jakarta+Sans:wght@200..800&display=swap"
       rel="stylesheet" />
 
     <script>
@@ -20,6 +20,14 @@
           if (t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
           }
+
+          var appTheme = localStorage.getItem('app-theme') || 'default';
+          var appFont = localStorage.getItem('app-font') || 'inter';
+          if (appTheme !== 'default') {
+            document.documentElement.classList.add('theme-' + appTheme);
+            document.documentElement.setAttribute('data-accent', '');
+          }
+          document.documentElement.classList.add('font-' + appFont);
         } catch (e) {}
       })();
     </script>
@@ -67,6 +75,8 @@
       *::after {
         box-sizing: border-box;
       }
+      .card { border-radius: 1.5rem; border: 1px solid rgb(231 229 228); background: white; box-shadow: 0 10px 12px -5px rgb(231 229 228 / 0.7); }
+      .dark .card { border-color: rgb(41 37 36); background: rgb(28 25 23); box-shadow: 0 10px 12px -5px rgb(0 0 0 / 0.5); }
       .reveal {
         opacity: 0;
         transform: translateY(12px);
@@ -76,6 +86,68 @@
         opacity: 1;
         transform: translateY(0);
       }
+
+      /* App theme picker */
+      html {
+        --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+        --app-brand-50: oklch(98.5% 0 0);
+        --app-brand-400: oklch(70% 0 0);
+        --app-brand-500: oklch(21% 0 0);
+        --app-brand-600: oklch(16% 0 0);
+        --app-brand-700: oklch(13% 0 0);
+        --app-brand-950: oklch(6% 0 0);
+      }
+      html.font-plus-jakarta { --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif; }
+      html.font-inter { --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif; }
+      html.font-jetbrains { --font-sans: 'JetBrains Mono', ui-monospace, monospace; }
+      html, body, .font-sans { font-family: var(--font-sans) !important; }
+      html.theme-red { --app-brand-500: oklch(63.7% 0.237 25); }
+      html.theme-orange { --app-brand-500: oklch(73.5% 0.197 55); }
+      html.theme-amber { --app-brand-500: oklch(68% 0.19 75); }
+      html.theme-yellow { --app-brand-500: oklch(84.8% 0.197 95); }
+      html.theme-lime { --app-brand-500: oklch(76.8% 0.233 130); }
+      html.theme-green { --app-brand-500: oklch(62.3% 0.17 145); }
+      html.theme-emerald { --app-brand-500: oklch(69.6% 0.167 165); }
+      html.theme-teal { --app-brand-500: oklch(58% 0.16 185); }
+      html.theme-cyan { --app-brand-500: oklch(71.5% 0.143 205); }
+      html.theme-sky { --app-brand-500: oklch(68.6% 0.148 230); }
+      html.theme-blue { --app-brand-500: oklch(62.3% 0.214 255); }
+      html.theme-indigo { --app-brand-500: oklch(58.5% 0.233 270); }
+      html.theme-violet { --app-brand-500: oklch(61.9% 0.246 290); }
+      html.theme-purple { --app-brand-500: oklch(62.7% 0.25 305); }
+      html.theme-fuchsia { --app-brand-500: oklch(66.7% 0.254 320); }
+      html.theme-pink { --app-brand-500: oklch(71.4% 0.203 350); }
+      html.theme-rose { --app-brand-500: oklch(59% 0.21 10); }
+      html.theme-slate { --app-brand-500: oklch(54% 0.17 245); }
+      html[data-accent] {
+        --app-brand-50: color-mix(in oklch, var(--app-brand-500) 8%, white);
+        --app-brand-400: color-mix(in oklch, var(--app-brand-500) 78%, white);
+        --app-brand-600: color-mix(in oklch, var(--app-brand-500) 88%, black);
+        --app-brand-700: color-mix(in oklch, var(--app-brand-500) 76%, black);
+        --app-brand-950: color-mix(in oklch, var(--app-brand-500) 22%, black);
+      }
+      .bg-brand-50 { background-color: var(--app-brand-50) !important; }
+      .bg-brand-500, .nav-link.active { background-color: var(--app-brand-500) !important; }
+      .hover\:bg-brand-600:hover { background-color: var(--app-brand-600) !important; }
+      .active\:bg-brand-700:active { background-color: var(--app-brand-700) !important; }
+      .border-brand-500 { border-color: var(--app-brand-500) !important; }
+      .hover\:border-brand-600:hover { border-color: var(--app-brand-600) !important; }
+      .active\:border-brand-700:active { border-color: var(--app-brand-700) !important; }
+      .text-brand-500 { color: var(--app-brand-500) !important; }
+      .dark .dark\:text-brand-400 { color: var(--app-brand-400) !important; }
+      .dark .dark\:bg-brand-950 { background-color: var(--app-brand-950) !important; }
+      .dark .nav-link.active { background-color: white !important; color: oklch(21% 0 0) !important; }
+      html[data-accent].dark .nav-link.active { background-color: var(--app-brand-500) !important; color: white !important; }
+      html[data-accent].dark .dark\:bg-white { background-color: var(--app-brand-500) !important; }
+      html[data-accent].dark .dark\:border-white { border-color: var(--app-brand-500) !important; }
+      html[data-accent].dark .dark\:text-stone-900 { color: white !important; }
+      .day-cell.today .day-num { background-color: var(--app-brand-500) !important; color: white !important; }
+      .theme-picker-wrap { position: relative; }
+      .theme-picker-popover { position: absolute; right: 0; top: calc(100% + 8px); z-index: 65; width: 20rem; max-width: min(20rem, calc(100vw - 2rem)); background: white; border: 1px solid rgb(231 229 228); border-radius: 0.75rem; box-shadow: 0 10px 30px rgb(0 0 0 / 0.12); }
+      .dark .theme-picker-popover { background: rgb(12 10 9); border-color: rgb(41 37 36); }
+      .theme-font-button { width: 5.5rem; min-height: 3.5rem; }
+      .theme-swatch-button[aria-pressed='true'] { transform: scale(1.1); box-shadow: 0 0 0 2px currentColor, 0 0 0 4px white; }
+      .dark .theme-swatch-button[aria-pressed='true'] { box-shadow: 0 0 0 2px currentColor, 0 0 0 4px rgb(28 25 23); }
     </style>
   </head>
 
@@ -120,7 +192,7 @@
         <div
           data-comment="login-card"
           data-component="card"
-          class="reveal w-full max-w-sm bg-white dark:bg-stone-950 rounded-3xl border border-stone-200 dark:border-stone-800 shadow-xl shadow-stone-200/70 dark:shadow-black/50 p-6 flex flex-col gap-6">
+          class="reveal w-full max-w-sm card p-6 flex flex-col gap-6">
 
           <div data-comment="login-card-content" class="flex-1 flex flex-col">
 

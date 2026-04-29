@@ -3,13 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Jobs — Countryside Concrete PM</title>
+    <title>Jobs - Countryside Concrete PM</title>
 
     <link rel="icon" type="image/webp" href="favicon.webp" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=JetBrains+Mono:wght@100..800&family=Plus+Jakarta+Sans:wght@200..800&display=swap" rel="stylesheet" />
 
     <script>
       (function () {
@@ -18,6 +18,14 @@
           if (t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
           }
+
+          var appTheme = localStorage.getItem('app-theme') || 'default';
+          var appFont = localStorage.getItem('app-font') || 'inter';
+          if (appTheme !== 'default') {
+            document.documentElement.classList.add('theme-' + appTheme);
+            document.documentElement.setAttribute('data-accent', '');
+          }
+          document.documentElement.classList.add('font-' + appFont);
         } catch (e) {}
       })();
     </script>
@@ -43,9 +51,17 @@
     </script>
 
     <style type="text/tailwindcss">
+      :root {
+        --color-brand: oklch(21% 0 0);
+        --color-border: rgb(231 229 228);
+        --color-bg: rgb(245 245 244);
+        --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+      }
       html, body { font-family: 'Inter', ui-sans-serif, system-ui, sans-serif; }
       *, *::before, *::after { box-sizing: border-box; }
       body { margin: 0; }
+      .card { border-radius: 1.5rem; border: 1px solid rgb(231 229 228); background: white; box-shadow: 0 10px 12px -5px rgb(231 229 228 / 0.7); }
+      .dark .card { border-color: rgb(41 37 36); background: rgb(28 25 23); box-shadow: 0 10px 12px -5px rgb(0 0 0 / 0.5); }
       i[data-lucide] { display: inline-block; width: 1em; height: 1em; }
       i[data-lucide]:empty { visibility: hidden; }
       .sb-backdrop { opacity: 0; pointer-events: none; transition: opacity 250ms ease; } .sb-backdrop.is-open { opacity: 1; pointer-events: auto; } .nav-link.active { background-color: oklch(21% 0 0); color: white; font-weight: 500; }
@@ -121,7 +137,96 @@
       .user-popover { position: absolute; bottom: calc(100% + 8px); left: 0.5rem; right: 0.5rem; z-index: 60; background: white; border: 1px solid rgb(231 229 228); border-radius: 0.75rem; box-shadow: 0 10px 30px rgb(0 0 0 / 0.12); padding: 0.25rem; opacity: 0; pointer-events: none; transform: translateY(4px); transition: opacity 150ms ease, transform 150ms ease; }
       .dark .user-popover { background: rgb(12 10 9); border-color: rgb(41 37 36); }
       .user-popover.is-open { opacity: 1; pointer-events: auto; transform: translateY(0); }
-    </style>
+
+      /* App theme picker */
+      html {
+        --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+        --app-brand-50: oklch(98.5% 0 0);
+        --app-brand-400: oklch(70% 0 0);
+        --app-brand-500: oklch(21% 0 0);
+        --app-brand-600: oklch(16% 0 0);
+        --app-brand-700: oklch(13% 0 0);
+        --app-brand-950: oklch(6% 0 0);
+      }
+      html.font-plus-jakarta { --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif; }
+      html.font-inter { --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif; }
+      html.font-jetbrains { --font-sans: 'JetBrains Mono', ui-monospace, monospace; }
+      html, body, .font-sans { font-family: var(--font-sans) !important; }
+      html.theme-red { --app-brand-500: oklch(63.7% 0.237 25); }
+      html.theme-orange { --app-brand-500: oklch(73.5% 0.197 55); }
+      html.theme-amber { --app-brand-500: oklch(68% 0.19 75); }
+      html.theme-yellow { --app-brand-500: oklch(84.8% 0.197 95); }
+      html.theme-lime { --app-brand-500: oklch(76.8% 0.233 130); }
+      html.theme-green { --app-brand-500: oklch(62.3% 0.17 145); }
+      html.theme-emerald { --app-brand-500: oklch(69.6% 0.167 165); }
+      html.theme-teal { --app-brand-500: oklch(58% 0.16 185); }
+      html.theme-cyan { --app-brand-500: oklch(71.5% 0.143 205); }
+      html.theme-sky { --app-brand-500: oklch(68.6% 0.148 230); }
+      html.theme-blue { --app-brand-500: oklch(62.3% 0.214 255); }
+      html.theme-indigo { --app-brand-500: oklch(58.5% 0.233 270); }
+      html.theme-violet { --app-brand-500: oklch(61.9% 0.246 290); }
+      html.theme-purple { --app-brand-500: oklch(62.7% 0.25 305); }
+      html.theme-fuchsia { --app-brand-500: oklch(66.7% 0.254 320); }
+      html.theme-pink { --app-brand-500: oklch(71.4% 0.203 350); }
+      html.theme-rose { --app-brand-500: oklch(59% 0.21 10); }
+      html.theme-slate { --app-brand-500: oklch(54% 0.17 245); }
+      html[data-accent] {
+        --app-brand-50: color-mix(in oklch, var(--app-brand-500) 8%, white);
+        --app-brand-400: color-mix(in oklch, var(--app-brand-500) 78%, white);
+        --app-brand-600: color-mix(in oklch, var(--app-brand-500) 88%, black);
+        --app-brand-700: color-mix(in oklch, var(--app-brand-500) 76%, black);
+        --app-brand-950: color-mix(in oklch, var(--app-brand-500) 22%, black);
+      }
+      .bg-brand-50 { background-color: var(--app-brand-50) !important; }
+      .bg-brand-500, .nav-link.active { background-color: var(--app-brand-500) !important; }
+      .hover\:bg-brand-600:hover { background-color: var(--app-brand-600) !important; }
+      .active\:bg-brand-700:active { background-color: var(--app-brand-700) !important; }
+      .border-brand-500 { border-color: var(--app-brand-500) !important; }
+      .hover\:border-brand-600:hover { border-color: var(--app-brand-600) !important; }
+      .active\:border-brand-700:active { border-color: var(--app-brand-700) !important; }
+      .text-brand-500 { color: var(--app-brand-500) !important; }
+      .dark .dark\:text-brand-400 { color: var(--app-brand-400) !important; }
+      .dark .dark\:bg-brand-950 { background-color: var(--app-brand-950) !important; }
+      .dark .nav-link.active { background-color: white !important; color: oklch(21% 0 0) !important; }
+      html[data-accent].dark .nav-link.active { background-color: var(--app-brand-500) !important; color: white !important; }
+      html[data-accent].dark .dark\:bg-white { background-color: var(--app-brand-500) !important; }
+      html[data-accent].dark .dark\:border-white { border-color: var(--app-brand-500) !important; }
+      html[data-accent].dark .dark\:text-stone-900 { color: white !important; }
+      .day-cell.today .day-num { background-color: var(--app-brand-500) !important; color: white !important; }
+      .theme-picker-wrap { position: relative; }
+      .theme-picker-popover { position: absolute; right: 0; top: calc(100% + 8px); z-index: 65; width: 20rem; max-width: min(20rem, calc(100vw - 2rem)); background: white; border: 1px solid rgb(231 229 228); border-radius: 0.75rem; box-shadow: 0 10px 30px rgb(0 0 0 / 0.12); }
+      .dark .theme-picker-popover { background: rgb(12 10 9); border-color: rgb(41 37 36); }
+      .theme-font-button { width: 5.5rem; min-height: 3.5rem; }
+      .theme-swatch-button[aria-pressed='true'] { transform: scale(1.1); box-shadow: 0 0 0 2px currentColor, 0 0 0 4px white; }
+      .dark .theme-swatch-button[aria-pressed='true'] { box-shadow: 0 0 0 2px currentColor, 0 0 0 4px rgb(28 25 23); }
+
+      /* Command Palette parity */
+      .cmd-palette-backdrop { align-items: center !important; justify-content: center !important; padding: 0 1rem !important; }
+      .cmd-palette-panel { width: 600px !important; max-width: 95vw !important; height: min(520px, calc(100vh - 4rem)) !important; max-height: calc(100vh - 4rem) !important; border-radius: 0.75rem !important; box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25) !important; }
+      .cmd-palette-search-field { display: flex; align-items: center; gap: 0.625rem; padding: 0 1rem; height: 2.25rem; border-radius: 9999px; background: rgb(245 245 244); border: 1px solid transparent; transition: border-color 150ms ease; }
+      .cmd-palette-search-field:hover, .cmd-palette-search-field:focus-within { border-color: rgb(214 211 209); }
+      .dark .cmd-palette-search-field { background: rgb(41 37 36); }
+      .dark .cmd-palette-search-field:hover, .dark .cmd-palette-search-field:focus-within { border-color: rgb(87 83 78); }
+      .cmd-palette-result-scroll { flex: 1; min-height: 0; overflow-y: auto; }
+      .cmd-section-header { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: rgb(250 250 249); border-bottom: 1px solid rgb(245 245 244); border-top: 1px solid rgb(245 245 244); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: rgb(168 162 158); }
+      .dark .cmd-section-header { background: rgb(28 25 23); border-color: rgb(41 37 36); color: rgb(120 113 108); }
+      .cmd-section-header:first-child { border-top: none; }
+      .cmd-result { width: 100%; min-height: 3.875rem; display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; cursor: pointer; border-bottom: 1px solid rgb(245 245 244); transition: background-color 100ms; text-align: left; background: transparent; border-left: none; border-right: none; border-top: none; }
+      .dark .cmd-result { border-bottom-color: rgb(28 25 23); }
+      .cmd-result:hover, .cmd-result.is-active { background-color: rgb(245 245 244); }
+      .dark .cmd-result:hover, .dark .cmd-result.is-active { background-color: rgb(28 25 23); }
+      .cmd-result mark { background: rgb(254 243 199); color: rgb(180 83 9); border-radius: 0.125rem; font-style: normal; font-weight: 700; }
+      .dark .cmd-result mark { background: rgba(120, 53, 15, 0.4); color: rgb(252 211 77); }
+      .cmd-tag { display: inline-flex; align-items: center; gap: 0.375rem; height: 1.375rem; padding: 0 0.5rem; border-radius: 9999px; border: 1px solid rgb(214 211 209); background: white; color: rgb(68 64 60); font-size: 0.75rem; line-height: 1; white-space: nowrap; }
+      .dark .cmd-tag { border-color: rgb(87 83 78); background: rgb(28 25 23); color: rgb(214 211 209); }
+      .cmd-tag-dot { width: 0.375rem; height: 0.375rem; border-radius: 9999px; flex-shrink: 0; }
+      .cmd-palette-footer { display: flex; align-items: center; gap: 1rem; padding: 0.625rem 1rem; border-top: 1px solid rgb(231 229 228); background: rgb(250 250 249); }
+      .dark .cmd-palette-footer { border-top-color: rgb(41 37 36); background: rgb(28 25 23); }
+      .cmd-footer-help { display: flex; align-items: center; gap: 0.375rem; font-size: 0.6875rem; color: rgb(168 162 158); }
+      .cmd-kbd { display: inline-flex; align-items: center; gap: 0.125rem; border: 1px solid rgb(231 229 228); border-radius: 0.25rem; padding: 0.125rem 0.375rem; background: white; color: rgb(168 162 158); font-size: 0.625rem; line-height: 1; font-weight: 500; }
+      .dark .cmd-kbd { border-color: rgb(68 64 60); background: rgb(41 37 36); }
+
+</style>
   </head>
 
   <body class="font-sans antialiased">
@@ -148,7 +253,9 @@
             <i data-lucide="hard-hat" class="w-4 h-4 shrink-0"></i><span class="flex-1 sidebar-label">Jobs</span>
           </a>
           <a data-component="link" data-comment="sidebar-nav-todos" href="tasks.html" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-full text-sm transition-colors cursor-pointer text-stone-800 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-300 hover:bg-stone-200/50 dark:hover:bg-stone-800/40">
-            <i data-lucide="check-square" class="w-4 h-4 shrink-0"></i><span class="flex-1 sidebar-label">Todos</span>
+            <i data-lucide="check-square" class="w-4 h-4 shrink-0"></i><span class="flex-1 sidebar-label">Tasks</span></a>
+          <a data-component="link" data-comment="sidebar-nav-dispatch-sms" href="dispatch-sms.html" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-full text-sm transition-colors cursor-pointer text-stone-800 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-300 hover:bg-stone-200/50 dark:hover:bg-stone-800/40">
+            <i data-lucide="send" class="w-4 h-4 shrink-0"></i><span class="flex-1 sidebar-label">Dispatch SMS</span>
           </a>
           <a data-component="link" data-comment="sidebar-nav-employees" href="employees.html" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-full text-sm transition-colors cursor-pointer text-stone-800 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-300 hover:bg-stone-200/50 dark:hover:bg-stone-800/40">
             <i data-lucide="users" class="w-4 h-4 shrink-0"></i><span class="flex-1 sidebar-label">Employees</span>
@@ -224,10 +331,16 @@
                   <i data-lucide="command" class="w-2.5 h-2.5"></i>K
                 </kbd>
               </button>
-              <button type="button" data-comment="header-theme-picker" data-component="button" aria-label="Theme color"
-                class="w-8 h-8 flex items-center justify-center rounded-lg text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors cursor-pointer">
-                <i data-lucide="palette" class="w-4 h-4"></i>
-              </button>
+              
+              <div data-comment="header-theme-picker-wrap" class="theme-picker-wrap">
+                <button type="button" data-comment="header-theme-picker" data-component="button" aria-label="Change theme" onclick="toggleThemePicker(event)"
+                  class="w-8 h-8 flex items-center justify-center rounded-lg text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-50 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors cursor-pointer">
+                  <i data-comment="header-theme-picker-icon" data-lucide="palette" class="w-4 h-4"></i>
+                </button>
+                <div id="theme-picker-popover" data-comment="theme-picker-popover" data-component="popover" class="theme-picker-popover hidden" onclick="event.stopPropagation()">
+                  <div id="theme-picker-content" data-comment="theme-picker-content" class="p-2 flex flex-col gap-3"></div>
+                </div>
+              </div>
               <button type="button" data-comment="header-darkmode-toggle" data-component="button" aria-label="Toggle dark mode" onclick="toggleColorMode()"
                 class="w-8 h-8 flex items-center justify-center rounded-lg text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors cursor-pointer">
                 <i data-lucide="moon" class="w-4 h-4 dark:hidden"></i>
@@ -266,10 +379,10 @@
                 <div data-comment="jobs-table-frame" data-component="card" class="overflow-hidden h-full flex flex-col rounded-xl border border-stone-200 dark:border-stone-800">
                   <div class="flex-1 overflow-auto">
                     <table data-comment="jobs-table" data-component="table" class="w-full text-sm">
-                      <thead class="bg-stone-50 dark:bg-stone-950 sticky top-0 z-10">
-                        <tr id="thead-row" class="text-left"></tr>
+                      <thead data-comment="jobs-thead" class="bg-stone-50 dark:bg-stone-950 sticky top-0 z-10">
+                        <tr data-comment="jobs-thead-row" id="thead-row" class="text-left"></tr>
                       </thead>
-                      <tbody id="tbody"></tbody>
+                      <tbody data-comment="jobs-tbody" id="tbody"></tbody>
                     </table>
                   </div>
                   <div data-comment="jobs-paginator" id="paginator" class="border-t border-stone-200 dark:border-stone-800 px-4 py-2 flex items-center justify-between gap-2 shrink-0 bg-white dark:bg-stone-900"></div>
@@ -635,13 +748,13 @@
           class: 'table-row border-t border-stone-100 dark:border-stone-800 cursor-pointer transition-colors',
           onclick: () => { window.location.href = `jobs-detail.html#job-${row.job_id}`; }
         });
-        tr.appendChild(el('td', { class: 'px-4 py-3 w-28' }, [
+        tr.appendChild(el('td', { 'data-comment': `jobs-row-${row.job_id}-id-cell`, class: 'px-4 py-3 w-28' }, [
           el('span', {
             'data-comment': `jobs-row-${row.job_id}-id`,
             class: 'font-mono text-sm font-medium text-stone-900 dark:text-stone-50 whitespace-nowrap'
           }, String(row.job_id))
         ]));
-        tr.appendChild(el('td', { class: 'px-4 py-3' }, [
+        tr.appendChild(el('td', { 'data-comment': `jobs-row-${row.job_id}-descr-cell`, class: 'px-4 py-3' }, [
           el('span', {
             'data-comment': `jobs-row-${row.job_id}-descr`,
             class: 'text-sm text-stone-700 dark:text-stone-300'
@@ -654,27 +767,27 @@
         });
         tag.appendChild(el('span', { class: `w-1.5 h-1.5 rounded-full shrink-0 ${st.dotCls}` }));
         tag.appendChild(document.createTextNode(st.label));
-        tr.appendChild(el('td', { class: 'px-4 py-3 w-36' }, [tag]));
+        tr.appendChild(el('td', { 'data-comment': `jobs-row-${row.job_id}-status-cell`, class: 'px-4 py-3 w-36' }, [tag]));
 
-        tr.appendChild(el('td', { class: 'px-4 py-3 w-32' }, [
+        tr.appendChild(el('td', { 'data-comment': `jobs-row-${row.job_id}-customer-cell`, class: 'px-4 py-3 w-32' }, [
           el('span', {
             'data-comment': `jobs-row-${row.job_id}-customer`,
             class: 'text-sm text-stone-500 dark:text-stone-400 font-mono whitespace-nowrap'
           }, row.customerid)
         ]));
-        tr.appendChild(el('td', { class: 'px-4 py-3 w-40' }, [
+        tr.appendChild(el('td', { 'data-comment': `jobs-row-${row.job_id}-location-cell`, class: 'px-4 py-3 w-40' }, [
           el('span', {
             'data-comment': `jobs-row-${row.job_id}-location`,
             class: 'text-sm text-stone-500 dark:text-stone-400 whitespace-nowrap'
           }, [row.l_city, row.l_state].filter(Boolean).join(', '))
         ]));
-        tr.appendChild(el('td', { class: 'px-4 py-3 w-28' }, [
+        tr.appendChild(el('td', { 'data-comment': `jobs-row-${row.job_id}-begin-cell`, class: 'px-4 py-3 w-28' }, [
           el('span', {
             'data-comment': `jobs-row-${row.job_id}-begin`,
             class: 'text-sm text-stone-500 dark:text-stone-400 whitespace-nowrap'
           }, row.begin_date ? formatShortDate(row.begin_date) : '—')
         ]));
-        tr.appendChild(el('td', { class: 'px-4 py-3 w-28' }, [
+        tr.appendChild(el('td', { 'data-comment': `jobs-row-${row.job_id}-end-cell`, class: 'px-4 py-3 w-28' }, [
           el('span', {
             'data-comment': `jobs-row-${row.job_id}-end`,
             class: 'text-sm text-stone-500 dark:text-stone-400 whitespace-nowrap'
@@ -818,6 +931,100 @@
         collapseIco.style.display = (isLg && !sidebarCollapsed) ? 'block' : 'none';
         expandIco.style.display = (isLg && sidebarCollapsed) ? 'block' : 'none';
       }
+
+      const UI_THEMES = [
+        { value: 'red', label: 'Red', color: 'oklch(63.7% 0.237 25)' },
+        { value: 'orange', label: 'Orange', color: 'oklch(73.5% 0.197 55)' },
+        { value: 'amber', label: 'Amber', color: 'oklch(68% 0.19 75)' },
+        { value: 'yellow', label: 'Yellow', color: 'oklch(84.8% 0.197 95)' },
+        { value: 'lime', label: 'Lime', color: 'oklch(76.8% 0.233 130)' },
+        { value: 'green', label: 'Green', color: 'oklch(62.3% 0.17 145)' },
+        { value: 'emerald', label: 'Emerald', color: 'oklch(69.6% 0.167 165)' },
+        { value: 'teal', label: 'Teal', color: 'oklch(58% 0.16 185)' },
+        { value: 'cyan', label: 'Cyan', color: 'oklch(71.5% 0.143 205)' },
+        { value: 'sky', label: 'Sky', color: 'oklch(68.6% 0.148 230)' },
+        { value: 'blue', label: 'Blue', color: 'oklch(62.3% 0.214 255)' },
+        { value: 'indigo', label: 'Indigo', color: 'oklch(58.5% 0.233 270)' },
+        { value: 'violet', label: 'Violet', color: 'oklch(61.9% 0.246 290)' },
+        { value: 'purple', label: 'Purple', color: 'oklch(62.7% 0.25 305)' },
+        { value: 'fuchsia', label: 'Fuchsia', color: 'oklch(66.7% 0.254 320)' },
+        { value: 'pink', label: 'Pink', color: 'oklch(71.4% 0.203 350)' },
+        { value: 'rose', label: 'Rose', color: 'oklch(59% 0.21 10)' },
+        { value: 'slate', label: 'Slate', color: 'oklch(54% 0.17 245)' }
+      ];
+      const UI_FONTS = [
+        { value: 'plus-jakarta', label: 'Plus Jakarta Sans', sample: 'Aa', family: 'Plus Jakarta Sans, sans-serif' },
+        { value: 'inter', label: 'Inter', sample: 'Aa', family: 'Inter, sans-serif' },
+        { value: 'jetbrains', label: 'JetBrains Mono', sample: 'Aa', family: 'JetBrains Mono, monospace' }
+      ];
+      function getAppTheme() { try { return localStorage.getItem('app-theme') || 'default'; } catch (e) { return 'default'; } }
+      function getAppFont() { try { return localStorage.getItem('app-font') || 'inter'; } catch (e) { return 'inter'; } }
+      function applyUITheme() {
+        const root = document.documentElement;
+        UI_THEMES.forEach((t) => root.classList.remove('theme-' + t.value));
+        UI_FONTS.forEach((f) => root.classList.remove('font-' + f.value));
+        const theme = getAppTheme();
+        const font = getAppFont();
+        if (theme !== 'default') { root.classList.add('theme-' + theme); root.setAttribute('data-accent', ''); }
+        else root.removeAttribute('data-accent');
+        root.classList.add('font-' + font);
+      }
+      function renderThemePicker() {
+        const root = document.getElementById('theme-picker-content');
+        if (!root) return;
+        const theme = getAppTheme();
+        const font = getAppFont();
+        const fontButtons = UI_FONTS.map((f) => `
+          <button type="button" data-comment="theme-font-${f.value}" data-component="button" onclick="setAppFont('${f.value}')" style="font-family:${f.family}" class="theme-font-button flex flex-col justify-center items-center gap-1 px-2 py-1.5 rounded-md text-xs font-medium transition-colors cursor-pointer ${font === f.value ? 'bg-stone-100 dark:bg-stone-800 text-stone-900 dark:text-stone-50' : 'text-stone-500 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800'}">
+            <span data-comment="theme-font-${f.value}-sample" class="text-base leading-none">${f.sample}</span>
+            <span data-comment="theme-font-${f.value}-label" class="text-[10px] truncate max-w-full">${f.label}</span>
+          </button>`).join('');
+        const colorButtons = UI_THEMES.map((t) => `
+          <button type="button" data-comment="theme-color-${t.value}" data-component="button" title="${t.label}" aria-label="${t.label}" aria-pressed="${theme === t.value}" onclick="setAppTheme('${t.value}')" class="theme-swatch-button w-full h-7 rounded-lg flex items-center justify-center cursor-pointer transition-transform hover:scale-110" style="color:${t.color}">
+            <span data-comment="theme-color-${t.value}-swatch" class="w-4 h-4 rounded-full ring-1 ring-black/10" style="background:${t.color}"></span>
+          </button>`).join('');
+        root.innerHTML = `
+          <div data-comment="theme-font-section" class="flex flex-col gap-1.5">
+            <p data-comment="theme-font-label" class="text-[10px] font-semibold uppercase tracking-widest text-stone-400 px-0.5">Font</p>
+            <div data-comment="theme-font-options" class="flex gap-1">${fontButtons}</div>
+          </div>
+          <div data-comment="theme-divider" class="h-px bg-stone-100 dark:bg-stone-800 -mx-2"></div>
+          <div data-comment="theme-color-section" class="flex flex-col gap-2">
+            <p data-comment="theme-color-label" class="text-[10px] font-semibold uppercase tracking-widest text-stone-400 px-0.5">Accent color</p>
+            <button type="button" data-comment="theme-color-default" data-component="button" onclick="setAppTheme('default')" class="flex items-center gap-2 px-2 py-2 rounded-md text-xs transition-colors cursor-pointer w-full ${theme === 'default' ? 'bg-stone-100 dark:bg-stone-800 text-stone-900 dark:text-stone-50 font-medium' : 'text-stone-500 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800'}">
+              <span data-comment="theme-color-default-swatch" class="w-3 h-3 rounded-full shrink-0 ring-1 ring-black/10" style="background:oklch(21% 0 0)"></span>
+              <span data-comment="theme-color-default-label">Default</span>
+            </button>
+            <div data-comment="theme-color-grid" class="grid grid-cols-9 gap-1">${colorButtons}</div>
+          </div>`;
+        if (window.lucide) lucide.createIcons();
+      }
+      function toggleThemePicker(e) {
+        if (e) e.stopPropagation();
+        const popover = document.getElementById('theme-picker-popover');
+        if (!popover) return;
+        const opening = popover.classList.contains('hidden');
+        if (opening) renderThemePicker();
+        popover.classList.toggle('hidden', !opening);
+      }
+      function closeThemePicker() {
+        document.getElementById('theme-picker-popover')?.classList.add('hidden');
+      }
+      function setAppTheme(value) {
+        try { localStorage.setItem('app-theme', value); } catch (e) {}
+        applyUITheme();
+        renderThemePicker();
+      }
+      function setAppFont(value) {
+        try { localStorage.setItem('app-font', value); } catch (e) {}
+        applyUITheme();
+        renderThemePicker();
+      }
+      applyUITheme();
+      document.addEventListener('mousedown', (e) => {
+        if (!e.target.closest('[data-comment="header-theme-picker-wrap"]')) closeThemePicker();
+      });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeThemePicker(); });
       function toggleColorMode() {
         const isDark = document.documentElement.classList.toggle('dark');
         try { localStorage.setItem('color-mode', isDark ? 'dark' : 'light'); } catch (e) {}
@@ -855,7 +1062,8 @@
         { kind: 'page', title: 'Dashboard', subtitle: 'Workspace overview', icon: 'layout-dashboard', href: 'home.html' },
         { kind: 'page', title: 'Calendar', subtitle: 'Month, week, 3-month, unscheduled', icon: 'calendar-days', href: 'calendar.html' },
         { kind: 'page', title: 'Jobs', subtitle: 'All jobs and statuses', icon: 'hard-hat', href: 'jobs.html' },
-        { kind: 'page', title: 'Todos', subtitle: 'Kanban + list', icon: 'check-square', href: 'tasks.html' },
+        { kind: 'page', title: 'Tasks', subtitle: 'Kanban + list', icon: 'check-square', href: 'tasks.html' },
+        { kind: 'page', title: 'Dispatch SMS', subtitle: 'Crew message workflow', icon: 'send', href: 'dispatch-sms.html' },
         { kind: 'page', title: 'Employees', subtitle: 'Directory and roles', icon: 'users', href: 'employees.html' },
         { kind: 'page', title: 'Changelog', subtitle: 'What is new', icon: 'megaphone', href: 'changelog.html' },
         { kind: 'job', title: 'Job #1042 · Westbrook commercial complex', subtitle: 'In Process · Toronto, ON', icon: 'hard-hat', href: 'jobs-detail.html#job-1042' },
@@ -1033,7 +1241,203 @@
         if (e.key === 'Escape') closeUserPopover();
       });
 
-    </script>
+    
+      // Command Palette parity
+      const CMD_PARITY_ITEMS = [
+        { kind: 'page', title: 'Dashboard', subtitle: 'Workspace overview', icon: 'layout-dashboard', href: 'home.html' },
+        { kind: 'page', title: 'Calendar', subtitle: 'Month, week, 3-month, unscheduled', icon: 'calendar-days', href: 'calendar.html' },
+        { kind: 'page', title: 'Jobs', subtitle: 'All jobs and statuses', icon: 'hard-hat', href: 'jobs.html' },
+        { kind: 'page', title: 'Tasks', subtitle: 'Kanban + list', icon: 'check-square', href: 'tasks.html' },
+        { kind: 'page', title: 'Dispatch SMS', subtitle: 'Crew message workflow', icon: 'send', href: 'dispatch-sms.html' },
+        { kind: 'page', title: 'Employees', subtitle: 'Directory and roles', icon: 'users', href: 'employees.html' },
+        { kind: 'page', title: 'Changelog', subtitle: 'What is new', icon: 'megaphone', href: 'changelog.html' },
+        { kind: 'job', title: '#1252 Parking Structure Formwork L1', subtitle: 'Burnaby', icon: 'hard-hat', href: 'jobs-detail.html#job-1252', meta: 'In Process', metaColor: '#3b82f6' },
+        { kind: 'job', title: '#1283 Bridge Deck Formwork', subtitle: 'Surrey', icon: 'hard-hat', href: 'jobs-detail.html#job-1283', meta: 'Tentative', metaColor: '#f97316' },
+        { kind: 'job', title: '#1325 Ramp Formwork', subtitle: 'Coquitlam', icon: 'hard-hat', href: 'jobs-detail.html#job-1325', meta: 'Tentative', metaColor: '#f97316' },
+        { kind: 'job', title: '#1290 Parking Slab Package', subtitle: 'Mississauga', icon: 'hard-hat', href: 'jobs-detail.html#job-1290', meta: 'In Process', metaColor: '#3b82f6' },
+        { kind: 'task', title: 'Formwork Prep & Layout', subtitle: '#1252 · Mar 15 – Mar 31', icon: 'hammer', href: 'calendar.html#task-formwork-prep', meta: 'Forming', metaColor: '#3b82f6' },
+        { kind: 'task', title: 'Formwork L1 Columns', subtitle: '#1252 · Apr 7 – Apr 22', icon: 'hammer', href: 'calendar.html#task-formwork-columns', meta: 'Forming', metaColor: '#3b82f6' },
+        { kind: 'task', title: 'Parking Slab Forming', subtitle: '#1290 · Apr 8 – Apr 24', icon: 'hammer', href: 'calendar.html#task-parking-slab', meta: 'Flatwork', metaColor: '#10b981' },
+        { kind: 'task', title: 'Column Forming', subtitle: '#1318 · Apr 3 – Apr 18', icon: 'hammer', href: 'calendar.html#task-column-forming', meta: 'Forming', metaColor: '#3b82f6' },
+        { kind: 'task', title: 'Formwork L1 Walls', subtitle: '#1252 · Apr 23 – May 9', icon: 'hammer', href: 'calendar.html#task-formwork-walls', meta: 'Forming', metaColor: '#3b82f6' },
+        { kind: 'todo', title: 'Invoice discrepancy – concrete supplier March', subtitle: 'Blocked', icon: 'check-square', href: 'tasks.html#todo-invoice-discrepancy', meta: 'high', metaColor: '#ef4444' },
+        { kind: 'todo', title: 'Inspect formwork alignment before pour', subtitle: 'Not Started', icon: 'check-square', href: 'tasks.html#todo-formwork-alignment', meta: 'high', metaColor: '#ef4444' },
+        { kind: 'todo', title: 'Repair damaged scaffolding on Level 2', subtitle: 'In Progress', icon: 'check-square', href: 'tasks.html#todo-scaffolding', meta: 'high', metaColor: '#ef4444' },
+        { kind: 'todo', title: 'Order formwork accessories – Warehouse project', subtitle: 'Not Started', icon: 'check-square', href: 'tasks.html#todo-formwork-accessories', meta: 'low', metaColor: '#22c55e' },
+        { kind: 'user', title: 'Admin User', subtitle: 'Admin · Administration', icon: 'users', href: 'employees.html#user-21', meta: 'active', metaColor: '#22c55e' },
+        { kind: 'user', title: 'Mike Johnson', subtitle: 'Foreman · Operations', icon: 'users', href: 'employees.html#user-1', meta: 'active', metaColor: '#22c55e' },
+        { kind: 'user', title: 'Sarah Chen', subtitle: 'Foreman · Operations', icon: 'users', href: 'employees.html#user-2', meta: 'active', metaColor: '#22c55e' }
+      ];
+      const CMD_PARITY_GROUP_META = {
+        page: { label: 'Pages', icon: 'layout-grid' },
+        job: { label: 'Jobs', icon: 'hard-hat' },
+        task: { label: 'Tasks', icon: 'hammer' },
+        todo: { label: 'Todos', icon: 'check-square' },
+        user: { label: 'Users', icon: 'users' }
+      };
+      const CMD_PARITY_GROUP_ORDER = ['page', 'job', 'task', 'todo', 'user'];
+      let cmdParityActiveIndex = 0;
+      let cmdParityQuery = '';
+      let cmdParityFlatItems = [];
+      function cmdParityEscape(value) {
+        return String(value ?? '').replace(/[&<>"']/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+      }
+      function cmdParityHighlight(value, query, key) {
+        const text = String(value ?? '');
+        const q = query.trim();
+        if (!q) return cmdParityEscape(text);
+        const lower = text.toLowerCase();
+        const needle = q.toLowerCase();
+        let cursor = 0;
+        let markIndex = 0;
+        let html = '';
+        while (true) {
+          const idx = lower.indexOf(needle, cursor);
+          if (idx === -1) break;
+          html += cmdParityEscape(text.slice(cursor, idx));
+          html += `<mark data-comment="${key}-mark-${markIndex++}">${cmdParityEscape(text.slice(idx, idx + q.length))}</mark>`;
+          cursor = idx + q.length;
+        }
+        html += cmdParityEscape(text.slice(cursor));
+        return html;
+      }
+      function ensureCmdPaletteStructure() {
+        const panel = document.getElementById('cmd-palette')?.querySelector('.cmd-palette-panel');
+        if (!panel) return;
+        const searchWrap = panel.querySelector('[data-comment="cmd-palette-search-wrap"]');
+        if (searchWrap) {
+          searchWrap.innerHTML = `
+            <div data-comment="cmd-palette-search-field" class="cmd-palette-search-field">
+              <i data-comment="cmd-palette-search-icon" data-lucide="search" class="w-4 h-4 text-stone-400 shrink-0"></i>
+              <input id="cmd-palette-input" data-comment="cmd-palette-input" data-component="input" type="text" placeholder="Search jobs, tasks, todos..." class="flex-1 bg-transparent text-sm text-stone-900 dark:text-stone-50 placeholder:text-stone-400 outline-none border-0" autocomplete="off" oninput="onCmdPaletteInput(event)" onkeydown="onCmdPaletteKey(event)" />
+              <kbd data-comment="cmd-palette-search-esc" class="cmd-kbd">ESC</kbd>
+            </div>`;
+        }
+        const results = document.getElementById('cmd-palette-results');
+        if (results) results.className = 'cmd-palette-result-scroll';
+        let footer = panel.querySelector('[data-comment="cmd-palette-footer"]');
+        if (!footer) {
+          footer = document.createElement('div');
+          footer.setAttribute('data-comment', 'cmd-palette-footer');
+          footer.className = 'cmd-palette-footer';
+          footer.innerHTML = `
+            <div data-comment="cmd-palette-footer-navigate" class="cmd-footer-help">
+              <kbd data-comment="cmd-palette-footer-up" class="cmd-kbd"><i data-comment="cmd-palette-footer-up-icon" data-lucide="arrow-up" class="w-2.5 h-2.5"></i></kbd>
+              <kbd data-comment="cmd-palette-footer-down" class="cmd-kbd"><i data-comment="cmd-palette-footer-down-icon" data-lucide="arrow-down" class="w-2.5 h-2.5"></i></kbd>
+              <span data-comment="cmd-palette-footer-navigate-text">Navigate</span>
+            </div>
+            <div data-comment="cmd-palette-footer-open" class="cmd-footer-help"><kbd data-comment="cmd-palette-footer-enter" class="cmd-kbd">↵</kbd><span data-comment="cmd-palette-footer-open-text">Open</span></div>
+            <div data-comment="cmd-palette-footer-close" class="cmd-footer-help"><kbd data-comment="cmd-palette-footer-esc" class="cmd-kbd">ESC</kbd><span data-comment="cmd-palette-footer-close-text">Close</span></div>`;
+          panel.appendChild(footer);
+        }
+      }
+      function openCmdPalette() {
+        const root = document.getElementById('cmd-palette');
+        if (!root) return;
+        ensureCmdPaletteStructure();
+        root.classList.add('is-open');
+        cmdParityQuery = '';
+        cmdParityActiveIndex = 0;
+        renderCmdPalette();
+        const input = document.getElementById('cmd-palette-input');
+        if (input) {
+          input.value = '';
+          setTimeout(() => input.focus(), 40);
+        }
+        if (window.lucide) lucide.createIcons();
+      }
+      function closeCmdPalette() {
+        const root = document.getElementById('cmd-palette');
+        if (root) root.classList.remove('is-open');
+      }
+      function onCmdPaletteInput(event) {
+        cmdParityQuery = event.target.value;
+        cmdParityActiveIndex = 0;
+        renderCmdPalette();
+      }
+      function cmdFiltered() {
+        const q = cmdParityQuery.trim().toLowerCase();
+        if (!q || q.length < 3) return [];
+        return CMD_PARITY_ITEMS.filter((item) =>
+          item.title.toLowerCase().includes(q) || item.subtitle.toLowerCase().includes(q) || String(item.meta || '').toLowerCase().includes(q)
+        );
+      }
+      function renderCmdCenteredState(type) {
+        const root = document.getElementById('cmd-palette-results');
+        if (!root) return;
+        const query = cmdParityEscape(cmdParityQuery.trim());
+        const content = {
+          idle: `<p data-comment="cmd-palette-idle-text" class="text-sm text-stone-400 dark:text-stone-500 m-0">Type to search across jobs, tasks, todos...</p>`,
+          short: `<p data-comment="cmd-palette-short-text" class="text-sm text-stone-400 dark:text-stone-500 m-0">Type at least 3 characters to search...</p>`,
+          empty: `<i data-comment="cmd-palette-empty-icon" data-lucide="search-x" class="w-8 h-8 mb-3 opacity-30 text-stone-400"></i><p data-comment="cmd-palette-empty-text" class="text-sm text-stone-400 dark:text-stone-500 m-0">No results for <span data-comment="cmd-palette-empty-query" class="font-medium text-stone-600 dark:text-stone-300">&quot;${query}&quot;</span></p>`
+        }[type];
+        root.innerHTML = `<div data-comment="cmd-palette-${type}" class="flex flex-col items-center justify-center h-full text-center">${content}</div>`;
+        cmdParityFlatItems = [];
+        if (window.lucide) lucide.createIcons();
+      }
+      function renderCmdPalette() {
+        ensureCmdPaletteStructure();
+        const root = document.getElementById('cmd-palette-results');
+        if (!root) return;
+        const q = cmdParityQuery.trim();
+        if (!q) { renderCmdCenteredState('idle'); return; }
+        if (q.length < 3) { renderCmdCenteredState('short'); return; }
+        const items = cmdFiltered();
+        if (!items.length) { renderCmdCenteredState('empty'); return; }
+        const groups = {};
+        items.forEach((item) => { (groups[item.kind] = groups[item.kind] || []).push(item); });
+        cmdParityFlatItems = [];
+        const parts = [];
+        CMD_PARITY_GROUP_ORDER.forEach((kind) => {
+          const groupItems = groups[kind];
+          if (!groupItems?.length) return;
+          const meta = CMD_PARITY_GROUP_META[kind];
+          parts.push(`<div data-comment="cmd-palette-section-${kind}" class="cmd-section-header"><i data-comment="cmd-palette-section-${kind}-icon" data-lucide="${meta.icon}" class="w-3.5 h-3.5 text-stone-400"></i><span data-comment="cmd-palette-section-${kind}-label">${meta.label}</span></div>`);
+          groupItems.forEach((item) => {
+            const index = cmdParityFlatItems.length;
+            cmdParityFlatItems.push(item);
+            const active = index === cmdParityActiveIndex;
+            const titleKey = `cmd-palette-result-${index}-title`;
+            const subtitleKey = `cmd-palette-result-${index}-subtitle`;
+            const tag = item.meta ? `<span data-comment="cmd-palette-result-${index}-tag" class="cmd-tag"><span data-comment="cmd-palette-result-${index}-tag-dot" class="cmd-tag-dot" style="background:${item.metaColor || '#a8a29e'}"></span>${cmdParityEscape(item.meta)}</span>` : `<span data-comment="cmd-palette-result-${index}-kind" class="text-[10px] uppercase tracking-wider font-semibold text-stone-400 dark:text-stone-500 shrink-0">${cmdParityEscape(item.kind)}</span>`;
+            parts.push(`
+              <button type="button" data-comment="cmd-palette-result-${index}" data-href="${cmdParityEscape(item.href)}" onclick="selectCmdPaletteItem(${index})" onmouseenter="setCmdActiveIndex(${index})" class="cmd-result${active ? ' is-active' : ''}">
+                <div data-comment="cmd-palette-result-${index}-body" class="flex-1 min-w-0">
+                  <p data-comment="${titleKey}" class="text-sm font-medium text-stone-900 dark:text-stone-50 truncate m-0">${cmdParityHighlight(item.title, q, titleKey)}</p>
+                  <p data-comment="${subtitleKey}" class="text-xs text-stone-400 dark:text-stone-500 truncate mt-0.5 m-0">${cmdParityHighlight(item.subtitle, q, subtitleKey)}</p>
+                </div>
+                ${tag}
+              </button>`);
+          });
+        });
+        root.innerHTML = parts.join('');
+        if (window.lucide) lucide.createIcons();
+      }
+      function setCmdActiveIndex(index) {
+        cmdParityActiveIndex = index;
+        document.querySelectorAll('.cmd-result').forEach((button, i) => button.classList.toggle('is-active', i === index));
+      }
+      function selectCmdPaletteItem(index) {
+        const item = cmdParityFlatItems[index];
+        if (!item) return;
+        closeCmdPalette();
+        window.location.href = item.href;
+      }
+      function onCmdPaletteKey(event) {
+        if (event.key === 'Escape') { event.preventDefault(); closeCmdPalette(); return; }
+        if (!cmdParityFlatItems.length) return;
+        if (event.key === 'ArrowDown') {
+          event.preventDefault();
+          setCmdActiveIndex(Math.min(cmdParityFlatItems.length - 1, cmdParityActiveIndex + 1));
+        } else if (event.key === 'ArrowUp') {
+          event.preventDefault();
+          setCmdActiveIndex(Math.max(0, cmdParityActiveIndex - 1));
+        } else if (event.key === 'Enter') {
+          event.preventDefault();
+          selectCmdPaletteItem(cmdParityActiveIndex);
+        }
+      }
+      document.addEventListener('DOMContentLoaded', ensureCmdPaletteStructure);</script>
   
       <div id="cmd-palette" data-comment="cmd-palette" data-component="dialog" class="cmd-palette-root">
         <div class="cmd-palette-backdrop" onclick="closeCmdPalette()">

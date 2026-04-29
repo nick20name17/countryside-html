@@ -3,13 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Calendar — Countryside Concrete PM</title>
+    <title>Calendar - Countryside Concrete PM</title>
 
     <link rel="icon" type="image/webp" href="favicon.webp" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=JetBrains+Mono:wght@100..800&family=Plus+Jakarta+Sans:wght@200..800&display=swap" rel="stylesheet" />
 
     <script>
       (function () {
@@ -18,6 +18,14 @@
           if (t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
           }
+
+          var appTheme = localStorage.getItem('app-theme') || 'default';
+          var appFont = localStorage.getItem('app-font') || 'inter';
+          if (appTheme !== 'default') {
+            document.documentElement.classList.add('theme-' + appTheme);
+            document.documentElement.setAttribute('data-accent', '');
+          }
+          document.documentElement.classList.add('font-' + appFont);
         } catch (e) {}
       })();
     </script>
@@ -43,9 +51,17 @@
     </script>
 
     <style type="text/tailwindcss">
+      :root {
+        --color-brand: oklch(21% 0 0);
+        --color-border: rgb(231 229 228);
+        --color-bg: rgb(245 245 244);
+        --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+      }
       html, body { font-family: 'Inter', ui-sans-serif, system-ui, sans-serif; }
       *, *::before, *::after { box-sizing: border-box; }
       body { margin: 0; }
+      .card { border-radius: 1.5rem; border: 1px solid rgb(231 229 228); background: white; box-shadow: 0 10px 12px -5px rgb(231 229 228 / 0.7); }
+      .dark .card { border-color: rgb(41 37 36); background: rgb(28 25 23); box-shadow: 0 10px 12px -5px rgb(0 0 0 / 0.5); }
       i[data-lucide] { display: inline-block; width: 1em; height: 1em; }
       i[data-lucide]:empty { visibility: hidden; }
       .sb-backdrop { opacity: 0; pointer-events: none; transition: opacity 250ms ease; } .sb-backdrop.is-open { opacity: 1; pointer-events: auto; } .nav-link.active { background-color: oklch(21% 0 0); color: white; font-weight: 500; }
@@ -78,6 +94,15 @@
         padding: 0.5rem; min-width: 14rem;
       }
       .dark .popover-panel { background: rgb(12 10 9); border-color: rgb(41 37 36); }
+      .month-picker-popover { width: 13rem; }
+      .month-picker-button[aria-selected='true'] {
+        background: oklch(21% 0 0);
+        color: white;
+      }
+      .dark .month-picker-button[aria-selected='true'] {
+        background: white;
+        color: oklch(21% 0 0);
+      }
       .drawer-root { position: fixed; inset: 0; z-index: 50; pointer-events: none; }
       .drawer-root.is-open { pointer-events: auto; }
       .drawer-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.4); opacity: 0; transition: opacity 250ms ease; }
@@ -150,7 +175,96 @@
       .user-popover { position: absolute; bottom: calc(100% + 8px); left: 0.5rem; right: 0.5rem; z-index: 60; background: white; border: 1px solid rgb(231 229 228); border-radius: 0.75rem; box-shadow: 0 10px 30px rgb(0 0 0 / 0.12); padding: 0.25rem; opacity: 0; pointer-events: none; transform: translateY(4px); transition: opacity 150ms ease, transform 150ms ease; }
       .dark .user-popover { background: rgb(12 10 9); border-color: rgb(41 37 36); }
       .user-popover.is-open { opacity: 1; pointer-events: auto; transform: translateY(0); }
-    </style>
+
+      /* App theme picker */
+      html {
+        --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+        --app-brand-50: oklch(98.5% 0 0);
+        --app-brand-400: oklch(70% 0 0);
+        --app-brand-500: oklch(21% 0 0);
+        --app-brand-600: oklch(16% 0 0);
+        --app-brand-700: oklch(13% 0 0);
+        --app-brand-950: oklch(6% 0 0);
+      }
+      html.font-plus-jakarta { --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif; }
+      html.font-inter { --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif; }
+      html.font-jetbrains { --font-sans: 'JetBrains Mono', ui-monospace, monospace; }
+      html, body, .font-sans { font-family: var(--font-sans) !important; }
+      html.theme-red { --app-brand-500: oklch(63.7% 0.237 25); }
+      html.theme-orange { --app-brand-500: oklch(73.5% 0.197 55); }
+      html.theme-amber { --app-brand-500: oklch(68% 0.19 75); }
+      html.theme-yellow { --app-brand-500: oklch(84.8% 0.197 95); }
+      html.theme-lime { --app-brand-500: oklch(76.8% 0.233 130); }
+      html.theme-green { --app-brand-500: oklch(62.3% 0.17 145); }
+      html.theme-emerald { --app-brand-500: oklch(69.6% 0.167 165); }
+      html.theme-teal { --app-brand-500: oklch(58% 0.16 185); }
+      html.theme-cyan { --app-brand-500: oklch(71.5% 0.143 205); }
+      html.theme-sky { --app-brand-500: oklch(68.6% 0.148 230); }
+      html.theme-blue { --app-brand-500: oklch(62.3% 0.214 255); }
+      html.theme-indigo { --app-brand-500: oklch(58.5% 0.233 270); }
+      html.theme-violet { --app-brand-500: oklch(61.9% 0.246 290); }
+      html.theme-purple { --app-brand-500: oklch(62.7% 0.25 305); }
+      html.theme-fuchsia { --app-brand-500: oklch(66.7% 0.254 320); }
+      html.theme-pink { --app-brand-500: oklch(71.4% 0.203 350); }
+      html.theme-rose { --app-brand-500: oklch(59% 0.21 10); }
+      html.theme-slate { --app-brand-500: oklch(54% 0.17 245); }
+      html[data-accent] {
+        --app-brand-50: color-mix(in oklch, var(--app-brand-500) 8%, white);
+        --app-brand-400: color-mix(in oklch, var(--app-brand-500) 78%, white);
+        --app-brand-600: color-mix(in oklch, var(--app-brand-500) 88%, black);
+        --app-brand-700: color-mix(in oklch, var(--app-brand-500) 76%, black);
+        --app-brand-950: color-mix(in oklch, var(--app-brand-500) 22%, black);
+      }
+      .bg-brand-50 { background-color: var(--app-brand-50) !important; }
+      .bg-brand-500, .nav-link.active { background-color: var(--app-brand-500) !important; }
+      .hover\:bg-brand-600:hover { background-color: var(--app-brand-600) !important; }
+      .active\:bg-brand-700:active { background-color: var(--app-brand-700) !important; }
+      .border-brand-500 { border-color: var(--app-brand-500) !important; }
+      .hover\:border-brand-600:hover { border-color: var(--app-brand-600) !important; }
+      .active\:border-brand-700:active { border-color: var(--app-brand-700) !important; }
+      .text-brand-500 { color: var(--app-brand-500) !important; }
+      .dark .dark\:text-brand-400 { color: var(--app-brand-400) !important; }
+      .dark .dark\:bg-brand-950 { background-color: var(--app-brand-950) !important; }
+      .dark .nav-link.active { background-color: white !important; color: oklch(21% 0 0) !important; }
+      html[data-accent].dark .nav-link.active { background-color: var(--app-brand-500) !important; color: white !important; }
+      html[data-accent].dark .dark\:bg-white { background-color: var(--app-brand-500) !important; }
+      html[data-accent].dark .dark\:border-white { border-color: var(--app-brand-500) !important; }
+      html[data-accent].dark .dark\:text-stone-900 { color: white !important; }
+      .day-cell.today .day-num { background-color: var(--app-brand-500) !important; color: white !important; }
+      .theme-picker-wrap { position: relative; }
+      .theme-picker-popover { position: absolute; right: 0; top: calc(100% + 8px); z-index: 65; width: 20rem; max-width: min(20rem, calc(100vw - 2rem)); background: white; border: 1px solid rgb(231 229 228); border-radius: 0.75rem; box-shadow: 0 10px 30px rgb(0 0 0 / 0.12); }
+      .dark .theme-picker-popover { background: rgb(12 10 9); border-color: rgb(41 37 36); }
+      .theme-font-button { width: 5.5rem; min-height: 3.5rem; }
+      .theme-swatch-button[aria-pressed='true'] { transform: scale(1.1); box-shadow: 0 0 0 2px currentColor, 0 0 0 4px white; }
+      .dark .theme-swatch-button[aria-pressed='true'] { box-shadow: 0 0 0 2px currentColor, 0 0 0 4px rgb(28 25 23); }
+
+      /* Command Palette parity */
+      .cmd-palette-backdrop { align-items: center !important; justify-content: center !important; padding: 0 1rem !important; }
+      .cmd-palette-panel { width: 600px !important; max-width: 95vw !important; height: min(520px, calc(100vh - 4rem)) !important; max-height: calc(100vh - 4rem) !important; border-radius: 0.75rem !important; box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25) !important; }
+      .cmd-palette-search-field { display: flex; align-items: center; gap: 0.625rem; padding: 0 1rem; height: 2.25rem; border-radius: 9999px; background: rgb(245 245 244); border: 1px solid transparent; transition: border-color 150ms ease; }
+      .cmd-palette-search-field:hover, .cmd-palette-search-field:focus-within { border-color: rgb(214 211 209); }
+      .dark .cmd-palette-search-field { background: rgb(41 37 36); }
+      .dark .cmd-palette-search-field:hover, .dark .cmd-palette-search-field:focus-within { border-color: rgb(87 83 78); }
+      .cmd-palette-result-scroll { flex: 1; min-height: 0; overflow-y: auto; }
+      .cmd-section-header { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: rgb(250 250 249); border-bottom: 1px solid rgb(245 245 244); border-top: 1px solid rgb(245 245 244); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: rgb(168 162 158); }
+      .dark .cmd-section-header { background: rgb(28 25 23); border-color: rgb(41 37 36); color: rgb(120 113 108); }
+      .cmd-section-header:first-child { border-top: none; }
+      .cmd-result { width: 100%; min-height: 3.875rem; display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; cursor: pointer; border-bottom: 1px solid rgb(245 245 244); transition: background-color 100ms; text-align: left; background: transparent; border-left: none; border-right: none; border-top: none; }
+      .dark .cmd-result { border-bottom-color: rgb(28 25 23); }
+      .cmd-result:hover, .cmd-result.is-active { background-color: rgb(245 245 244); }
+      .dark .cmd-result:hover, .dark .cmd-result.is-active { background-color: rgb(28 25 23); }
+      .cmd-result mark { background: rgb(254 243 199); color: rgb(180 83 9); border-radius: 0.125rem; font-style: normal; font-weight: 700; }
+      .dark .cmd-result mark { background: rgba(120, 53, 15, 0.4); color: rgb(252 211 77); }
+      .cmd-tag { display: inline-flex; align-items: center; gap: 0.375rem; height: 1.375rem; padding: 0 0.5rem; border-radius: 9999px; border: 1px solid rgb(214 211 209); background: white; color: rgb(68 64 60); font-size: 0.75rem; line-height: 1; white-space: nowrap; }
+      .dark .cmd-tag { border-color: rgb(87 83 78); background: rgb(28 25 23); color: rgb(214 211 209); }
+      .cmd-tag-dot { width: 0.375rem; height: 0.375rem; border-radius: 9999px; flex-shrink: 0; }
+      .cmd-palette-footer { display: flex; align-items: center; gap: 1rem; padding: 0.625rem 1rem; border-top: 1px solid rgb(231 229 228); background: rgb(250 250 249); }
+      .dark .cmd-palette-footer { border-top-color: rgb(41 37 36); background: rgb(28 25 23); }
+      .cmd-footer-help { display: flex; align-items: center; gap: 0.375rem; font-size: 0.6875rem; color: rgb(168 162 158); }
+      .cmd-kbd { display: inline-flex; align-items: center; gap: 0.125rem; border: 1px solid rgb(231 229 228); border-radius: 0.25rem; padding: 0.125rem 0.375rem; background: white; color: rgb(168 162 158); font-size: 0.625rem; line-height: 1; font-weight: 500; }
+      .dark .cmd-kbd { border-color: rgb(68 64 60); background: rgb(41 37 36); }
+
+</style>
   </head>
 
   <body class="font-sans antialiased">
@@ -177,7 +291,9 @@
             <i data-lucide="hard-hat" class="w-4 h-4 shrink-0"></i><span class="flex-1 sidebar-label">Jobs</span>
           </a>
           <a data-component="link" data-comment="sidebar-nav-todos" href="tasks.html" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-full text-sm transition-colors cursor-pointer text-stone-800 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-300 hover:bg-stone-200/50 dark:hover:bg-stone-800/40">
-            <i data-lucide="check-square" class="w-4 h-4 shrink-0"></i><span class="flex-1 sidebar-label">Todos</span>
+            <i data-lucide="check-square" class="w-4 h-4 shrink-0"></i><span class="flex-1 sidebar-label">Tasks</span></a>
+          <a data-component="link" data-comment="sidebar-nav-dispatch-sms" href="dispatch-sms.html" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-full text-sm transition-colors cursor-pointer text-stone-800 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-300 hover:bg-stone-200/50 dark:hover:bg-stone-800/40">
+            <i data-lucide="send" class="w-4 h-4 shrink-0"></i><span class="flex-1 sidebar-label">Dispatch SMS</span>
           </a>
           <a data-component="link" data-comment="sidebar-nav-employees" href="employees.html" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-full text-sm transition-colors cursor-pointer text-stone-800 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-300 hover:bg-stone-200/50 dark:hover:bg-stone-800/40">
             <i data-lucide="users" class="w-4 h-4 shrink-0"></i><span class="flex-1 sidebar-label">Employees</span>
@@ -252,10 +368,16 @@
                   <i data-lucide="command" class="w-2.5 h-2.5"></i>K
                 </kbd>
               </button>
-              <button type="button" data-comment="header-theme-picker" aria-label="Theme color"
-                class="w-8 h-8 flex items-center justify-center rounded-lg text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors cursor-pointer">
-                <i data-lucide="palette" class="w-4 h-4"></i>
-              </button>
+              
+              <div data-comment="header-theme-picker-wrap" class="theme-picker-wrap">
+                <button type="button" data-comment="header-theme-picker" data-component="button" aria-label="Change theme" onclick="toggleThemePicker(event)"
+                  class="w-8 h-8 flex items-center justify-center rounded-lg text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-50 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors cursor-pointer">
+                  <i data-comment="header-theme-picker-icon" data-lucide="palette" class="w-4 h-4"></i>
+                </button>
+                <div id="theme-picker-popover" data-comment="theme-picker-popover" data-component="popover" class="theme-picker-popover hidden" onclick="event.stopPropagation()">
+                  <div id="theme-picker-content" data-comment="theme-picker-content" class="p-2 flex flex-col gap-3"></div>
+                </div>
+              </div>
               <button type="button" data-comment="header-darkmode-toggle" aria-label="Toggle dark mode" onclick="toggleColorMode()"
                 class="w-8 h-8 flex items-center justify-center rounded-lg text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors cursor-pointer">
                 <i data-lucide="moon" class="w-4 h-4 dark:hidden"></i>
@@ -279,10 +401,15 @@
                   <button type="button" data-comment="month-nav-prev" onclick="prevMonth()" class="w-9 h-9 flex items-center justify-center rounded-full text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors cursor-pointer">
                     <i data-lucide="chevron-left" class="w-4 h-4"></i>
                   </button>
-                  <button type="button" data-comment="month-nav-current" id="month-pill" onclick="resetToToday()" class="h-9 px-3 inline-flex items-center gap-1.5 rounded-full text-sm font-medium border border-stone-200 dark:border-stone-700 text-stone-700 dark:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors cursor-pointer">
-                    <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
-                    <span id="month-label">—</span>
-                  </button>
+                  <div data-comment="month-picker-wrap" id="month-picker-wrap" class="relative">
+                    <button type="button" data-comment="month-nav-current" id="month-pill" data-component="date-picker" aria-haspopup="dialog" aria-expanded="false" onclick="toggleMonthPicker(event)" class="h-9 px-3 inline-flex items-center gap-1.5 rounded-full text-sm font-medium border border-stone-200 dark:border-stone-700 text-stone-700 dark:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors cursor-pointer">
+                      <i data-comment="month-nav-current-icon" data-lucide="calendar" class="w-3.5 h-3.5"></i>
+                      <span data-comment="month-nav-current-label" id="month-label">—</span>
+                    </button>
+                    <div id="month-picker-popover" data-comment="month-picker-popover" data-component="popover" class="popover-panel month-picker-popover hidden left-0" style="top: calc(100% + 4px);" onclick="event.stopPropagation()">
+                      <div id="month-picker-content" data-comment="month-picker-content"></div>
+                    </div>
+                  </div>
                   <button type="button" data-comment="month-nav-next" onclick="nextMonth()" class="w-9 h-9 flex items-center justify-center rounded-full text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors cursor-pointer">
                     <i data-lucide="chevron-right" class="w-4 h-4"></i>
                   </button>
@@ -310,7 +437,7 @@
                 <div data-comment="calendar-view-wrap" id="view-wrap" class="relative flex-1 min-h-0 flex"></div>
                 <div data-comment="calendar-aside" class="w-64 shrink-0 flex flex-col gap-3 overflow-y-auto">
                   <div data-comment="foreman-card" data-component="card" class="bg-white dark:bg-stone-950 rounded-3xl border border-stone-200 dark:border-stone-800 p-4 flex flex-col gap-3">
-                    <p class="text-xs font-semibold text-stone-400 dark:text-stone-500 uppercase tracking-wide">Foreman Color Coding</p>
+                    <p data-comment="foreman-card-title" class="text-xs font-semibold text-stone-400 dark:text-stone-500 uppercase tracking-wide">Foreman Color Coding</p>
                     <div id="foreman-list" class="flex flex-col gap-1.5"></div>
                   </div>
                 </div>
@@ -323,12 +450,9 @@
 
       <div id="task-drawer" data-comment="task-drawer" data-component="drawer" class="drawer-root">
         <div class="drawer-backdrop" onclick="closeDrawer()"></div>
-        <aside class="drawer-panel">
-          <header class="flex items-center justify-between px-6 py-4 border-b border-stone-200 dark:border-stone-800 shrink-0">
-            <div>
-              <p data-comment="drawer-job" id="drawer-job" class="text-[10px] font-medium uppercase tracking-wider text-stone-400 dark:text-stone-500">JOB —</p>
-              <h2 data-comment="drawer-descr" id="drawer-descr" class="text-lg font-semibold text-stone-900 dark:text-stone-50 mt-0.5">—</h2>
-            </div>
+        <aside class="drawer-panel" data-comment="task-drawer-panel">
+          <header data-comment="drawer-header" class="flex items-center justify-between px-6 py-4 border-b border-stone-200 dark:border-stone-800 shrink-0">
+            <h2 data-comment="drawer-title" class="text-base font-semibold text-stone-900 dark:text-stone-50 m-0">Task Details</h2>
             <button type="button" data-comment="drawer-close" aria-label="Close" onclick="closeDrawer()"
               class="w-8 h-8 flex items-center justify-center rounded-lg text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800 cursor-pointer">
               <i data-lucide="x" class="w-4 h-4"></i>
@@ -363,13 +487,13 @@
       const taskType = (v) => TASK_TYPES.find((t) => t.value === v) ?? { value: v, label: v, color: '#a8a29e' };
 
       const USERS = [
-        { id: 1, first_name: 'Nazar',  last_name: 'K.',     color: '#3b82f6', is_foreman: true  },
-        { id: 2, first_name: 'Anna',   last_name: 'Lee',    color: '#22c55e', is_foreman: false },
-        { id: 3, first_name: 'Mark',   last_name: 'Chen',   color: '#f97316', is_foreman: true  },
-        { id: 4, first_name: 'Olivia', last_name: 'Brown',  color: '#a855f7', is_foreman: false },
-        { id: 5, first_name: 'Liam',   last_name: 'Patel',  color: '#ef4444', is_foreman: true  },
-        { id: 6, first_name: 'Erin',   last_name: 'Olsen',  color: '#0ea5e9', is_foreman: false },
-        { id: 7, first_name: 'Sara',   last_name: 'Thompson', color: '#10b981', is_foreman: true }
+        { id: 1, first_name: 'Nazar',  last_name: 'K.',       color: '#3b82f6', is_foreman: true,  position: 'Foreman', status: 'active' },
+        { id: 2, first_name: 'Anna',   last_name: 'Lee',      color: '#22c55e', is_foreman: false, position: 'Finisher', status: 'active' },
+        { id: 3, first_name: 'Mark',   last_name: 'Chen',     color: '#f97316', is_foreman: true,  position: 'Foreman', status: 'active' },
+        { id: 4, first_name: 'Olivia', last_name: 'Brown',    color: '#a855f7', is_foreman: false, position: 'Labourer', status: 'active' },
+        { id: 5, first_name: 'Liam',   last_name: 'Patel',    color: '#ef4444', is_foreman: true,  position: 'Foreman', status: 'on_leave' },
+        { id: 6, first_name: 'Erin',   last_name: 'Olsen',    color: '#0ea5e9', is_foreman: false, position: 'Operator', status: 'active' },
+        { id: 7, first_name: 'Sara',   last_name: 'Thompson', color: '#10b981', is_foreman: true,  position: 'Foreman', status: 'active' }
       ];
       const displayName = (u) => `${u.first_name} ${u.last_name}`;
       const isForeman = (u) => !!u.is_foreman;
@@ -382,6 +506,7 @@
       const fmtMonthYear = (d) => fmt(d, { month: 'long', year: 'numeric' });
       const fmtMMyy = (d) => fmt(d, { month: 'short', year: 'numeric' });
       const fmtShortDate = (iso) => fmt(parseISO(iso), { month: 'short', day: 'numeric', year: 'numeric' });
+      const slug = (v) => String(v).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
       const startOfMonth = (d) => new Date(d.getFullYear(), d.getMonth(), 1);
       const endOfMonth = (d) => new Date(d.getFullYear(), d.getMonth() + 1, 0);
       const startOfWeek = (d) => { const x = new Date(d); x.setDate(x.getDate() - x.getDay()); return x; };
@@ -389,20 +514,41 @@
       const addMonths = (d, n) => { const x = new Date(d); x.setMonth(x.getMonth() + n); return x; };
       const sameDay = (a, b) => a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
       const sameMonth = (a, b) => a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth();
+      const localISODate = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+      const shortDayMonth = (d) => fmt(d, { month: 'short', day: 'numeric' });
+      const sameWeek = (a, b) => sameDay(startOfWeek(a), startOfWeek(b));
+      function monthWeeks(monthDate) {
+        const weeks = [];
+        const start = startOfWeek(startOfMonth(monthDate));
+        const end = endOfWeek(endOfMonth(monthDate));
+        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 7)) {
+          const s = new Date(d);
+          const e = endOfWeek(s);
+          weeks.push({ start: s, end: e, label: `${shortDayMonth(s)} – ${e.getDate()}` });
+        }
+        return weeks;
+      }
 
       const TASKS = [
-        { autoid: 't1',  job_id: 1042, descr: 'Excavate basement footprint',     type: 'Excavating', start_date: isoOffset(-12), end_date: isoOffset(-9),  job_status: 'In Process', assigned_users: [USERS[2], USERS[4]] },
-        { autoid: 't2',  job_id: 1042, descr: 'Form footings — east elevation',  type: 'Forming',    start_date: isoOffset(-8),  end_date: isoOffset(-5),  job_status: 'In Process', assigned_users: [USERS[0], USERS[1]] },
-        { autoid: 't3',  job_id: 1042, descr: 'Pour foundation slab',            type: 'Flatwork',   start_date: isoOffset(-4),  end_date: isoOffset(-2),  job_status: 'In Process', assigned_users: [USERS[0], USERS[1], USERS[3]] },
-        { autoid: 't4',  job_id: 1042, descr: 'Form wall sections A1–A4',        type: 'Forming',    start_date: isoOffset(-1),  end_date: isoOffset(3),   job_status: 'In Process', assigned_users: [USERS[2], USERS[1]] },
-        { autoid: 't5',  job_id: 1058, descr: 'Order rebar staging',             type: 'Forming',    start_date: isoOffset(2),   end_date: isoOffset(5),   job_status: 'Confirmed',  assigned_users: [USERS[0], USERS[5]] },
-        { autoid: 't6',  job_id: 1063, descr: 'Trench utilities corridor',       type: 'Excavating', start_date: isoOffset(7),   end_date: isoOffset(9),   job_status: 'Confirmed',  assigned_users: [USERS[6], USERS[3]] },
-        { autoid: 't7',  job_id: 1063, descr: 'Driveway flatwork pour',          type: 'Flatwork',   start_date: isoOffset(10),  end_date: isoOffset(11),  job_status: 'Confirmed',  assigned_users: [USERS[2], USERS[1]] },
-        { autoid: 't8',  job_id: 1067, descr: 'Sidewalk pour — phase 2',         type: 'Flatwork',   start_date: isoOffset(13),  end_date: isoOffset(14),  job_status: 'Tentative',  assigned_users: [USERS[6]] },
-        { autoid: 't9',  job_id: 1071, descr: 'Footings excavation — south',     type: 'Excavating', start_date: isoOffset(5),   end_date: isoOffset(7),   job_status: 'In Process', assigned_users: [USERS[4], USERS[3]] },
-        { autoid: 't10', job_id: 1075, descr: 'Garage slab finish',              type: 'Flatwork',   start_date: isoOffset(-3),  end_date: isoOffset(-1),  job_status: 'Confirmed',  assigned_users: [USERS[0]] },
-        { autoid: 'u1',  job_id: 1080, descr: 'Awaiting permit — exterior pad',  type: 'Flatwork',   start_date: null,           end_date: null,           job_status: 'Tentative',  assigned_users: [] },
-        { autoid: 'u2',  job_id: 1081, descr: 'TBD: foundation repair scope',    type: 'Forming',    start_date: null,           end_date: null,           job_status: 'Tentative',  assigned_users: [USERS[2]] }
+        { autoid: 't1',  job_id: 1042, job_descr: 'Westbrook commercial complex', descr: 'Excavate basement footprint',     type: 'Excavating', start_date: isoOffset(-12), end_date: isoOffset(-9),  estimated_hours: 96,  custom_start_date: null, custom_end_date: null, custom_estimated: null, job_status: 'In Process', assigned_users: [USERS[2], USERS[4]] },
+        { autoid: 't2',  job_id: 1042, job_descr: 'Westbrook commercial complex', descr: 'Form footings — east elevation',  type: 'Forming',    start_date: isoOffset(-8),  end_date: isoOffset(-5),  estimated_hours: 128, custom_start_date: null, custom_end_date: null, custom_estimated: null, job_status: 'In Process', assigned_users: [USERS[0], USERS[1]] },
+        { autoid: 't3',  job_id: 1042, job_descr: 'Westbrook commercial complex', descr: 'Pour foundation slab',            type: 'Flatwork',   start_date: isoOffset(-4),  end_date: isoOffset(-2),  estimated_hours: 72,  custom_start_date: null, custom_end_date: null, custom_estimated: null, job_status: 'In Process', assigned_users: [USERS[0], USERS[1], USERS[3]] },
+        { autoid: 't4',  job_id: 1042, job_descr: 'Westbrook commercial complex', descr: 'Form wall sections A1–A4',        type: 'Forming',    start_date: isoOffset(-1),  end_date: isoOffset(3),   estimated_hours: 160, custom_start_date: null, custom_end_date: null, custom_estimated: null, job_status: 'In Process', assigned_users: [USERS[2], USERS[1]] },
+        { autoid: 't5',  job_id: 1058, job_descr: 'Greenfield warehouse expansion', descr: 'Order rebar staging',           type: 'Forming',    start_date: isoOffset(2),   end_date: isoOffset(5),   estimated_hours: 88,  custom_start_date: null, custom_end_date: null, custom_estimated: null, job_status: 'Confirmed',  assigned_users: [USERS[0], USERS[5]] },
+        { autoid: 't6',  job_id: 1063, job_descr: 'Riverside utilities trenching', descr: 'Trench utilities corridor',       type: 'Excavating', start_date: isoOffset(7),   end_date: isoOffset(9),   estimated_hours: 64,  custom_start_date: null, custom_end_date: null, custom_estimated: null, job_status: 'Confirmed',  assigned_users: [USERS[6], USERS[3]] },
+        { autoid: 't7',  job_id: 1063, job_descr: 'Riverside utilities trenching', descr: 'Driveway flatwork pour',          type: 'Flatwork',   start_date: isoOffset(10),  end_date: isoOffset(11),  estimated_hours: 40,  custom_start_date: null, custom_end_date: null, custom_estimated: null, job_status: 'Confirmed',  assigned_users: [USERS[2], USERS[1]] },
+        { autoid: 't8',  job_id: 1067, job_descr: 'Maple school sidewalk package', descr: 'Sidewalk pour — phase 2',         type: 'Flatwork',   start_date: isoOffset(13),  end_date: isoOffset(14),  estimated_hours: 48,  custom_start_date: null, custom_end_date: null, custom_estimated: null, job_status: 'Tentative',  assigned_users: [USERS[6]] },
+        { autoid: 't9',  job_id: 1071, job_descr: 'Harbourview footing repairs', descr: 'Footings excavation — south',       type: 'Excavating', start_date: isoOffset(5),   end_date: isoOffset(7),   estimated_hours: 80,  custom_start_date: null, custom_end_date: null, custom_estimated: null, job_status: 'In Process', assigned_users: [USERS[4], USERS[3]] },
+        { autoid: 't10', job_id: 1075, job_descr: 'Oakridge residential garage', descr: 'Garage slab finish',                type: 'Flatwork',   start_date: isoOffset(-3),  end_date: isoOffset(-1),  estimated_hours: 32,  custom_start_date: null, custom_end_date: null, custom_estimated: null, job_status: 'Confirmed',  assigned_users: [USERS[0]] },
+        { autoid: 'u1',  job_id: 1080, job_descr: 'Exterior pad permit hold', descr: 'Awaiting permit — exterior pad',        type: 'Flatwork',   start_date: null,           end_date: null,           estimated_hours: 24,  custom_start_date: null, custom_end_date: null, custom_estimated: null, job_status: 'Tentative',  assigned_users: [] },
+        { autoid: 'u2',  job_id: 1081, job_descr: 'Foundation repair scope', descr: 'TBD: foundation repair scope',           type: 'Forming',    start_date: null,           end_date: null,           estimated_hours: 40,  custom_start_date: null, custom_end_date: null, custom_estimated: null, job_status: 'Tentative',  assigned_users: [USERS[2]] }
+      ];
+
+      const TASK_TODOS = [
+        { id: 501, job_id: 1042, title: 'Inspect formwork alignment before pour', status: 'Not Started', type: 'Safety', priority: 'high', due_date: isoOffset(1), created_by: USERS[0], assigned_users: [USERS[2], USERS[1]] },
+        { id: 502, job_id: 1042, title: 'Submit RFI for column spacing', status: 'Blocked', type: 'Change Order', priority: 'high', due_date: isoOffset(-1), created_by: USERS[1], assigned_users: [USERS[0]] },
+        { id: 503, job_id: 1058, title: 'Confirm rebar delivery window', status: 'In Progress', type: 'Logistics', priority: 'medium', due_date: isoOffset(3), created_by: USERS[5], assigned_users: [USERS[0], USERS[5]] },
+        { id: 504, job_id: 1063, title: 'Daily safety briefing — trench access', status: 'Not Started', type: 'Safety', priority: 'medium', due_date: isoOffset(7), created_by: USERS[6], assigned_users: [USERS[3]] }
       ];
 
       const TABS = [
@@ -415,14 +561,19 @@
       const store = createStore({
         tasks: TASKS,
         activeTab: 'month',
-        selectedType: 'all',
+        selectedType: 'Forming',
         currentMonth: startOfMonth(today),
+        currentWeek: startOfWeek(today),
         excludedUsers: [],
         showTentative: true,
         showUnassigned: true,
         openSelect: null,
         settingsOpen: false,
+        monthPickerOpen: false,
+        monthPickerYear: today.getFullYear(),
         drawerTaskId: null,
+        drawerEditingField: null,
+        drawerEditDateValue: '',
         sidebarCollapsed: false,
         sidebarMobileOpen: false
       });
@@ -521,7 +672,12 @@
             type: 'button', role: 'tab',
             'data-comment': `tab-${t.value}`,
             'aria-selected': String(active),
-            onclick: () => store.set({ activeTab: t.value }),
+            onclick: () => store.set((s) => {
+              if (t.value !== 'week') return { activeTab: t.value };
+              const weeks = monthWeeks(s.currentMonth);
+              const currentWeek = weeks.some((w) => sameWeek(w.start, s.currentWeek)) ? s.currentWeek : weeks[0].start;
+              return { activeTab: t.value, currentWeek };
+            }),
             class: 'tab-pill px-3.5 py-1.5 rounded-full text-sm font-medium transition-colors duration-100 cursor-pointer select-none whitespace-nowrap outline-none text-stone-500 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-300'
           });
           const inner = el('span', { class: 'flex items-center gap-1.5' });
@@ -656,19 +812,24 @@
               class: `flex-1 bg-white dark:bg-stone-950 rounded-3xl border ${c.remaining < 0 ? 'border-red-300 dark:border-red-800' : 'border-stone-200 dark:border-stone-800'} p-4 flex flex-col min-w-0`
             });
             card.appendChild(el('p', {
+              'data-comment': `capacity-${m.getFullYear()}-${m.getMonth() + 1}-month`,
               class: 'text-[11px] font-semibold uppercase tracking-widest text-stone-400 dark:text-stone-500 mb-3 m-0'
             }, fmtMonthYear(m).toUpperCase()));
-            const rowsWrap = el('div', { class: 'flex flex-col flex-1 gap-1.5' });
-            const mkRow = (label, value, valueCls, divider) => {
-              const r = el('div', { class: `flex items-center justify-between text-sm${divider ? ' pt-1 border-t border-stone-100 dark:border-stone-800' : ''}` });
-              r.appendChild(el('span', { class: 'text-stone-500 dark:text-stone-400' }, label));
-              r.appendChild(el('span', { class: `font-semibold tabular-nums ${valueCls}` }, `${value} hrs`));
+            const rowsWrap = el('div', { 'data-comment': `capacity-${m.getFullYear()}-${m.getMonth() + 1}-rows`, class: 'flex flex-col flex-1 gap-1.5' });
+            const mkRow = (key, label, value, valueCls, divider) => {
+              const r = el('div', {
+                'data-comment': `capacity-${m.getFullYear()}-${m.getMonth() + 1}-${key}-row`,
+                class: `flex items-center justify-between text-sm${divider ? ' pt-1 border-t border-stone-100 dark:border-stone-800' : ''}`
+              });
+              r.appendChild(el('span', { 'data-comment': `capacity-${m.getFullYear()}-${m.getMonth() + 1}-${key}-label`, class: 'text-stone-500 dark:text-stone-400' }, label));
+              r.appendChild(el('span', { 'data-comment': `capacity-${m.getFullYear()}-${m.getMonth() + 1}-${key}-value`, class: `font-semibold tabular-nums ${valueCls}` }, `${value} hrs`));
               return r;
             };
-            rowsWrap.appendChild(mkRow('Available', c.available, 'text-stone-700 dark:text-stone-300'));
-            rowsWrap.appendChild(mkRow('Booked', c.booked, 'text-stone-700 dark:text-stone-300'));
-            rowsWrap.appendChild(mkRow('Tentative', c.tentative, 'text-violet-500 dark:text-violet-400'));
+            rowsWrap.appendChild(mkRow('available', 'Available', c.available, 'text-stone-700 dark:text-stone-300'));
+            rowsWrap.appendChild(mkRow('booked', 'Booked', c.booked, 'text-stone-700 dark:text-stone-300'));
+            rowsWrap.appendChild(mkRow('tentative', 'Tentative', c.tentative, 'text-violet-500 dark:text-violet-400'));
             rowsWrap.appendChild(mkRow(
+              c.remaining < 0 ? 'overbooked' : 'remaining',
               c.remaining < 0 ? 'Overbooked' : 'Remaining',
               Math.abs(c.remaining),
               c.remaining < 0 ? 'text-red-500 dark:text-red-400' : 'text-teal-600 dark:text-teal-400',
@@ -689,6 +850,7 @@
               class: `bg-white dark:bg-stone-950 rounded-3xl border ${overbooked ? 'border-red-300 dark:border-red-800' : 'border-stone-200 dark:border-stone-800'} p-4 flex flex-col justify-between min-h-[6.25rem]`
             });
             card.appendChild(el('p', {
+              'data-comment': `capacity-card-${key}-label`,
               class: `text-[11px] font-semibold uppercase tracking-widest ${overbooked ? 'text-red-500 dark:text-red-400' : 'text-stone-400 dark:text-stone-500'} m-0`
             }, label));
             const big = el('p', {
@@ -768,7 +930,7 @@
               const visual = barVisualStyle(t);
               const radius = `${b.clipsLeft ? '0' : '8px'} ${b.clipsRight ? '0' : '8px'} ${b.clipsRight ? '0' : '8px'} ${b.clipsLeft ? '0' : '8px'}`;
               const bar = el('div', {
-                'data-comment': `bar-${t.autoid}`,
+                'data-comment': `bar-${t.autoid}-week-${wi}-col-${b.startCol}`,
                 class: 'calendar-bar',
                 style: `pointer-events: auto; left: calc(${b.startCol} / 7 * 100% + 3px); width: calc(${b.span} / 7 * 100% - 6px); top: ${b.track * BAR_SPACING}px; border-radius: ${radius}; ${visual}`,
                 onclick: () => store.set({ drawerTaskId: t.autoid })
@@ -789,113 +951,197 @@
       }
 
       function renderWeekView() {
-        const card = el('div', { 'data-comment': 'week-view', 'data-component': 'card', class: 'flex-1 min-h-0 min-w-0 flex flex-col overflow-auto bg-white dark:bg-stone-950 rounded-3xl border border-stone-200 dark:border-stone-800' });
-        const { currentMonth } = store.get();
-        const weekStart = startOfWeek(currentMonth);
-        const days = [];
-        for (let i = 0; i < 7; i++) { const d = new Date(weekStart); d.setDate(d.getDate() + i); days.push({ date: d, isToday: sameDay(d, today), currentMonth: sameMonth(d, currentMonth) }); }
+        const { currentMonth, currentWeek } = store.get();
+        const card = el('div', {
+          'data-comment': 'week-view',
+          'data-component': 'card',
+          class: 'flex-1 min-h-0 min-w-0 flex flex-col overflow-x-auto bg-white dark:bg-stone-950 rounded-3xl border border-stone-200 dark:border-stone-800'
+        });
+        const inner = el('div', { 'data-comment': 'week-view-inner', class: 'flex flex-col min-w-[37.5rem] flex-1 min-h-0' });
 
-        // Header row with EEE name + day number; today gets brand-circle
-        const headRow = el('div', { class: 'grid grid-cols-7 border-b border-stone-200 dark:border-stone-700 shrink-0 bg-stone-50/60 dark:bg-stone-950' });
+        const tabsWrap = el('div', { 'data-comment': 'week-tabs-wrap', class: 'px-4 py-3 shrink-0 border-b border-stone-200 dark:border-stone-700' });
+        const tabs = el('div', { 'data-comment': 'week-tabs', 'data-component': 'tabs', class: 'flex items-center bg-stone-100 dark:bg-stone-800 rounded-full p-1 gap-0.5 w-fit max-w-full overflow-x-auto' });
+        monthWeeks(currentMonth).forEach((week, i) => {
+          const active = sameWeek(week.start, currentWeek);
+          tabs.appendChild(el('button', {
+            type: 'button',
+            role: 'tab',
+            'data-comment': `week-tab-${i}`,
+            'aria-selected': String(active),
+            onclick: () => store.set({ currentWeek: week.start }),
+            class: 'tab-pill px-3.5 py-1.5 rounded-full text-sm font-medium transition-colors duration-100 cursor-pointer select-none whitespace-nowrap outline-none text-stone-500 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-300'
+          }, week.label));
+        });
+        tabsWrap.appendChild(tabs);
+        inner.appendChild(tabsWrap);
+
+        const weekStart = startOfWeek(currentWeek);
+        const weekEnd = endOfWeek(currentWeek);
+        const days = Array.from({ length: 7 }, (_, i) => {
+          const d = new Date(weekStart);
+          d.setDate(d.getDate() + i);
+          return { date: d, isToday: sameDay(d, today) };
+        });
+
+        const headRow = el('div', { 'data-comment': 'week-day-headers', class: 'grid grid-cols-7 shrink-0' });
         days.forEach((d, i) => {
-          const cell = el('div', { 'data-comment': `week-header-${i}`, class: `flex flex-col items-center gap-1 py-3 ${i < 6 ? 'border-r border-stone-200 dark:border-stone-800' : ''}` });
-          cell.appendChild(el('p', { class: 'text-[10px] uppercase tracking-wide text-stone-400 dark:text-stone-500 m-0 font-medium' }, ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.date.getDay()]));
-          if (d.isToday) {
-            cell.appendChild(el('div', {
-              class: 'w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold bg-stone-900 dark:bg-white text-white dark:text-stone-900'
-            }, String(d.date.getDate())));
-          } else {
-            cell.appendChild(el('p', { class: 'text-base font-semibold text-stone-900 dark:text-stone-50 m-0' }, String(d.date.getDate())));
-          }
+          const cell = el('div', { 'data-comment': `week-header-${i}`, class: 'py-2.5 flex flex-col items-center justify-center border-r border-stone-200 dark:border-stone-700 last:border-r-0' });
+          cell.appendChild(el('span', {
+            'data-comment': `week-header-${i}-name`,
+            class: `text-xs font-medium ${d.isToday ? 'text-brand-500' : 'text-stone-400 dark:text-stone-500'}`
+          }, ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.date.getDay()]));
+          cell.appendChild(el('span', {
+            'data-comment': `week-header-${i}-day`,
+            class: `mt-0.5 inline-flex w-7 h-7 items-center justify-center rounded-full text-sm font-semibold ${d.isToday ? 'bg-brand-500 text-white' : 'text-stone-700 dark:text-stone-300'}`
+          }, String(d.date.getDate())));
           headRow.appendChild(cell);
         });
-        card.appendChild(headRow);
+        inner.appendChild(headRow);
 
-        const tasks = filteredTasks();
-        const bars = buildBars(tasks, days);
-        const trackCount = bars.length ? Math.max(...bars.map((b) => b.track)) + 1 : 1;
-        const BAR_H = 42, BAR_GAP = 6, BAR_TOP_OFFSET = 12, BOTTOM_PAD = 12;
-
-        // Day columns (visible grid)
-        const cols = el('div', { class: 'relative flex-1 grid grid-cols-7', style: `min-height: ${Math.max(280, trackCount * (BAR_H + BAR_GAP) + BAR_TOP_OFFSET + BOTTOM_PAD)}px` });
-        days.forEach((d, i) => {
-          cols.appendChild(el('div', { class: `${i < 6 ? 'border-r' : ''} border-stone-200 dark:border-stone-800 ${d.isToday ? 'bg-blue-50/30 dark:bg-blue-950/10' : ''}` }));
-        });
-
-        // Bars overlay (positioned over the cols)
-        const overlay = el('div', { class: 'absolute inset-x-0', style: `top: ${BAR_TOP_OFFSET}px; pointer-events: none;` });
-        bars.forEach((b) => {
-          const t = b.task;
-          const visual = barVisualStyle(t);
-          const radius = `${b.clipsLeft ? '0' : '8px'} ${b.clipsRight ? '0' : '8px'} ${b.clipsRight ? '0' : '8px'} ${b.clipsLeft ? '0' : '8px'}`;
-          const bar = el('div', {
-            'data-comment': `week-bar-${t.autoid}`,
-            class: 'calendar-bar',
-            style: `pointer-events: auto; left: calc(${b.startCol} / 7 * 100% + 4px); width: calc(${b.span} / 7 * 100% - 8px); top: ${b.track * (BAR_H + BAR_GAP)}px; border-radius: ${radius}; ${visual}`,
-            onclick: () => store.set({ drawerTaskId: t.autoid })
+        const weekTasks = filteredTasks()
+          .filter((t) => {
+            if (!t.start_date || !t.end_date) return false;
+            const s = parseISO(t.start_date);
+            const e = parseISO(t.end_date);
+            return s <= weekEnd && e >= weekStart;
+          })
+          .map((t) => {
+            const s = parseISO(t.start_date);
+            const e = parseISO(t.end_date);
+            const startsBeforeWeek = s < weekStart;
+            const endsAfterWeek = e > weekEnd;
+            return {
+              task: t,
+              startCol: startsBeforeWeek ? 0 : s.getDay(),
+              endCol: endsAfterWeek ? 6 : e.getDay(),
+              startsBeforeWeek,
+              endsAfterWeek,
+              dateRange: `${shortDayMonth(s)} – ${shortDayMonth(e)}`
+            };
           });
-          if (!t.assigned_users.some(isForeman)) {
-            bar.appendChild(el('span', { class: 'absolute left-2 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full shrink-0', style: `background:${taskType(t.type).color}` }));
-          }
-          bar.appendChild(el('span', { class: 'truncate', title: `#${t.job_id} ${t.descr}` }, `#${t.job_id} ${t.descr}`));
-          overlay.appendChild(bar);
-        });
 
-        // Wrap cols + overlay in a relative container so overlay aligns over them
-        const inner = el('div', { class: 'relative flex-1 flex flex-col' });
-        inner.appendChild(cols);
-        inner.appendChild(overlay);
-        card.appendChild(inner);
-
-        if (!bars.length) {
-          const empty = el('div', { class: 'absolute inset-0 flex items-center justify-center pointer-events-none' });
-          const e = el('div', { class: 'flex flex-col items-center justify-center gap-3 py-12 text-center' });
-          const ico = el('div', { class: 'w-10 h-10 rounded-3xl bg-stone-50 dark:bg-stone-800 flex items-center justify-center' });
-          ico.appendChild(lucideEl('calendar-x', 'w-8 h-8 text-stone-400 dark:text-stone-500'));
+        const rows = el('div', { 'data-comment': 'week-task-rows', class: 'flex-1 overflow-y-auto flex flex-col' });
+        if (!weekTasks.length) {
+          const empty = el('div', { 'data-comment': 'week-empty', class: 'flex-1 flex items-center justify-center' });
+          const e = el('div', { 'data-comment': 'week-empty-content', class: 'flex flex-col items-center justify-center gap-3 py-12 text-center' });
+          const ico = el('div', { 'data-comment': 'week-empty-icon', class: 'w-10 h-10 rounded-3xl bg-stone-50 dark:bg-stone-800 flex items-center justify-center' });
+          ico.appendChild(lucideEl('calendar-x', 'w-8 h-8 text-stone-400 dark:text-stone-500', { 'data-comment': 'week-empty-icon-svg' }));
           e.appendChild(ico);
-          e.appendChild(el('p', { class: 'text-sm font-semibold text-stone-900 dark:text-stone-50 m-0' }, 'No tasks this week'));
-          e.appendChild(el('p', { class: 'text-xs text-stone-400 dark:text-stone-500 mt-0.5 m-0' }, 'Try changing filters or navigating to a different week'));
+          e.appendChild(el('p', { 'data-comment': 'week-empty-title', class: 'text-sm font-semibold text-stone-900 dark:text-stone-50 m-0' }, 'No jobs this week'));
+          e.appendChild(el('p', { 'data-comment': 'week-empty-description', class: 'text-xs text-stone-400 dark:text-stone-500 mt-0.5 m-0' }, 'No jobs are scheduled for this period'));
           empty.appendChild(e);
-          inner.appendChild(empty);
+          rows.appendChild(empty);
+        } else {
+          weekTasks.forEach((row, idx) => {
+            const t = row.task;
+            const item = el('div', {
+              'data-comment': `week-row-${t.autoid}`,
+              class: 'relative shrink-0',
+              style: 'height: 100px'
+            });
+            const cols = el('div', { 'data-comment': `week-row-${t.autoid}-cols`, class: 'absolute inset-0 grid grid-cols-7 pointer-events-none' });
+            days.forEach((d, i) => {
+              cols.appendChild(el('div', {
+                'data-comment': `week-row-${t.autoid}-col-${i}`,
+                class: `border-r border-stone-200 dark:border-stone-700 last:border-r-0 ${d.isToday ? 'bg-stone-50/80 dark:bg-stone-800/20' : ''}`
+              }));
+            });
+            item.appendChild(cols);
+            const radius = `${row.startsBeforeWeek ? '0' : '12px'} ${row.endsAfterWeek ? '0' : '12px'} ${row.endsAfterWeek ? '0' : '12px'} ${row.startsBeforeWeek ? '0' : '12px'}`;
+            const bar = el('div', {
+              'data-comment': `week-bar-${t.autoid}`,
+              class: 'absolute top-3 bottom-3 flex flex-col justify-center px-4 overflow-hidden cursor-pointer transition-filter duration-100 transition-shadow hover:brightness-110',
+              style: `left: calc(${row.startCol} / 7 * 100% + 6px); right: calc((6 - ${row.endCol}) / 7 * 100% + 6px); border-radius: ${radius}; ${barVisualStyle(t)}`,
+              onclick: () => store.set({ drawerTaskId: t.autoid })
+            });
+            if (row.startsBeforeWeek) bar.appendChild(lucideEl('arrow-left', 'absolute left-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 opacity-70 shrink-0', { 'data-comment': `week-bar-${t.autoid}-left` }));
+            const body = el('div', { 'data-comment': `week-bar-${t.autoid}-body`, class: row.startsBeforeWeek ? 'pl-5' : '' });
+            body.appendChild(el('p', { 'data-comment': `week-bar-${t.autoid}-title`, class: 'text-sm font-bold leading-tight truncate m-0', title: `#${t.job_id} ${t.descr}` }, `#${t.job_id} ${t.descr}`));
+            body.appendChild(el('p', { 'data-comment': `week-bar-${t.autoid}-type`, class: 'text-xs mt-0.5 opacity-80 truncate m-0' }, taskType(t.type).label));
+            body.appendChild(el('p', { 'data-comment': `week-bar-${t.autoid}-range`, class: 'text-xs mt-0.5 opacity-60 truncate m-0' }, row.dateRange));
+            bar.appendChild(body);
+            if (row.endsAfterWeek) bar.appendChild(lucideEl('arrow-right', 'absolute right-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 opacity-70 shrink-0', { 'data-comment': `week-bar-${t.autoid}-right` }));
+            item.appendChild(bar);
+            rows.appendChild(item);
+          });
         }
+        inner.appendChild(rows);
+        card.appendChild(inner);
         return card;
       }
 
       function renderThreeMonthView() {
         const { currentMonth } = store.get();
-        const wrap = el('div', { 'data-comment': 'three-month-view', class: 'flex-1 grid grid-cols-1 lg:grid-cols-3 gap-3 min-h-0' });
+        const wrap = el('div', { 'data-comment': 'three-month-view', class: 'flex-1 min-h-0 flex flex-col overflow-hidden' });
+        const monthsWrap = el('div', { 'data-comment': 'three-month-months', class: 'flex-1 min-h-0 flex gap-3 overflow-x-auto' });
         [-1, 0, 1].forEach((off) => {
           const m = addMonths(currentMonth, off);
           const card = el('div', {
             'data-comment': `three-month-${off}`,
             'data-component': 'card',
-            class: 'bg-white dark:bg-stone-950 rounded-3xl border border-stone-200 dark:border-stone-800 p-3 flex flex-col gap-2 overflow-auto'
+            class: 'bg-white dark:bg-stone-950 rounded-3xl border border-stone-200 dark:border-stone-800 flex-1 min-w-64 min-h-0 flex flex-col overflow-hidden shadow-none'
           });
-          card.appendChild(el('p', { class: 'text-sm font-semibold text-stone-900 dark:text-stone-50 m-0' }, fmtMonthYear(m)));
-          const grid = el('div', { class: 'grid grid-cols-7 gap-px text-[10px]' });
-          ['S','M','T','W','T','F','S'].forEach((n) => grid.appendChild(el('div', { class: 'text-center text-stone-400 dark:text-stone-500 font-medium py-1' }, n)));
+          const title = el('div', { 'data-comment': `three-month-${off}-title-wrap`, class: 'px-4 pt-3 pb-2 shrink-0 border-b border-stone-200 dark:border-stone-700' });
+          title.appendChild(el('p', {
+            'data-comment': `three-month-${off}-title`,
+            class: 'text-xs font-bold text-stone-500 dark:text-stone-400 uppercase tracking-wide text-center m-0'
+          }, fmtMonthYear(m).toUpperCase()));
+          card.appendChild(title);
+          const daysHead = el('div', { 'data-comment': `three-month-${off}-days`, class: 'grid grid-cols-7 border-b border-stone-200 dark:border-stone-700 shrink-0' });
+          ['S','M','T','W','T','F','S'].forEach((n, i) => daysHead.appendChild(el('div', {
+            'data-comment': `three-month-${off}-day-${i}`,
+            class: 'py-1.5 text-center text-[10px] font-medium text-stone-400 dark:text-stone-500'
+          }, n)));
+          card.appendChild(daysHead);
+
+          const body = el('div', { 'data-comment': `three-month-${off}-body`, class: 'flex-1 overflow-y-auto flex flex-col' });
           const weeks = buildMonthGrid(m);
           const tasks = filteredTasks();
-          weeks.forEach((week) => {
+          const DATE_OFFSET = 30, BAR_H = 20, BAR_GAP = 2, BAR_SPACING = BAR_H + BAR_GAP, BOTTOM_PAD = 4, MIN_ROW_H = 60;
+          weeks.forEach((week, wi) => {
             const bars = buildBars(tasks, week);
-            week.forEach((day) => {
-              const dayBars = bars.filter((b) => day.date.getDay() >= b.startCol && day.date.getDay() <= b.startCol + b.span - 1);
-              const cell = el('div', {
-                class: `text-center py-1 rounded ${day.isToday ? 'bg-stone-200 dark:bg-stone-800 font-bold' : ''} ${!day.currentMonth ? 'opacity-30' : ''} ${dayBars.length ? 'cursor-pointer' : ''}`,
-                onclick: dayBars.length ? () => store.set({ drawerTaskId: dayBars[0].task.autoid }) : null
-              });
-              cell.appendChild(el('span', { class: 'text-[11px] text-stone-700 dark:text-stone-300' }, String(day.date.getDate())));
-              if (dayBars.length) {
-                const dots = el('div', { class: 'flex justify-center gap-0.5 mt-0.5' });
-                dayBars.slice(0, 3).forEach((b) => dots.appendChild(el('span', { class: 'w-1 h-1 rounded-full', style: `background:${colorOf(b.task)}` })));
-                cell.appendChild(dots);
-              }
-              grid.appendChild(cell);
+            const trackCount = bars.length ? Math.max(...bars.map((b) => b.track)) + 1 : 0;
+            const rowH = Math.max(DATE_OFFSET + trackCount * BAR_SPACING + BOTTOM_PAD, MIN_ROW_H);
+            const row = el('div', {
+              'data-comment': `three-month-${off}-week-${wi}`,
+              class: 'relative border-b border-stone-200 dark:border-stone-700 last:border-b-0',
+              style: `min-height: ${rowH}px`
             });
+            const cells = el('div', { 'data-comment': `three-month-${off}-week-${wi}-cells`, class: 'absolute inset-0 grid grid-cols-7' });
+            week.forEach((day, di) => {
+              const cellCls = `day-cell ${day.isToday ? 'today' : ''} ${!day.currentMonth ? 'other-month' : ''}`;
+              const cell = el('div', { 'data-comment': `three-month-${off}-week-${wi}-day-${di}`, class: `${cellCls} p-1` });
+              cell.appendChild(el('span', { 'data-comment': `three-month-${off}-week-${wi}-day-${di}-num`, class: 'day-num', style: 'width: 1.25rem; height: 1.25rem; font-size: 10px;' }, String(day.date.getDate())));
+              cells.appendChild(cell);
+            });
+            row.appendChild(cells);
+            const layer = el('div', {
+              'data-comment': `three-month-${off}-week-${wi}-bars`,
+              class: 'absolute inset-x-0 pointer-events-none',
+              style: `top: ${DATE_OFFSET}px; bottom: ${BOTTOM_PAD}px`
+            });
+            bars.forEach((b) => {
+              const t = b.task;
+              const radius = `${b.clipsLeft ? '0' : '4px'} ${b.clipsRight ? '0' : '4px'} ${b.clipsRight ? '0' : '4px'} ${b.clipsLeft ? '0' : '4px'}`;
+              const bar = el('div', {
+                'data-comment': `three-month-bar-${off}-${t.autoid}-${wi}-${b.startCol}`,
+                class: 'absolute text-[10px] font-semibold overflow-hidden flex items-center px-2 pointer-events-auto cursor-pointer transition-shadow duration-150 hover:brightness-110',
+                style: `height: ${BAR_H}px; left: calc(${b.startCol} / 7 * 100% + 2px); width: calc(${b.span} / 7 * 100% - 4px); top: ${b.track * BAR_SPACING}px; border-radius: ${radius}; ${barVisualStyle(t, '1px')}`,
+                onclick: () => store.set({ drawerTaskId: t.autoid })
+              });
+              if (!t.assigned_users.some(isForeman)) {
+                bar.appendChild(el('span', { 'data-comment': `three-month-bar-${off}-${t.autoid}-${wi}-${b.startCol}-dot`, class: 'w-1.5 h-1.5 rounded-full shrink-0 mr-1', style: `background:${taskType(t.type).color}` }));
+              }
+              bar.appendChild(el('span', { 'data-comment': `three-month-bar-${off}-${t.autoid}-${wi}-${b.startCol}-text`, class: 'truncate', title: `#${t.job_id} ${t.descr}` }, `#${t.job_id} ${t.descr}`));
+              layer.appendChild(bar);
+            });
+            row.appendChild(layer);
+            body.appendChild(row);
           });
-          card.appendChild(grid);
-          wrap.appendChild(card);
+          card.appendChild(body);
+          monthsWrap.appendChild(card);
         });
+        wrap.appendChild(monthsWrap);
         return wrap;
       }
 
@@ -903,28 +1149,27 @@
         const tasks = filteredTasks().filter((t) => !t.start_date || !t.end_date);
         const card = el('div', { 'data-comment': 'unscheduled-view', 'data-component': 'card', class: 'flex-1 min-h-0 flex flex-col bg-white dark:bg-stone-950 rounded-3xl border border-stone-200 dark:border-stone-800 overflow-hidden' });
         if (!tasks.length) {
-          const empty = el('div', { class: 'flex-1 flex flex-col items-center justify-center gap-3 py-12 text-center' });
-          const ico = el('div', { class: 'w-10 h-10 rounded-3xl bg-stone-50 dark:bg-stone-800 flex items-center justify-center' });
-          ico.appendChild(lucideEl('calendar-clock', 'w-8 h-8 text-stone-400 dark:text-stone-500'));
+          const empty = el('div', { 'data-comment': 'unscheduled-empty', class: 'flex-1 flex flex-col items-center justify-center gap-3 py-12 text-center' });
+          const ico = el('div', { 'data-comment': 'unscheduled-empty-icon', class: 'w-10 h-10 rounded-3xl bg-stone-50 dark:bg-stone-800 flex items-center justify-center' });
+          ico.appendChild(lucideEl('calendar-clock', 'w-8 h-8 text-stone-400 dark:text-stone-500', { 'data-comment': 'unscheduled-empty-icon-svg' }));
           empty.appendChild(ico);
-          empty.appendChild(el('p', { class: 'text-sm font-semibold text-stone-900 dark:text-stone-50 m-0' }, 'Nothing unscheduled'));
-          empty.appendChild(el('p', { class: 'text-xs text-stone-400 dark:text-stone-500 mt-0.5 m-0' }, 'All tasks have dates assigned'));
+          empty.appendChild(el('p', { 'data-comment': 'unscheduled-empty-title', class: 'text-sm font-semibold text-stone-900 dark:text-stone-50 m-0' }, 'Nothing unscheduled'));
+          empty.appendChild(el('p', { 'data-comment': 'unscheduled-empty-description', class: 'text-xs text-stone-400 dark:text-stone-500 mt-0.5 m-0' }, 'All tasks have dates assigned'));
           card.appendChild(empty);
           return card;
         }
-        const tableWrap = el('div', { class: 'flex-1 overflow-auto' });
-        const table = el('table', { 'data-component': 'table', class: 'w-full text-sm' });
-        const thead = el('thead', { class: 'bg-stone-50 dark:bg-stone-950 sticky top-0 z-10' });
-        const headerRow = el('tr', { class: 'text-left' });
+        const tableWrap = el('div', { 'data-comment': 'unscheduled-table-wrap', class: 'flex-1 overflow-auto' });
+        const table = el('table', { 'data-comment': 'unscheduled-table', 'data-component': 'table', class: 'w-full text-sm' });
+        const thead = el('thead', { 'data-comment': 'unscheduled-table-head', class: 'bg-stone-50 dark:bg-stone-950 sticky top-0 z-10' });
+        const headerRow = el('tr', { 'data-comment': 'unscheduled-table-header-row', class: 'text-left' });
         ['Job', 'Task', 'Type', 'Foreman', 'Est. Hours', 'Status'].forEach((h) => {
-          headerRow.appendChild(el('th', { class: 'px-4 py-3 text-xs font-medium text-stone-500 dark:text-stone-400 whitespace-nowrap' }, h));
+          headerRow.appendChild(el('th', { 'data-comment': `unscheduled-table-head-${slug(h)}`, class: 'px-4 py-3 text-xs font-medium text-stone-500 dark:text-stone-400 whitespace-nowrap' }, h));
         });
         thead.appendChild(headerRow);
         table.appendChild(thead);
 
-        const tbody = el('tbody');
+        const tbody = el('tbody', { 'data-comment': 'unscheduled-table-body' });
         tasks.forEach((t) => {
-          const color = colorOf(t);
           const tt = taskType(t.type);
           const foreman = t.assigned_users.find(isForeman);
           const tr = el('tr', {
@@ -933,11 +1178,11 @@
             onclick: () => store.set({ drawerTaskId: t.autoid })
           });
           // Job
-          tr.appendChild(el('td', { class: 'px-4 py-3 whitespace-nowrap' }, [
+          tr.appendChild(el('td', { 'data-comment': `unscheduled-row-${t.autoid}-job-cell`, class: 'px-4 py-3 whitespace-nowrap' }, [
             el('span', { 'data-comment': `unscheduled-row-${t.autoid}-job`, class: 'font-mono text-sm font-medium text-stone-900 dark:text-stone-50' }, `#${t.job_id}`)
           ]));
           // Task descr
-          tr.appendChild(el('td', { class: 'px-4 py-3' }, [
+          tr.appendChild(el('td', { 'data-comment': `unscheduled-row-${t.autoid}-descr-cell`, class: 'px-4 py-3' }, [
             el('span', { 'data-comment': `unscheduled-row-${t.autoid}-descr`, class: 'text-sm text-stone-700 dark:text-stone-300' }, t.descr)
           ]));
           // Type
@@ -946,22 +1191,22 @@
             class: 'inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full border whitespace-nowrap',
             style: `color:${tt.color};background:${tt.color}1a;border-color:${tt.color}66`
           });
-          typeTag.appendChild(el('span', { class: 'w-1.5 h-1.5 rounded-full', style: `background:${tt.color}` }));
+          typeTag.appendChild(el('span', { 'data-comment': `unscheduled-row-${t.autoid}-type-dot`, class: 'w-1.5 h-1.5 rounded-full', style: `background:${tt.color}` }));
           typeTag.appendChild(document.createTextNode(tt.label));
-          tr.appendChild(el('td', { class: 'px-4 py-3' }, [typeTag]));
+          tr.appendChild(el('td', { 'data-comment': `unscheduled-row-${t.autoid}-type-cell`, class: 'px-4 py-3' }, [typeTag]));
           // Foreman
-          const fCell = el('td', { class: 'px-4 py-3 whitespace-nowrap' });
+          const fCell = el('td', { 'data-comment': `unscheduled-row-${t.autoid}-foreman-cell`, class: 'px-4 py-3 whitespace-nowrap' });
           if (foreman) {
-            const fwrap = el('div', { class: 'inline-flex items-center gap-1.5' });
-            fwrap.appendChild(el('span', { class: 'w-2 h-2 rounded-full shrink-0', style: `background:${foreman.color}` }));
+            const fwrap = el('div', { 'data-comment': `unscheduled-row-${t.autoid}-foreman-wrap`, class: 'inline-flex items-center gap-1.5' });
+            fwrap.appendChild(el('span', { 'data-comment': `unscheduled-row-${t.autoid}-foreman-dot`, class: 'w-2 h-2 rounded-full shrink-0', style: `background:${foreman.color}` }));
             fwrap.appendChild(el('span', { 'data-comment': `unscheduled-row-${t.autoid}-foreman`, class: 'text-sm text-stone-700 dark:text-stone-300' }, displayName(foreman)));
             fCell.appendChild(fwrap);
           } else {
-            fCell.appendChild(el('span', { class: 'text-sm text-stone-400 dark:text-stone-500' }, '—'));
+            fCell.appendChild(el('span', { 'data-comment': `unscheduled-row-${t.autoid}-foreman-empty`, class: 'text-sm text-stone-400 dark:text-stone-500' }, '—'));
           }
           tr.appendChild(fCell);
           // Est. Hours
-          tr.appendChild(el('td', { class: 'px-4 py-3 whitespace-nowrap' }, [
+          tr.appendChild(el('td', { 'data-comment': `unscheduled-row-${t.autoid}-hours-cell`, class: 'px-4 py-3 whitespace-nowrap' }, [
             el('span', { 'data-comment': `unscheduled-row-${t.autoid}-hours`, class: 'text-sm tabular-nums text-stone-700 dark:text-stone-300' }, t.estimated_hours ? `${t.estimated_hours}h` : '—')
           ]));
           // Status
@@ -973,7 +1218,7 @@
               : t.job_status === 'Confirmed' ? 'background:rgba(16,185,129,0.15);color:rgb(5,150,105)'
               : 'background:rgba(120,113,108,0.15);color:rgb(87,83,78)'
           }, t.job_status);
-          tr.appendChild(el('td', { class: 'px-4 py-3' }, [statusTag]));
+          tr.appendChild(el('td', { 'data-comment': `unscheduled-row-${t.autoid}-status-cell`, class: 'px-4 py-3' }, [statusTag]));
           tbody.appendChild(tr);
         });
         table.appendChild(tbody);
@@ -1001,94 +1246,283 @@
         drawer.classList.add('is-open');
         const t = tasks.find((x) => x.autoid === drawerTaskId);
         if (!t) return;
-        document.getElementById('drawer-job').textContent = `JOB #${t.job_id} · ${t.job_status}`;
-        document.getElementById('drawer-descr').textContent = t.descr;
         const body = document.getElementById('drawer-body');
         clear(body);
-        const make = (label, content) => {
-          const w = el('div', { class: 'flex flex-col gap-1' });
-          w.appendChild(el('span', { class: 'text-[10px] font-medium uppercase tracking-wider text-stone-400 dark:text-stone-500' }, label));
-          w.appendChild(content);
-          return w;
+        const SECTION_LABEL = 'text-[11px] font-semibold uppercase tracking-wide text-stone-400 dark:text-stone-500';
+        const displayStart = t.custom_start_date ?? t.start_date;
+        const displayEnd = t.custom_end_date ?? t.end_date;
+        const displayHours = t.custom_estimated ?? t.estimated_hours ?? 0;
+        const isStartAdjusted = t.custom_start_date != null && t.custom_start_date !== t.start_date;
+        const isEndAdjusted = t.custom_end_date != null && t.custom_end_date !== t.end_date;
+        const isHoursAdjusted = t.custom_estimated != null && t.custom_estimated !== t.estimated_hours;
+        const isWebAdjusted = isStartAdjusted || isEndAdjusted || isHoursAdjusted;
+        const statusTag = (status, key) => {
+          const color = status === 'Tentative' ? '#f59e0b' : status === 'In Process' ? '#3b82f6' : status === 'Confirmed' ? '#10b981' : '#78716c';
+          const tag = el('span', {
+            'data-comment': key,
+            class: 'inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full border w-fit',
+            style: `color:${color};background:${color}1a;border-color:${color}66;${status === 'Tentative' ? 'border-style:dashed;' : ''}`
+          });
+          tag.appendChild(el('span', { 'data-comment': `${key}-dot`, class: 'w-1.5 h-1.5 rounded-full', style: 'background:currentColor' }));
+          tag.appendChild(document.createTextNode(status || 'Unknown'));
+          return tag;
         };
+        const adjustedLabel = (key) => el('p', { 'data-comment': `drawer-${key}-adjusted`, class: 'text-xs text-teal-500 mt-1 flex items-center gap-1.5 m-0' }, [
+          el('span', { 'data-comment': `drawer-${key}-adjusted-dot`, class: 'w-1.5 h-1.5 rounded-full bg-teal-500 shrink-0' }),
+          'Adjusted'
+        ]);
+
+        const parent = el('a', {
+          href: `jobs-detail.html#job-${t.job_id}`,
+          'data-comment': 'drawer-parent-job',
+          'data-component': 'card',
+          class: 'block bg-stone-50 dark:bg-stone-800/40 rounded-xl p-4 border border-stone-200 dark:border-stone-700 hover:border-stone-300 dark:hover:border-stone-600 hover:bg-stone-100 dark:hover:bg-stone-800/60 transition-colors cursor-pointer group'
+        });
+        parent.appendChild(el('p', { 'data-comment': 'drawer-parent-job-label', class: `${SECTION_LABEL} mb-2 m-0` }, 'Parent Job'));
+        parent.appendChild(el('p', { 'data-comment': 'drawer-parent-job-text', class: 'text-sm m-0' }, [
+          el('span', { 'data-comment': 'drawer-parent-job-id', class: 'font-bold text-stone-900 dark:text-stone-50 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors' }, `#${t.job_id}`),
+          el('span', { 'data-comment': 'drawer-parent-job-separator', class: 'mx-1.5 text-stone-300 dark:text-stone-600' }, '·'),
+          el('span', { 'data-comment': 'drawer-parent-job-description', class: 'text-stone-600 dark:text-stone-300 group-hover:text-stone-800 dark:group-hover:text-stone-100 transition-colors' }, t.job_descr || 'Job')
+        ]));
+        const parentMeta = el('div', { 'data-comment': 'drawer-parent-job-meta', class: 'flex items-center gap-2 mt-2.5' });
+        parentMeta.appendChild(statusTag(t.job_status, 'drawer-parent-job-status'));
+        parentMeta.appendChild(lucideEl('arrow-right', 'w-3.5 h-3.5 text-stone-300 dark:text-stone-600 group-hover:text-brand-500 dark:group-hover:text-brand-400 group-hover:translate-x-0.5 transition-all ml-auto', { 'data-comment': 'drawer-parent-job-arrow' }));
+        parent.appendChild(parentMeta);
+        body.appendChild(parent);
+
+        const taskSection = el('div', { 'data-comment': 'drawer-task-section' });
+        taskSection.appendChild(el('p', { 'data-comment': 'drawer-task-label', class: `${SECTION_LABEL} mb-1.5 m-0` }, 'Task'));
+        taskSection.appendChild(el('h3', { 'data-comment': 'drawer-task-title', class: 'text-xl font-bold text-stone-900 dark:text-stone-50 mb-2.5 m-0' }, t.descr));
+        const taskTags = el('div', { 'data-comment': 'drawer-task-tags', class: 'flex items-center gap-2' });
         const tt = taskType(t.type);
         const typeP = el('span', {
           'data-comment': 'drawer-type',
           class: 'inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full border w-fit',
           style: `color:${tt.color};background:${tt.color}1a;border-color:${tt.color}66`
         });
-        typeP.appendChild(el('span', { class: 'w-1.5 h-1.5 rounded-full', style: 'background:currentColor' }));
+        typeP.appendChild(el('span', { 'data-comment': 'drawer-type-dot', class: 'w-1.5 h-1.5 rounded-full', style: 'background:currentColor' }));
         typeP.appendChild(document.createTextNode(tt.label));
-
-        const grid = el('div', { class: 'grid grid-cols-2 gap-4' });
-        grid.appendChild(make('Type', typeP));
-        grid.appendChild(make('Status', el('span', { class: 'text-sm text-stone-700 dark:text-stone-300' }, t.job_status)));
-
-        if (t.start_date && t.end_date) {
-          grid.appendChild(make('Start date', el('span', { 'data-comment': 'drawer-start-date', class: 'text-sm text-stone-700 dark:text-stone-300 tabular-nums' }, fmtShortDate(t.start_date))));
-          grid.appendChild(make('End date', el('span', { 'data-comment': 'drawer-end-date', class: 'text-sm text-stone-700 dark:text-stone-300 tabular-nums' }, fmtShortDate(t.end_date))));
-        } else {
-          grid.appendChild(make('Dates', el('span', { class: 'text-sm font-medium text-amber-500' }, 'Date required')));
+        taskTags.appendChild(typeP);
+        if (isWebAdjusted) {
+          taskTags.appendChild(el('span', { 'data-comment': 'drawer-web-adjusted-tag', class: 'inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full border border-stone-200 dark:border-stone-700 bg-stone-100/60 dark:bg-stone-800/60 text-stone-600 dark:text-stone-300' }, [
+            el('span', { 'data-comment': 'drawer-web-adjusted-dot', class: 'w-1.5 h-1.5 rounded-full bg-stone-400 dark:bg-stone-500' }),
+            'Web Adjusted'
+          ]));
         }
-        body.appendChild(grid);
+        taskSection.appendChild(taskTags);
+        body.appendChild(taskSection);
+        body.appendChild(el('div', { 'data-comment': 'drawer-task-divider', class: 'border-t border-stone-100 dark:border-stone-800' }));
 
-        // Crew metrics card
-        if (t.start_date && t.end_date) {
-          const days = Math.max(1, Math.round((parseISO(t.end_date) - parseISO(t.start_date)) / 86400000) + 1);
-          const estHours = (t.estimated_hours || (days * 8));
-          const crewSize = t.assigned_users.length || 1;
-          const metrics = el('div', {
-            'data-comment': 'drawer-metrics',
-            class: 'grid grid-cols-3 gap-3 rounded-xl bg-stone-50 dark:bg-stone-800/50 border border-stone-200 dark:border-stone-700 p-3'
-          });
-          const metric = (label, value) => {
-            const w = el('div', { class: 'flex flex-col gap-0.5' });
-            w.appendChild(el('span', { class: 'text-[10px] font-medium uppercase tracking-wider text-stone-400 dark:text-stone-500' }, label));
-            w.appendChild(el('span', { class: 'text-sm font-semibold text-stone-900 dark:text-stone-50 tabular-nums' }, value));
-            return w;
-          };
-          metrics.appendChild(metric('Total Duration', `${estHours} h`));
-          metrics.appendChild(metric('Hours / Day', (estHours / days).toFixed(1)));
-          metrics.appendChild(metric('Hours / Person', `${(estHours / crewSize).toFixed(1)} h`));
-          body.appendChild(metrics);
-        }
+        const dateSection = (field, label, display, original, adjusted) => {
+          const section = el('div', { 'data-comment': `drawer-${field}-section` });
+          const header = el('div', { 'data-comment': `drawer-${field}-header`, class: 'flex items-center justify-between mb-2' });
+          header.appendChild(el('p', { 'data-comment': `drawer-${field}-label`, class: `${SECTION_LABEL} m-0` }, label));
+          if (store.get().drawerEditingField !== field) {
+            header.appendChild(el('button', {
+              type: 'button',
+              'data-comment': `drawer-${field}-edit`,
+              'data-component': 'button',
+              class: 'text-xs text-brand-500 dark:text-brand-300 hover:text-brand-600 dark:hover:text-brand-200 hover:underline transition-colors cursor-pointer bg-transparent border-0 p-0',
+              onclick: () => startDrawerDateEdit(t.autoid, field)
+            }, adjusted ? 'Edit' : 'Override'));
+          }
+          section.appendChild(header);
+          if (store.get().drawerEditingField === field) {
+            section.appendChild(el('input', {
+              id: `drawer-${field}-input`,
+              'data-comment': `drawer-${field}-input`,
+              'data-component': 'date-picker',
+              type: 'date',
+              value: store.get().drawerEditDateValue,
+              onchange: (e) => store.set({ drawerEditDateValue: e.target.value }),
+              class: 'w-full h-9 rounded-lg border border-stone-200 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 text-sm text-stone-900 dark:text-stone-50 outline-none'
+            }));
+            const actions = el('div', { 'data-comment': `drawer-${field}-actions`, class: 'flex items-center justify-between mt-2.5' });
+            actions.appendChild(el('div', { 'data-comment': `drawer-${field}-primary-actions`, class: 'flex items-center gap-2' }, [
+              el('button', { type: 'button', 'data-comment': `drawer-${field}-save`, 'data-component': 'button', onclick: () => saveDrawerDateEdit(t.autoid, field), class: 'inline-flex h-8 px-3 items-center justify-center rounded-full text-xs bg-brand-500 hover:bg-brand-600 text-white border border-brand-500 cursor-pointer' }, 'Save'),
+              el('button', { type: 'button', 'data-comment': `drawer-${field}-cancel`, 'data-component': 'button', onclick: cancelDrawerDateEdit, class: 'inline-flex h-8 px-3 items-center justify-center rounded-full text-xs bg-white dark:bg-stone-950 border border-stone-200 dark:border-stone-700 text-stone-700 dark:text-stone-200 cursor-pointer hover:bg-stone-50 dark:hover:bg-stone-800' }, 'Cancel')
+            ]));
+            if (adjusted) actions.appendChild(el('button', { type: 'button', 'data-comment': `drawer-${field}-reset`, 'data-component': 'button', onclick: () => resetDrawerDateEdit(t.autoid, field), class: 'inline-flex h-8 px-3 items-center justify-center rounded-full text-xs border border-red-200 dark:border-red-900 text-red-500 dark:text-red-400 cursor-pointer hover:bg-red-50 dark:hover:bg-red-950/30 bg-transparent' }, 'Reset to EBMS'));
+            section.appendChild(actions);
+          } else {
+            section.appendChild(el('p', { 'data-comment': `drawer-${field}-value`, class: 'text-sm text-stone-900 dark:text-stone-50 m-0' }, display ? fmtShortDate(display) : '—'));
+            section.appendChild(el('p', { 'data-comment': `drawer-${field}-source`, class: 'text-xs text-stone-400 dark:text-stone-500 mt-0.5 m-0' }, adjusted && original ? `EBMS: ${fmtShortDate(original)}` : 'Default (EBMS)'));
+            if (adjusted) section.appendChild(adjustedLabel(field));
+          }
+          return section;
+        };
+        body.appendChild(dateSection('startDate', 'Start Date', displayStart, t.start_date, isStartAdjusted));
+        body.appendChild(dateSection('endDate', 'End Date', displayEnd, t.end_date, isEndAdjusted));
+
+        const hours = el('div', { 'data-comment': 'drawer-hours-section' });
+        hours.appendChild(el('p', { 'data-comment': 'drawer-hours-label', class: `${SECTION_LABEL} mb-2 m-0` }, 'Estimated Hours'));
+        hours.appendChild(el('p', { 'data-comment': 'drawer-hours-value', class: 'text-sm text-stone-900 dark:text-stone-50 m-0' }, `${displayHours} hours`));
+        hours.appendChild(el('p', { 'data-comment': 'drawer-hours-source', class: 'text-xs text-stone-400 dark:text-stone-500 mt-0.5 m-0' }, isHoursAdjusted ? `EBMS: ${t.estimated_hours} hours` : 'From EBMS'));
+        if (isHoursAdjusted) hours.appendChild(adjustedLabel('hours'));
+        body.appendChild(hours);
+
+        const crewSize = t.assigned_users.length;
+        const hoursPerDay = 10;
+        const totalDuration = crewSize > 0 ? (displayHours / (crewSize * hoursPerDay)).toFixed(1) : null;
+        const hoursPerPerson = crewSize > 0 ? (displayHours / crewSize).toFixed(1) : null;
+        const metrics = el('div', {
+          'data-comment': 'drawer-metrics',
+          'data-component': 'card',
+          class: 'bg-stone-50 dark:bg-stone-800/40 rounded-xl p-4 border border-stone-200 dark:border-stone-700'
+        });
+        metrics.appendChild(el('div', { 'data-comment': 'drawer-crew-size-header', class: 'flex items-center justify-between' }, [
+          el('div', { 'data-comment': 'drawer-crew-size-copy' }, [
+            el('p', { 'data-comment': 'drawer-crew-size-label', class: 'text-sm font-medium text-stone-700 dark:text-stone-300 m-0' }, 'Crew Size'),
+            el('p', { 'data-comment': 'drawer-crew-size-description', class: 'text-xs text-stone-400 dark:text-stone-500 mt-0.5 m-0' }, 'Dispatched crew members')
+          ]),
+          el('span', { 'data-comment': 'drawer-crew-size-value', class: 'text-2xl font-semibold text-stone-900 dark:text-stone-50 tabular-nums' }, crewSize ? String(crewSize) : '—')
+        ]));
+        const productivity = el('div', { 'data-comment': 'drawer-productivity', class: 'border-t border-stone-200 dark:border-stone-700 mt-3 pt-3 flex flex-col gap-2' });
+        const metricRow = (key, label, value, strong) => el('div', { 'data-comment': `drawer-productivity-${key}`, class: 'flex items-center justify-between text-sm' }, [
+          el('span', { 'data-comment': `drawer-productivity-${key}-label`, class: 'text-stone-500 dark:text-stone-400' }, label),
+          el('span', { 'data-comment': `drawer-productivity-${key}-value`, class: `${strong ? 'font-semibold text-teal-600 dark:text-teal-400' : 'font-medium text-stone-700 dark:text-stone-300'} tabular-nums` }, value)
+        ]);
+        productivity.appendChild(metricRow('duration', 'Total Duration', totalDuration != null ? `${totalDuration} days` : '—'));
+        productivity.appendChild(metricRow('hours-day', 'Hours per Day', `${hoursPerDay} hrs/day`));
+        productivity.appendChild(metricRow('hours-person', 'Hours per Person', hoursPerPerson != null ? `${hoursPerPerson} hrs` : '—', true));
+        metrics.appendChild(productivity);
+        body.appendChild(metrics);
+        body.appendChild(el('div', { 'data-comment': 'drawer-metrics-divider', class: 'border-t border-stone-100 dark:border-stone-800' }));
 
         // Crew dispatch checklist
-        const dispatch = el('div', { 'data-comment': 'drawer-crew-dispatch', class: 'flex flex-col gap-1.5' });
+        const dispatchSection = el('div', { 'data-comment': 'drawer-crew-dispatch-section' });
+        dispatchSection.appendChild(el('p', { 'data-comment': 'drawer-crew-dispatch-label', class: `${SECTION_LABEL} mb-3 m-0` }, 'Crew Dispatch'));
+        const dispatch = el('div', { 'data-comment': 'drawer-crew-dispatch', class: 'rounded-xl border border-stone-200 dark:border-stone-700 overflow-hidden divide-y divide-stone-100 dark:divide-stone-800 max-h-84 overflow-y-auto' });
         const taskUserIds = new Set(t.assigned_users.map((u) => u.id));
-        USERS.forEach((u) => {
+        [...USERS].sort((a, b) => (isForeman(a) ? 0 : 1) - (isForeman(b) ? 0 : 1)).forEach((u) => {
           const dispatched = taskUserIds.has(u.id);
-          const isOnLeave = u.on_leave === true;
+          const isOnLeave = u.status === 'on_leave';
           const row = el('label', {
             'data-comment': `drawer-crew-${u.id}`,
-            class: `flex items-center gap-2.5 px-2 py-1.5 rounded-lg cursor-pointer transition-colors ${isOnLeave ? 'opacity-50 cursor-not-allowed' : 'hover:bg-stone-100 dark:hover:bg-stone-800/40'} select-none`
+            class: `flex items-center gap-3 px-3.5 py-2.5 select-none transition-colors ${isOnLeave ? 'opacity-50 pointer-events-none cursor-default' : 'hover:bg-stone-50 dark:hover:bg-stone-800/50 cursor-pointer'}`
           });
           const cb = el('input', {
             type: 'checkbox',
-            class: 'w-4 h-4 rounded border-stone-300 dark:border-stone-600 cursor-pointer',
+            'data-comment': `drawer-crew-${u.id}-checkbox`,
+            class: 'w-4 h-4 rounded border-stone-300 dark:border-stone-600 cursor-pointer accent-stone-900 dark:accent-stone-50',
             ...(dispatched ? { checked: '' } : {}),
             ...(isOnLeave ? { disabled: '' } : {}),
             onchange: (e) => toggleCrewDispatch(t.autoid, u.id, e.target.checked)
           });
           row.appendChild(cb);
-          row.appendChild(el('span', { class: 'w-2 h-2 rounded-full shrink-0', style: `background:${u.color}` }));
-          row.appendChild(el('span', { class: 'text-sm text-stone-800 dark:text-stone-200 flex-1' }, displayName(u)));
-          if (u.is_foreman) row.appendChild(el('span', { class: 'text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-amber-100 dark:bg-amber-500/15 text-amber-700 dark:text-amber-300' }, 'Foreman'));
-          if (isOnLeave) row.appendChild(el('span', { class: 'text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-stone-200 dark:bg-stone-700 text-stone-500 dark:text-stone-400' }, 'On Leave'));
+          row.appendChild(el('span', { 'data-comment': `drawer-crew-${u.id}-avatar`, class: 'w-9 h-9 rounded-full shrink-0 flex items-center justify-center text-xs font-semibold text-white ring-2 ring-white dark:ring-stone-950', style: `background:${u.color}` }, displayName(u).split(' ').map((x) => x[0]).join('').slice(0, 2)));
+          row.appendChild(el('span', { 'data-comment': `drawer-crew-${u.id}-copy`, class: 'flex-1 min-w-0' }, [
+            el('span', { 'data-comment': `drawer-crew-${u.id}-name`, class: 'block text-sm font-medium text-stone-800 dark:text-stone-200 truncate' }, displayName(u)),
+            el('span', { 'data-comment': `drawer-crew-${u.id}-position`, class: 'block text-xs text-stone-400 dark:text-stone-500 truncate' }, u.position || (u.is_foreman ? 'Foreman' : 'Crew'))
+          ]));
+          if (isOnLeave) row.appendChild(el('span', { 'data-comment': `drawer-crew-${u.id}-leave`, class: 'text-xs text-amber-500 font-medium shrink-0' }, 'On Leave'));
           dispatch.appendChild(row);
         });
-        body.appendChild(make('Crew dispatch', dispatch));
+        dispatchSection.appendChild(dispatch);
+        if (USERS.some((u) => u.status === 'on_leave')) {
+          dispatchSection.appendChild(el('p', { 'data-comment': 'drawer-crew-leave-note', class: 'text-xs text-stone-400 dark:text-stone-500 mt-2 m-0' }, 'Greyed-out employees are currently on leave.'));
+        }
+        body.appendChild(dispatchSection);
+        body.appendChild(el('div', { 'data-comment': 'drawer-crew-divider', class: 'border-t border-stone-100 dark:border-stone-800' }));
 
-        const calLink = el('a', {
-          href: `jobs-detail.html#job-${t.job_id}`,
-          'data-comment': 'drawer-job-link',
-          class: 'inline-flex items-center gap-1.5 text-sm text-brand-500 dark:text-brand-400 hover:underline w-fit'
-        });
-        calLink.appendChild(lucideEl('external-link', 'w-3.5 h-3.5'));
-        calLink.appendChild(document.createTextNode('Open job page'));
-        body.appendChild(calLink);
+        const todosSection = el('div', { 'data-comment': 'drawer-todos-section' });
+        todosSection.appendChild(el('div', { 'data-comment': 'drawer-todos-header', class: 'flex items-center justify-between mb-3' }, [
+          el('p', { 'data-comment': 'drawer-todos-label', class: `${SECTION_LABEL} m-0` }, 'Todos'),
+          el('button', { type: 'button', 'data-comment': 'drawer-add-todo', 'data-component': 'button', onclick: () => addDrawerTodo(t.job_id), class: 'inline-flex h-8 px-3 items-center gap-1.5 justify-center rounded-full text-xs bg-brand-500 hover:bg-brand-600 text-white border border-brand-500 cursor-pointer' }, [
+            lucideEl('plus', 'w-3.5 h-3.5', { 'data-comment': 'drawer-add-todo-icon' }),
+            'Add Todo'
+          ])
+        ]));
+        const todos = TASK_TODOS.filter((todo) => todo.job_id === t.job_id);
+        if (todos.length) {
+          const todoList = el('div', { 'data-comment': 'drawer-todos-list', class: 'rounded-xl border border-stone-200 dark:border-stone-700 overflow-hidden divide-y divide-stone-100 dark:divide-stone-800' });
+          todos.forEach((todo) => {
+            const priorityColor = todo.priority === 'high' ? '#ef4444' : todo.priority === 'medium' ? '#f59e0b' : '#22c55e';
+            const overdue = parseISO(todo.due_date) < today;
+            const row = el('a', { href: `tasks.html#todo-${todo.id}`, 'data-comment': `drawer-todo-${todo.id}`, class: 'flex flex-col gap-3 px-3.5 py-2.5 hover:bg-stone-50 dark:hover:bg-stone-800/50 transition-colors' });
+            row.appendChild(el('div', { 'data-comment': `drawer-todo-${todo.id}-top`, class: 'flex items-center gap-2 min-w-0' }, [
+              el('p', { 'data-comment': `drawer-todo-${todo.id}-title`, class: 'flex-1 text-sm font-medium text-stone-800 dark:text-stone-200 line-clamp-2 min-w-0 m-0', title: todo.title }, todo.title),
+              el('div', { 'data-comment': `drawer-todo-${todo.id}-avatars`, class: 'flex items-center gap-1 shrink-0' }, [
+                el('span', { 'data-comment': `drawer-todo-${todo.id}-created-avatar`, class: 'w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-semibold text-white', style: `background:${todo.created_by.color}` }, displayName(todo.created_by).slice(0, 1)),
+                ...(todo.assigned_users.some((a) => a.id !== todo.created_by.id) ? [
+                  lucideEl('arrow-right', 'w-2.5 h-2.5 text-stone-300 dark:text-stone-600 shrink-0', { 'data-comment': `drawer-todo-${todo.id}-avatar-arrow` }),
+                  el('span', { 'data-comment': `drawer-todo-${todo.id}-assignee-stack`, class: 'flex items-center' }, todo.assigned_users.filter((a) => a.id !== todo.created_by.id).slice(0, 3).map((u, i) => el('span', { 'data-comment': `drawer-todo-${todo.id}-assignee-${u.id}`, class: `w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-semibold text-white ring-2 ring-white dark:ring-stone-950 ${i > 0 ? '-ml-1' : ''}`, style: `background:${u.color}` }, displayName(u).slice(0, 1))))
+                ] : [])
+              ])
+            ]));
+            row.appendChild(el('div', { 'data-comment': `drawer-todo-${todo.id}-meta`, class: 'flex items-center justify-between gap-2 min-w-0' }, [
+              el('div', { 'data-comment': `drawer-todo-${todo.id}-tags`, class: 'flex items-center gap-1.5 min-w-0' }, [
+                statusTag(todo.status, `drawer-todo-${todo.id}-status`),
+                el('span', { 'data-comment': `drawer-todo-${todo.id}-type`, class: 'inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full border w-fit', style: 'color:#8b5cf6;background:#8b5cf61a;border-color:#8b5cf666' }, [
+                  el('span', { 'data-comment': `drawer-todo-${todo.id}-type-dot`, class: 'w-1.5 h-1.5 rounded-full', style: 'background:currentColor' }),
+                  todo.type
+                ])
+              ]),
+              el('div', { 'data-comment': `drawer-todo-${todo.id}-due`, class: 'flex items-center gap-1.5 shrink-0' }, [
+                lucideEl('flag', 'w-3 h-3 shrink-0', { 'data-comment': `drawer-todo-${todo.id}-priority-icon`, style: `color:${priorityColor}` }),
+                lucideEl(overdue ? 'calendar-x' : 'calendar', `w-3 h-3 shrink-0 ${overdue ? 'text-red-400 dark:text-red-500' : 'text-stone-400 dark:text-stone-500'}`, { 'data-comment': `drawer-todo-${todo.id}-due-icon` }),
+                el('span', { 'data-comment': `drawer-todo-${todo.id}-due-date`, class: `text-xs tabular-nums ${overdue ? 'text-red-400 dark:text-red-500 font-medium' : 'text-stone-400 dark:text-stone-500'}` }, fmt(parseISO(todo.due_date), { month: 'short', day: 'numeric' }))
+              ])
+            ]));
+            todoList.appendChild(row);
+          });
+          todosSection.appendChild(todoList);
+        } else {
+          const empty = el('div', { 'data-comment': 'drawer-todos-empty', class: 'flex flex-col items-center justify-center gap-2 py-8 text-center rounded-xl border border-stone-200 dark:border-stone-700' });
+          empty.appendChild(lucideEl('check-square', 'w-8 h-8 text-stone-300 dark:text-stone-600', { 'data-comment': 'drawer-todos-empty-icon' }));
+          empty.appendChild(el('p', { 'data-comment': 'drawer-todos-empty-title', class: 'text-sm font-semibold text-stone-900 dark:text-stone-50 m-0' }, 'No todos for this job'));
+          todosSection.appendChild(empty);
+        }
+        body.appendChild(todosSection);
 
         if (window.lucide) lucide.createIcons();
+      }
+
+      function startDrawerDateEdit(taskId, field) {
+        const task = store.get().tasks.find((t) => t.autoid === taskId);
+        if (!task) return;
+        const value = field === 'startDate' ? (task.custom_start_date ?? task.start_date) : (task.custom_end_date ?? task.end_date);
+        store.set({ drawerEditingField: field, drawerEditDateValue: value || localISODate(today) });
+      }
+      function cancelDrawerDateEdit() {
+        store.set({ drawerEditingField: null, drawerEditDateValue: '' });
+      }
+      function saveDrawerDateEdit(taskId, field) {
+        const value = document.getElementById(`drawer-${field}-input`)?.value || '';
+        if (!value) return;
+        store.set((s) => ({
+          tasks: s.tasks.map((t) => {
+            if (t.autoid !== taskId) return t;
+            return field === 'startDate' ? { ...t, custom_start_date: value } : { ...t, custom_end_date: value };
+          }),
+          drawerEditingField: null,
+          drawerEditDateValue: ''
+        }));
+      }
+      function resetDrawerDateEdit(taskId, field) {
+        store.set((s) => ({
+          tasks: s.tasks.map((t) => {
+            if (t.autoid !== taskId) return t;
+            return field === 'startDate' ? { ...t, custom_start_date: null } : { ...t, custom_end_date: null };
+          }),
+          drawerEditingField: null,
+          drawerEditDateValue: ''
+        }));
+      }
+      function addDrawerTodo(jobId) {
+        const id = Math.max(...TASK_TODOS.map((todo) => todo.id)) + 1;
+        TASK_TODOS.unshift({
+          id,
+          job_id: jobId,
+          title: 'New job follow-up',
+          status: 'Not Started',
+          type: 'General',
+          priority: 'medium',
+          due_date: localISODate(addMonths(today, 0)),
+          created_by: USERS[0],
+          assigned_users: [USERS[0]]
+        });
+        renderDrawer();
       }
 
       function toggleCrewDispatch(taskId, userId, dispatch) {
@@ -1110,7 +1544,7 @@
       }
       function toggleSettings(e) {
         e.stopPropagation();
-        store.set((s) => ({ settingsOpen: !s.settingsOpen }));
+        store.set((s) => ({ settingsOpen: !s.settingsOpen, monthPickerOpen: false }));
       }
       function setSetting(key, value) {
         store.set({ [key]: value });
@@ -1120,17 +1554,102 @@
         const next = excludedUsers.includes(id) ? excludedUsers.filter((x) => x !== id) : [...excludedUsers, id];
         store.set({ excludedUsers: next });
       }
-      function prevMonth() { store.set((s) => ({ currentMonth: addMonths(s.currentMonth, -1) })); }
-      function nextMonth() { store.set((s) => ({ currentMonth: addMonths(s.currentMonth, 1) })); }
-      function resetToToday() { store.set({ currentMonth: startOfMonth(today) }); }
-      function closeDrawer() { store.set({ drawerTaskId: null }); }
+      function prevMonth() {
+        store.set((s) => {
+          const currentMonth = addMonths(s.currentMonth, -1);
+          return { currentMonth, monthPickerYear: currentMonth.getFullYear(), ...(s.activeTab === 'week' ? { currentWeek: startOfWeek(currentMonth) } : {}) };
+        });
+      }
+      function nextMonth() {
+        store.set((s) => {
+          const currentMonth = addMonths(s.currentMonth, 1);
+          return { currentMonth, monthPickerYear: currentMonth.getFullYear(), ...(s.activeTab === 'week' ? { currentWeek: startOfWeek(currentMonth) } : {}) };
+        });
+      }
+      function resetToToday() { store.set({ currentMonth: startOfMonth(today), currentWeek: startOfWeek(today) }); }
+      function closeDrawer() { store.set({ drawerTaskId: null, drawerEditingField: null, drawerEditDateValue: '' }); }
+
+      function toggleMonthPicker(e) {
+        e.stopPropagation();
+        store.set((s) => ({
+          monthPickerOpen: !s.monthPickerOpen,
+          monthPickerYear: s.currentMonth.getFullYear(),
+          settingsOpen: false,
+          openSelect: null
+        }));
+      }
+      function closeMonthPicker() {
+        if (store.get().monthPickerOpen) store.set({ monthPickerOpen: false });
+      }
+      function setMonthPickerYear(delta) {
+        store.set((s) => ({ monthPickerYear: s.monthPickerYear + delta }));
+      }
+      function selectPickerMonth(monthIndex) {
+        store.set((s) => {
+          const selected = startOfMonth(new Date(s.monthPickerYear, monthIndex, 1));
+          let currentWeek = s.currentWeek;
+          if (s.activeTab === 'week') {
+            const preferred = new Date(selected.getFullYear(), selected.getMonth(), Math.min(s.currentWeek.getDate(), endOfMonth(selected).getDate()));
+            currentWeek = startOfWeek(preferred);
+          }
+          return { currentMonth: selected, currentWeek, monthPickerOpen: false };
+        });
+      }
+
+      function renderMonthPicker() {
+        const root = document.getElementById('month-picker-content');
+        const popover = document.getElementById('month-picker-popover');
+        const button = document.getElementById('month-pill');
+        if (!root || !popover || !button) return;
+        const { monthPickerOpen, monthPickerYear, currentMonth } = store.get();
+        popover.classList.toggle('hidden', !monthPickerOpen);
+        button.setAttribute('aria-expanded', String(monthPickerOpen));
+        if (!monthPickerOpen) return;
+
+        root.innerHTML = '';
+        const header = el('div', { 'data-comment': 'month-picker-header', class: 'flex items-center justify-between gap-2 px-1 pb-2' });
+        header.appendChild(el('button', {
+          type: 'button',
+          'data-comment': 'month-picker-prev-year',
+          'data-component': 'button',
+          class: 'w-8 h-8 inline-flex items-center justify-center rounded-md text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800 cursor-pointer',
+          onclick: () => setMonthPickerYear(-1),
+          'aria-label': 'Previous year'
+        }, [lucideEl('chevron-left', 'w-4 h-4', { 'data-comment': 'month-picker-prev-year-icon' })]));
+        header.appendChild(el('div', { 'data-comment': 'month-picker-year', class: 'text-sm font-semibold text-stone-900 dark:text-stone-50 tabular-nums' }, String(monthPickerYear)));
+        header.appendChild(el('button', {
+          type: 'button',
+          'data-comment': 'month-picker-next-year',
+          'data-component': 'button',
+          class: 'w-8 h-8 inline-flex items-center justify-center rounded-md text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800 cursor-pointer',
+          onclick: () => setMonthPickerYear(1),
+          'aria-label': 'Next year'
+        }, [lucideEl('chevron-right', 'w-4 h-4', { 'data-comment': 'month-picker-next-year-icon' })]));
+        root.appendChild(header);
+
+        const grid = el('div', { 'data-comment': 'month-picker-grid', 'data-component': 'calendar', class: 'grid grid-cols-3 gap-1' });
+        const names = Array.from({ length: 12 }, (_, i) => fmt(new Date(monthPickerYear, i, 1), { month: 'short' }));
+        names.forEach((name, i) => {
+          const selected = currentMonth.getFullYear() === monthPickerYear && currentMonth.getMonth() === i;
+          grid.appendChild(el('button', {
+            type: 'button',
+            'data-comment': `month-picker-month-${i}`,
+            'data-component': 'button',
+            'aria-selected': String(selected),
+            class: 'month-picker-button h-9 rounded-md text-sm font-medium text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 cursor-pointer transition-colors',
+            onclick: () => selectPickerMonth(i)
+          }, name));
+        });
+        root.appendChild(grid);
+        if (window.lucide) lucide.createIcons();
+      }
 
       function applyTopbar() {
-        const { activeTab, currentMonth, selectedType } = store.get();
+        const { activeTab, currentMonth, currentWeek, selectedType } = store.get();
         const opts = [{ value: 'all', label: 'All types' }, ...TASK_TYPES];
         const sel = opts.find((o) => o.value === selectedType);
         document.getElementById('calendar-subtitle').textContent = `${fmtMonthYear(currentMonth)} · ${sel.label}`;
-        document.getElementById('month-label').textContent = activeTab === 'week' ? `Week of ${fmtShortDate(currentMonth.toISOString().slice(0, 10))}` : fmtMMyy(currentMonth);
+        document.getElementById('month-label').textContent = activeTab === 'week' ? `Week of ${fmtShortDate(localISODate(currentWeek))}` : fmtMMyy(currentMonth);
       }
 
       function toggleSidebar() {
@@ -1159,6 +1678,100 @@
         collapseIco.style.display = (isLg && !sidebarCollapsed) ? 'block' : 'none';
         expandIco.style.display = (isLg && sidebarCollapsed) ? 'block' : 'none';
       }
+
+      const UI_THEMES = [
+        { value: 'red', label: 'Red', color: 'oklch(63.7% 0.237 25)' },
+        { value: 'orange', label: 'Orange', color: 'oklch(73.5% 0.197 55)' },
+        { value: 'amber', label: 'Amber', color: 'oklch(68% 0.19 75)' },
+        { value: 'yellow', label: 'Yellow', color: 'oklch(84.8% 0.197 95)' },
+        { value: 'lime', label: 'Lime', color: 'oklch(76.8% 0.233 130)' },
+        { value: 'green', label: 'Green', color: 'oklch(62.3% 0.17 145)' },
+        { value: 'emerald', label: 'Emerald', color: 'oklch(69.6% 0.167 165)' },
+        { value: 'teal', label: 'Teal', color: 'oklch(58% 0.16 185)' },
+        { value: 'cyan', label: 'Cyan', color: 'oklch(71.5% 0.143 205)' },
+        { value: 'sky', label: 'Sky', color: 'oklch(68.6% 0.148 230)' },
+        { value: 'blue', label: 'Blue', color: 'oklch(62.3% 0.214 255)' },
+        { value: 'indigo', label: 'Indigo', color: 'oklch(58.5% 0.233 270)' },
+        { value: 'violet', label: 'Violet', color: 'oklch(61.9% 0.246 290)' },
+        { value: 'purple', label: 'Purple', color: 'oklch(62.7% 0.25 305)' },
+        { value: 'fuchsia', label: 'Fuchsia', color: 'oklch(66.7% 0.254 320)' },
+        { value: 'pink', label: 'Pink', color: 'oklch(71.4% 0.203 350)' },
+        { value: 'rose', label: 'Rose', color: 'oklch(59% 0.21 10)' },
+        { value: 'slate', label: 'Slate', color: 'oklch(54% 0.17 245)' }
+      ];
+      const UI_FONTS = [
+        { value: 'plus-jakarta', label: 'Plus Jakarta Sans', sample: 'Aa', family: 'Plus Jakarta Sans, sans-serif' },
+        { value: 'inter', label: 'Inter', sample: 'Aa', family: 'Inter, sans-serif' },
+        { value: 'jetbrains', label: 'JetBrains Mono', sample: 'Aa', family: 'JetBrains Mono, monospace' }
+      ];
+      function getAppTheme() { try { return localStorage.getItem('app-theme') || 'default'; } catch (e) { return 'default'; } }
+      function getAppFont() { try { return localStorage.getItem('app-font') || 'inter'; } catch (e) { return 'inter'; } }
+      function applyUITheme() {
+        const root = document.documentElement;
+        UI_THEMES.forEach((t) => root.classList.remove('theme-' + t.value));
+        UI_FONTS.forEach((f) => root.classList.remove('font-' + f.value));
+        const theme = getAppTheme();
+        const font = getAppFont();
+        if (theme !== 'default') { root.classList.add('theme-' + theme); root.setAttribute('data-accent', ''); }
+        else root.removeAttribute('data-accent');
+        root.classList.add('font-' + font);
+      }
+      function renderThemePicker() {
+        const root = document.getElementById('theme-picker-content');
+        if (!root) return;
+        const theme = getAppTheme();
+        const font = getAppFont();
+        const fontButtons = UI_FONTS.map((f) => `
+          <button type="button" data-comment="theme-font-${f.value}" data-component="button" onclick="setAppFont('${f.value}')" style="font-family:${f.family}" class="theme-font-button flex flex-col justify-center items-center gap-1 px-2 py-1.5 rounded-md text-xs font-medium transition-colors cursor-pointer ${font === f.value ? 'bg-stone-100 dark:bg-stone-800 text-stone-900 dark:text-stone-50' : 'text-stone-500 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800'}">
+            <span data-comment="theme-font-${f.value}-sample" class="text-base leading-none">${f.sample}</span>
+            <span data-comment="theme-font-${f.value}-label" class="text-[10px] truncate max-w-full">${f.label}</span>
+          </button>`).join('');
+        const colorButtons = UI_THEMES.map((t) => `
+          <button type="button" data-comment="theme-color-${t.value}" data-component="button" title="${t.label}" aria-label="${t.label}" aria-pressed="${theme === t.value}" onclick="setAppTheme('${t.value}')" class="theme-swatch-button w-full h-7 rounded-lg flex items-center justify-center cursor-pointer transition-transform hover:scale-110" style="color:${t.color}">
+            <span data-comment="theme-color-${t.value}-swatch" class="w-4 h-4 rounded-full ring-1 ring-black/10" style="background:${t.color}"></span>
+          </button>`).join('');
+        root.innerHTML = `
+          <div data-comment="theme-font-section" class="flex flex-col gap-1.5">
+            <p data-comment="theme-font-label" class="text-[10px] font-semibold uppercase tracking-widest text-stone-400 px-0.5">Font</p>
+            <div data-comment="theme-font-options" class="flex gap-1">${fontButtons}</div>
+          </div>
+          <div data-comment="theme-divider" class="h-px bg-stone-100 dark:bg-stone-800 -mx-2"></div>
+          <div data-comment="theme-color-section" class="flex flex-col gap-2">
+            <p data-comment="theme-color-label" class="text-[10px] font-semibold uppercase tracking-widest text-stone-400 px-0.5">Accent color</p>
+            <button type="button" data-comment="theme-color-default" data-component="button" onclick="setAppTheme('default')" class="flex items-center gap-2 px-2 py-2 rounded-md text-xs transition-colors cursor-pointer w-full ${theme === 'default' ? 'bg-stone-100 dark:bg-stone-800 text-stone-900 dark:text-stone-50 font-medium' : 'text-stone-500 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800'}">
+              <span data-comment="theme-color-default-swatch" class="w-3 h-3 rounded-full shrink-0 ring-1 ring-black/10" style="background:oklch(21% 0 0)"></span>
+              <span data-comment="theme-color-default-label">Default</span>
+            </button>
+            <div data-comment="theme-color-grid" class="grid grid-cols-9 gap-1">${colorButtons}</div>
+          </div>`;
+        if (window.lucide) lucide.createIcons();
+      }
+      function toggleThemePicker(e) {
+        if (e) e.stopPropagation();
+        const popover = document.getElementById('theme-picker-popover');
+        if (!popover) return;
+        const opening = popover.classList.contains('hidden');
+        if (opening) renderThemePicker();
+        popover.classList.toggle('hidden', !opening);
+      }
+      function closeThemePicker() {
+        document.getElementById('theme-picker-popover')?.classList.add('hidden');
+      }
+      function setAppTheme(value) {
+        try { localStorage.setItem('app-theme', value); } catch (e) {}
+        applyUITheme();
+        renderThemePicker();
+      }
+      function setAppFont(value) {
+        try { localStorage.setItem('app-font', value); } catch (e) {}
+        applyUITheme();
+        renderThemePicker();
+      }
+      applyUITheme();
+      document.addEventListener('mousedown', (e) => {
+        if (!e.target.closest('[data-comment="header-theme-picker-wrap"]')) closeThemePicker();
+      });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeThemePicker(); });
       function toggleColorMode() {
         const isDark = document.documentElement.classList.toggle('dark');
         try { localStorage.setItem('color-mode', isDark ? 'dark' : 'light'); } catch (e) {}
@@ -1173,6 +1786,7 @@
         renderView();
         renderDrawer();
         applySettingsPopover();
+        renderMonthPicker();
         applySidebarState();
         if (window.lucide) lucide.createIcons();
       }
@@ -1185,12 +1799,16 @@
         if (store.get().settingsOpen && !e.target.closest('#settings-wrap')) {
           store.set({ settingsOpen: false });
         }
+        if (store.get().monthPickerOpen && !e.target.closest('#month-picker-wrap')) {
+          store.set({ monthPickerOpen: false });
+        }
       });
       document.addEventListener('keydown', (e) => {
         if (e.key !== 'Escape') return;
         if (store.get().drawerTaskId) closeDrawer();
         else if (store.get().openSelect) store.set({ openSelect: null });
         else if (store.get().settingsOpen) store.set({ settingsOpen: false });
+        else if (store.get().monthPickerOpen) closeMonthPicker();
       });
 
       window.addEventListener('resize', applySidebarState);
@@ -1204,7 +1822,8 @@
         { kind: 'page', title: 'Dashboard', subtitle: 'Workspace overview', icon: 'layout-dashboard', href: 'home.html' },
         { kind: 'page', title: 'Calendar', subtitle: 'Month, week, 3-month, unscheduled', icon: 'calendar-days', href: 'calendar.html' },
         { kind: 'page', title: 'Jobs', subtitle: 'All jobs and statuses', icon: 'hard-hat', href: 'jobs.html' },
-        { kind: 'page', title: 'Todos', subtitle: 'Kanban + list', icon: 'check-square', href: 'tasks.html' },
+        { kind: 'page', title: 'Tasks', subtitle: 'Kanban + list', icon: 'check-square', href: 'tasks.html' },
+        { kind: 'page', title: 'Dispatch SMS', subtitle: 'Crew message workflow', icon: 'send', href: 'dispatch-sms.html' },
         { kind: 'page', title: 'Employees', subtitle: 'Directory and roles', icon: 'users', href: 'employees.html' },
         { kind: 'page', title: 'Changelog', subtitle: 'What is new', icon: 'megaphone', href: 'changelog.html' },
         { kind: 'job', title: 'Job #1042 · Westbrook commercial complex', subtitle: 'In Process · Toronto, ON', icon: 'hard-hat', href: 'jobs-detail.html#job-1042' },
@@ -1382,7 +2001,203 @@
         if (e.key === 'Escape') closeUserPopover();
       });
 
-    </script>
+    
+      // Command Palette parity
+      const CMD_PARITY_ITEMS = [
+        { kind: 'page', title: 'Dashboard', subtitle: 'Workspace overview', icon: 'layout-dashboard', href: 'home.html' },
+        { kind: 'page', title: 'Calendar', subtitle: 'Month, week, 3-month, unscheduled', icon: 'calendar-days', href: 'calendar.html' },
+        { kind: 'page', title: 'Jobs', subtitle: 'All jobs and statuses', icon: 'hard-hat', href: 'jobs.html' },
+        { kind: 'page', title: 'Tasks', subtitle: 'Kanban + list', icon: 'check-square', href: 'tasks.html' },
+        { kind: 'page', title: 'Dispatch SMS', subtitle: 'Crew message workflow', icon: 'send', href: 'dispatch-sms.html' },
+        { kind: 'page', title: 'Employees', subtitle: 'Directory and roles', icon: 'users', href: 'employees.html' },
+        { kind: 'page', title: 'Changelog', subtitle: 'What is new', icon: 'megaphone', href: 'changelog.html' },
+        { kind: 'job', title: '#1252 Parking Structure Formwork L1', subtitle: 'Burnaby', icon: 'hard-hat', href: 'jobs-detail.html#job-1252', meta: 'In Process', metaColor: '#3b82f6' },
+        { kind: 'job', title: '#1283 Bridge Deck Formwork', subtitle: 'Surrey', icon: 'hard-hat', href: 'jobs-detail.html#job-1283', meta: 'Tentative', metaColor: '#f97316' },
+        { kind: 'job', title: '#1325 Ramp Formwork', subtitle: 'Coquitlam', icon: 'hard-hat', href: 'jobs-detail.html#job-1325', meta: 'Tentative', metaColor: '#f97316' },
+        { kind: 'job', title: '#1290 Parking Slab Package', subtitle: 'Mississauga', icon: 'hard-hat', href: 'jobs-detail.html#job-1290', meta: 'In Process', metaColor: '#3b82f6' },
+        { kind: 'task', title: 'Formwork Prep & Layout', subtitle: '#1252 · Mar 15 – Mar 31', icon: 'hammer', href: 'calendar.html#task-formwork-prep', meta: 'Forming', metaColor: '#3b82f6' },
+        { kind: 'task', title: 'Formwork L1 Columns', subtitle: '#1252 · Apr 7 – Apr 22', icon: 'hammer', href: 'calendar.html#task-formwork-columns', meta: 'Forming', metaColor: '#3b82f6' },
+        { kind: 'task', title: 'Parking Slab Forming', subtitle: '#1290 · Apr 8 – Apr 24', icon: 'hammer', href: 'calendar.html#task-parking-slab', meta: 'Flatwork', metaColor: '#10b981' },
+        { kind: 'task', title: 'Column Forming', subtitle: '#1318 · Apr 3 – Apr 18', icon: 'hammer', href: 'calendar.html#task-column-forming', meta: 'Forming', metaColor: '#3b82f6' },
+        { kind: 'task', title: 'Formwork L1 Walls', subtitle: '#1252 · Apr 23 – May 9', icon: 'hammer', href: 'calendar.html#task-formwork-walls', meta: 'Forming', metaColor: '#3b82f6' },
+        { kind: 'todo', title: 'Invoice discrepancy – concrete supplier March', subtitle: 'Blocked', icon: 'check-square', href: 'tasks.html#todo-invoice-discrepancy', meta: 'high', metaColor: '#ef4444' },
+        { kind: 'todo', title: 'Inspect formwork alignment before pour', subtitle: 'Not Started', icon: 'check-square', href: 'tasks.html#todo-formwork-alignment', meta: 'high', metaColor: '#ef4444' },
+        { kind: 'todo', title: 'Repair damaged scaffolding on Level 2', subtitle: 'In Progress', icon: 'check-square', href: 'tasks.html#todo-scaffolding', meta: 'high', metaColor: '#ef4444' },
+        { kind: 'todo', title: 'Order formwork accessories – Warehouse project', subtitle: 'Not Started', icon: 'check-square', href: 'tasks.html#todo-formwork-accessories', meta: 'low', metaColor: '#22c55e' },
+        { kind: 'user', title: 'Admin User', subtitle: 'Admin · Administration', icon: 'users', href: 'employees.html#user-21', meta: 'active', metaColor: '#22c55e' },
+        { kind: 'user', title: 'Mike Johnson', subtitle: 'Foreman · Operations', icon: 'users', href: 'employees.html#user-1', meta: 'active', metaColor: '#22c55e' },
+        { kind: 'user', title: 'Sarah Chen', subtitle: 'Foreman · Operations', icon: 'users', href: 'employees.html#user-2', meta: 'active', metaColor: '#22c55e' }
+      ];
+      const CMD_PARITY_GROUP_META = {
+        page: { label: 'Pages', icon: 'layout-grid' },
+        job: { label: 'Jobs', icon: 'hard-hat' },
+        task: { label: 'Tasks', icon: 'hammer' },
+        todo: { label: 'Todos', icon: 'check-square' },
+        user: { label: 'Users', icon: 'users' }
+      };
+      const CMD_PARITY_GROUP_ORDER = ['page', 'job', 'task', 'todo', 'user'];
+      let cmdParityActiveIndex = 0;
+      let cmdParityQuery = '';
+      let cmdParityFlatItems = [];
+      function cmdParityEscape(value) {
+        return String(value ?? '').replace(/[&<>"']/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+      }
+      function cmdParityHighlight(value, query, key) {
+        const text = String(value ?? '');
+        const q = query.trim();
+        if (!q) return cmdParityEscape(text);
+        const lower = text.toLowerCase();
+        const needle = q.toLowerCase();
+        let cursor = 0;
+        let markIndex = 0;
+        let html = '';
+        while (true) {
+          const idx = lower.indexOf(needle, cursor);
+          if (idx === -1) break;
+          html += cmdParityEscape(text.slice(cursor, idx));
+          html += `<mark data-comment="${key}-mark-${markIndex++}">${cmdParityEscape(text.slice(idx, idx + q.length))}</mark>`;
+          cursor = idx + q.length;
+        }
+        html += cmdParityEscape(text.slice(cursor));
+        return html;
+      }
+      function ensureCmdPaletteStructure() {
+        const panel = document.getElementById('cmd-palette')?.querySelector('.cmd-palette-panel');
+        if (!panel) return;
+        const searchWrap = panel.querySelector('[data-comment="cmd-palette-search-wrap"]');
+        if (searchWrap) {
+          searchWrap.innerHTML = `
+            <div data-comment="cmd-palette-search-field" class="cmd-palette-search-field">
+              <i data-comment="cmd-palette-search-icon" data-lucide="search" class="w-4 h-4 text-stone-400 shrink-0"></i>
+              <input id="cmd-palette-input" data-comment="cmd-palette-input" data-component="input" type="text" placeholder="Search jobs, tasks, todos..." class="flex-1 bg-transparent text-sm text-stone-900 dark:text-stone-50 placeholder:text-stone-400 outline-none border-0" autocomplete="off" oninput="onCmdPaletteInput(event)" onkeydown="onCmdPaletteKey(event)" />
+              <kbd data-comment="cmd-palette-search-esc" class="cmd-kbd">ESC</kbd>
+            </div>`;
+        }
+        const results = document.getElementById('cmd-palette-results');
+        if (results) results.className = 'cmd-palette-result-scroll';
+        let footer = panel.querySelector('[data-comment="cmd-palette-footer"]');
+        if (!footer) {
+          footer = document.createElement('div');
+          footer.setAttribute('data-comment', 'cmd-palette-footer');
+          footer.className = 'cmd-palette-footer';
+          footer.innerHTML = `
+            <div data-comment="cmd-palette-footer-navigate" class="cmd-footer-help">
+              <kbd data-comment="cmd-palette-footer-up" class="cmd-kbd"><i data-comment="cmd-palette-footer-up-icon" data-lucide="arrow-up" class="w-2.5 h-2.5"></i></kbd>
+              <kbd data-comment="cmd-palette-footer-down" class="cmd-kbd"><i data-comment="cmd-palette-footer-down-icon" data-lucide="arrow-down" class="w-2.5 h-2.5"></i></kbd>
+              <span data-comment="cmd-palette-footer-navigate-text">Navigate</span>
+            </div>
+            <div data-comment="cmd-palette-footer-open" class="cmd-footer-help"><kbd data-comment="cmd-palette-footer-enter" class="cmd-kbd">↵</kbd><span data-comment="cmd-palette-footer-open-text">Open</span></div>
+            <div data-comment="cmd-palette-footer-close" class="cmd-footer-help"><kbd data-comment="cmd-palette-footer-esc" class="cmd-kbd">ESC</kbd><span data-comment="cmd-palette-footer-close-text">Close</span></div>`;
+          panel.appendChild(footer);
+        }
+      }
+      function openCmdPalette() {
+        const root = document.getElementById('cmd-palette');
+        if (!root) return;
+        ensureCmdPaletteStructure();
+        root.classList.add('is-open');
+        cmdParityQuery = '';
+        cmdParityActiveIndex = 0;
+        renderCmdPalette();
+        const input = document.getElementById('cmd-palette-input');
+        if (input) {
+          input.value = '';
+          setTimeout(() => input.focus(), 40);
+        }
+        if (window.lucide) lucide.createIcons();
+      }
+      function closeCmdPalette() {
+        const root = document.getElementById('cmd-palette');
+        if (root) root.classList.remove('is-open');
+      }
+      function onCmdPaletteInput(event) {
+        cmdParityQuery = event.target.value;
+        cmdParityActiveIndex = 0;
+        renderCmdPalette();
+      }
+      function cmdFiltered() {
+        const q = cmdParityQuery.trim().toLowerCase();
+        if (!q || q.length < 3) return [];
+        return CMD_PARITY_ITEMS.filter((item) =>
+          item.title.toLowerCase().includes(q) || item.subtitle.toLowerCase().includes(q) || String(item.meta || '').toLowerCase().includes(q)
+        );
+      }
+      function renderCmdCenteredState(type) {
+        const root = document.getElementById('cmd-palette-results');
+        if (!root) return;
+        const query = cmdParityEscape(cmdParityQuery.trim());
+        const content = {
+          idle: `<p data-comment="cmd-palette-idle-text" class="text-sm text-stone-400 dark:text-stone-500 m-0">Type to search across jobs, tasks, todos...</p>`,
+          short: `<p data-comment="cmd-palette-short-text" class="text-sm text-stone-400 dark:text-stone-500 m-0">Type at least 3 characters to search...</p>`,
+          empty: `<i data-comment="cmd-palette-empty-icon" data-lucide="search-x" class="w-8 h-8 mb-3 opacity-30 text-stone-400"></i><p data-comment="cmd-palette-empty-text" class="text-sm text-stone-400 dark:text-stone-500 m-0">No results for <span data-comment="cmd-palette-empty-query" class="font-medium text-stone-600 dark:text-stone-300">&quot;${query}&quot;</span></p>`
+        }[type];
+        root.innerHTML = `<div data-comment="cmd-palette-${type}" class="flex flex-col items-center justify-center h-full text-center">${content}</div>`;
+        cmdParityFlatItems = [];
+        if (window.lucide) lucide.createIcons();
+      }
+      function renderCmdPalette() {
+        ensureCmdPaletteStructure();
+        const root = document.getElementById('cmd-palette-results');
+        if (!root) return;
+        const q = cmdParityQuery.trim();
+        if (!q) { renderCmdCenteredState('idle'); return; }
+        if (q.length < 3) { renderCmdCenteredState('short'); return; }
+        const items = cmdFiltered();
+        if (!items.length) { renderCmdCenteredState('empty'); return; }
+        const groups = {};
+        items.forEach((item) => { (groups[item.kind] = groups[item.kind] || []).push(item); });
+        cmdParityFlatItems = [];
+        const parts = [];
+        CMD_PARITY_GROUP_ORDER.forEach((kind) => {
+          const groupItems = groups[kind];
+          if (!groupItems?.length) return;
+          const meta = CMD_PARITY_GROUP_META[kind];
+          parts.push(`<div data-comment="cmd-palette-section-${kind}" class="cmd-section-header"><i data-comment="cmd-palette-section-${kind}-icon" data-lucide="${meta.icon}" class="w-3.5 h-3.5 text-stone-400"></i><span data-comment="cmd-palette-section-${kind}-label">${meta.label}</span></div>`);
+          groupItems.forEach((item) => {
+            const index = cmdParityFlatItems.length;
+            cmdParityFlatItems.push(item);
+            const active = index === cmdParityActiveIndex;
+            const titleKey = `cmd-palette-result-${index}-title`;
+            const subtitleKey = `cmd-palette-result-${index}-subtitle`;
+            const tag = item.meta ? `<span data-comment="cmd-palette-result-${index}-tag" class="cmd-tag"><span data-comment="cmd-palette-result-${index}-tag-dot" class="cmd-tag-dot" style="background:${item.metaColor || '#a8a29e'}"></span>${cmdParityEscape(item.meta)}</span>` : `<span data-comment="cmd-palette-result-${index}-kind" class="text-[10px] uppercase tracking-wider font-semibold text-stone-400 dark:text-stone-500 shrink-0">${cmdParityEscape(item.kind)}</span>`;
+            parts.push(`
+              <button type="button" data-comment="cmd-palette-result-${index}" data-href="${cmdParityEscape(item.href)}" onclick="selectCmdPaletteItem(${index})" onmouseenter="setCmdActiveIndex(${index})" class="cmd-result${active ? ' is-active' : ''}">
+                <div data-comment="cmd-palette-result-${index}-body" class="flex-1 min-w-0">
+                  <p data-comment="${titleKey}" class="text-sm font-medium text-stone-900 dark:text-stone-50 truncate m-0">${cmdParityHighlight(item.title, q, titleKey)}</p>
+                  <p data-comment="${subtitleKey}" class="text-xs text-stone-400 dark:text-stone-500 truncate mt-0.5 m-0">${cmdParityHighlight(item.subtitle, q, subtitleKey)}</p>
+                </div>
+                ${tag}
+              </button>`);
+          });
+        });
+        root.innerHTML = parts.join('');
+        if (window.lucide) lucide.createIcons();
+      }
+      function setCmdActiveIndex(index) {
+        cmdParityActiveIndex = index;
+        document.querySelectorAll('.cmd-result').forEach((button, i) => button.classList.toggle('is-active', i === index));
+      }
+      function selectCmdPaletteItem(index) {
+        const item = cmdParityFlatItems[index];
+        if (!item) return;
+        closeCmdPalette();
+        window.location.href = item.href;
+      }
+      function onCmdPaletteKey(event) {
+        if (event.key === 'Escape') { event.preventDefault(); closeCmdPalette(); return; }
+        if (!cmdParityFlatItems.length) return;
+        if (event.key === 'ArrowDown') {
+          event.preventDefault();
+          setCmdActiveIndex(Math.min(cmdParityFlatItems.length - 1, cmdParityActiveIndex + 1));
+        } else if (event.key === 'ArrowUp') {
+          event.preventDefault();
+          setCmdActiveIndex(Math.max(0, cmdParityActiveIndex - 1));
+        } else if (event.key === 'Enter') {
+          event.preventDefault();
+          selectCmdPaletteItem(cmdParityActiveIndex);
+        }
+      }
+      document.addEventListener('DOMContentLoaded', ensureCmdPaletteStructure);</script>
   
       <div id="cmd-palette" data-comment="cmd-palette" data-component="dialog" class="cmd-palette-root">
         <div class="cmd-palette-backdrop" onclick="closeCmdPalette()">
